@@ -10,12 +10,12 @@ export const courseFormSchema = z.object({
 
 export type CourseForm = z.infer<typeof courseFormSchema>;
 
-export function useCourseForm(){
+export function useCourseForm(InitialData?: CourseForm, courseId?: number) {
     const form = useForm<CourseForm>({
-        title: '',
-        description: '',
-        category: 10, // None
-        status: 3, // None
+        title: InitialData?.title ?? '',
+        description: InitialData?.description ?? '',
+        category: InitialData?.category ?? 10, // None
+        status: InitialData?.status ?? 3, // None
     });
     
     function validate(): boolean {
@@ -37,6 +37,15 @@ export function useCourseForm(){
 
     function submit(): void {
         if(!validate()){
+            return;
+        }
+
+        if(courseId){
+            form.put(`/courses/${courseId}`, {
+                onSuccess: () => {
+                    form.reset();
+                }
+            });
             return;
         }
 

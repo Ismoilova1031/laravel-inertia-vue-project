@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, applyUrlDefaults } from './../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\CourseController::create
-* @see app/Http/Controllers/CourseController.php:34
+* @see app/Http/Controllers/CourseController.php:36
 * @route '/courses/create'
 */
 export const create = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -16,7 +16,7 @@ create.definition = {
 
 /**
 * @see \App\Http\Controllers\CourseController::create
-* @see app/Http/Controllers/CourseController.php:34
+* @see app/Http/Controllers/CourseController.php:36
 * @route '/courses/create'
 */
 create.url = (options?: RouteQueryOptions) => {
@@ -25,7 +25,7 @@ create.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\CourseController::create
-* @see app/Http/Controllers/CourseController.php:34
+* @see app/Http/Controllers/CourseController.php:36
 * @route '/courses/create'
 */
 create.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -35,7 +35,7 @@ create.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\CourseController::create
-* @see app/Http/Controllers/CourseController.php:34
+* @see app/Http/Controllers/CourseController.php:36
 * @route '/courses/create'
 */
 create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -44,8 +44,42 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 })
 
 /**
+* @see \App\Http\Controllers\CourseController::store
+* @see app/Http/Controllers/CourseController.php:44
+* @route '/courses'
+*/
+export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+    url: store.url(options),
+    method: 'post',
+})
+
+store.definition = {
+    methods: ["post"],
+    url: '/courses',
+} satisfies RouteDefinition<["post"]>
+
+/**
+* @see \App\Http\Controllers\CourseController::store
+* @see app/Http/Controllers/CourseController.php:44
+* @route '/courses'
+*/
+store.url = (options?: RouteQueryOptions) => {
+    return store.definition.url + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\CourseController::store
+* @see app/Http/Controllers/CourseController.php:44
+* @route '/courses'
+*/
+store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+    url: store.url(options),
+    method: 'post',
+})
+
+/**
 * @see \App\Http\Controllers\CourseController::show
-* @see app/Http/Controllers/CourseController.php:21
+* @see app/Http/Controllers/CourseController.php:23
 * @route '/courses/{course}'
 */
 export const show = (args: { course: number | { id: number } } | [course: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -60,7 +94,7 @@ show.definition = {
 
 /**
 * @see \App\Http\Controllers\CourseController::show
-* @see app/Http/Controllers/CourseController.php:21
+* @see app/Http/Controllers/CourseController.php:23
 * @route '/courses/{course}'
 */
 show.url = (args: { course: number | { id: number } } | [course: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -93,7 +127,7 @@ show.url = (args: { course: number | { id: number } } | [course: number | { id: 
 
 /**
 * @see \App\Http\Controllers\CourseController::show
-* @see app/Http/Controllers/CourseController.php:21
+* @see app/Http/Controllers/CourseController.php:23
 * @route '/courses/{course}'
 */
 show.get = (args: { course: number | { id: number } } | [course: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -103,7 +137,7 @@ show.get = (args: { course: number | { id: number } } | [course: number | { id: 
 
 /**
 * @see \App\Http\Controllers\CourseController::show
-* @see app/Http/Controllers/CourseController.php:21
+* @see app/Http/Controllers/CourseController.php:23
 * @route '/courses/{course}'
 */
 show.head = (args: { course: number | { id: number } } | [course: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -112,39 +146,199 @@ show.head = (args: { course: number | { id: number } } | [course: number | { id:
 })
 
 /**
-* @see \App\Http\Controllers\CourseController::store
-* @see app/Http/Controllers/CourseController.php:42
-* @route '/courses'
+* @see \App\Http\Controllers\CourseController::edit
+* @see app/Http/Controllers/CourseController.php:59
+* @route '/courses/{course}/edit'
 */
-export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
-    url: store.url(options),
-    method: 'post',
+export const edit = (args: { course: number | { id: number } } | [course: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: edit.url(args, options),
+    method: 'get',
 })
 
-store.definition = {
-    methods: ["post"],
-    url: '/courses',
-} satisfies RouteDefinition<["post"]>
+edit.definition = {
+    methods: ["get","head"],
+    url: '/courses/{course}/edit',
+} satisfies RouteDefinition<["get","head"]>
 
 /**
-* @see \App\Http\Controllers\CourseController::store
-* @see app/Http/Controllers/CourseController.php:42
-* @route '/courses'
+* @see \App\Http\Controllers\CourseController::edit
+* @see app/Http/Controllers/CourseController.php:59
+* @route '/courses/{course}/edit'
 */
-store.url = (options?: RouteQueryOptions) => {
-    return store.definition.url + queryParams(options)
+edit.url = (args: { course: number | { id: number } } | [course: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
+    if (typeof args === 'string' || typeof args === 'number') {
+        args = { course: args }
+    }
+
+    if (typeof args === 'object' && !Array.isArray(args) && 'id' in args) {
+        args = { course: args.id }
+    }
+
+    if (Array.isArray(args)) {
+        args = {
+            course: args[0],
+        }
+    }
+
+    args = applyUrlDefaults(args)
+
+    const parsedArgs = {
+        course: typeof args.course === 'object'
+        ? args.course.id
+        : args.course,
+    }
+
+    return edit.definition.url
+            .replace('{course}', parsedArgs.course.toString())
+            .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
-* @see \App\Http\Controllers\CourseController::store
-* @see app/Http/Controllers/CourseController.php:42
-* @route '/courses'
+* @see \App\Http\Controllers\CourseController::edit
+* @see app/Http/Controllers/CourseController.php:59
+* @route '/courses/{course}/edit'
 */
-store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
-    url: store.url(options),
-    method: 'post',
+edit.get = (args: { course: number | { id: number } } | [course: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: edit.url(args, options),
+    method: 'get',
 })
 
-const CourseController = { create, show, store }
+/**
+* @see \App\Http\Controllers\CourseController::edit
+* @see app/Http/Controllers/CourseController.php:59
+* @route '/courses/{course}/edit'
+*/
+edit.head = (args: { course: number | { id: number } } | [course: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: edit.url(args, options),
+    method: 'head',
+})
+
+/**
+* @see \App\Http\Controllers\CourseController::update
+* @see app/Http/Controllers/CourseController.php:80
+* @route '/courses/{course}'
+*/
+export const update = (args: { course: number | { id: number } } | [course: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+    url: update.url(args, options),
+    method: 'put',
+})
+
+update.definition = {
+    methods: ["put","patch"],
+    url: '/courses/{course}',
+} satisfies RouteDefinition<["put","patch"]>
+
+/**
+* @see \App\Http\Controllers\CourseController::update
+* @see app/Http/Controllers/CourseController.php:80
+* @route '/courses/{course}'
+*/
+update.url = (args: { course: number | { id: number } } | [course: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
+    if (typeof args === 'string' || typeof args === 'number') {
+        args = { course: args }
+    }
+
+    if (typeof args === 'object' && !Array.isArray(args) && 'id' in args) {
+        args = { course: args.id }
+    }
+
+    if (Array.isArray(args)) {
+        args = {
+            course: args[0],
+        }
+    }
+
+    args = applyUrlDefaults(args)
+
+    const parsedArgs = {
+        course: typeof args.course === 'object'
+        ? args.course.id
+        : args.course,
+    }
+
+    return update.definition.url
+            .replace('{course}', parsedArgs.course.toString())
+            .replace(/\/+$/, '') + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\CourseController::update
+* @see app/Http/Controllers/CourseController.php:80
+* @route '/courses/{course}'
+*/
+update.put = (args: { course: number | { id: number } } | [course: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+    url: update.url(args, options),
+    method: 'put',
+})
+
+/**
+* @see \App\Http\Controllers\CourseController::update
+* @see app/Http/Controllers/CourseController.php:80
+* @route '/courses/{course}'
+*/
+update.patch = (args: { course: number | { id: number } } | [course: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
+    url: update.url(args, options),
+    method: 'patch',
+})
+
+/**
+* @see \App\Http\Controllers\CourseController::destroy
+* @see app/Http/Controllers/CourseController.php:96
+* @route '/courses/{course}'
+*/
+export const destroy = (args: { course: number | { id: number } } | [course: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+    url: destroy.url(args, options),
+    method: 'delete',
+})
+
+destroy.definition = {
+    methods: ["delete"],
+    url: '/courses/{course}',
+} satisfies RouteDefinition<["delete"]>
+
+/**
+* @see \App\Http\Controllers\CourseController::destroy
+* @see app/Http/Controllers/CourseController.php:96
+* @route '/courses/{course}'
+*/
+destroy.url = (args: { course: number | { id: number } } | [course: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
+    if (typeof args === 'string' || typeof args === 'number') {
+        args = { course: args }
+    }
+
+    if (typeof args === 'object' && !Array.isArray(args) && 'id' in args) {
+        args = { course: args.id }
+    }
+
+    if (Array.isArray(args)) {
+        args = {
+            course: args[0],
+        }
+    }
+
+    args = applyUrlDefaults(args)
+
+    const parsedArgs = {
+        course: typeof args.course === 'object'
+        ? args.course.id
+        : args.course,
+    }
+
+    return destroy.definition.url
+            .replace('{course}', parsedArgs.course.toString())
+            .replace(/\/+$/, '') + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\CourseController::destroy
+* @see app/Http/Controllers/CourseController.php:96
+* @route '/courses/{course}'
+*/
+destroy.delete = (args: { course: number | { id: number } } | [course: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+    url: destroy.url(args, options),
+    method: 'delete',
+})
+
+const CourseController = { create, store, show, edit, update, destroy }
 
 export default CourseController

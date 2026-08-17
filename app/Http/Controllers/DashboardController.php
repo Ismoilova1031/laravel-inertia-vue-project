@@ -19,7 +19,15 @@ class DashboardController extends Controller
         $courses = $this->getCoursesUseCase->execute();
 
         return Inertia::render('Dashboard', [
-            'courses' => $courses,
+            'courses' => $courses->map(function ($course) {
+                return [
+                    'id' => $course->id,
+                    'title' => $course->title,
+                    'description' => $course->description,
+                    'category' => $course->category->label(),
+                    'status' => $course->status->label(),
+                ];
+            }),
         ]);
     }
 }

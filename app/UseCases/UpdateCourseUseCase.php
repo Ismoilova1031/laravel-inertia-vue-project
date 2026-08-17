@@ -3,10 +3,11 @@
 namespace App\UseCases;
 
 use App\Contracts\Repositories\CourseRepositoryInterface;
-use App\Contracts\UseCases\GetCoursesUseCaseInterface;
-use Illuminate\Support\Collection;
+use App\Contracts\UseCases\UpdateCourseUseCaseInterface;
+use App\Dtos\CourseDto;
+use App\Models\Course;
 
-class GetCoursesUseCase implements GetCoursesUseCaseInterface
+class UpdateCourseUseCase implements UpdateCourseUseCaseInterface
 {
     private CourseRepositoryInterface $courseRepository;
 
@@ -15,8 +16,8 @@ class GetCoursesUseCase implements GetCoursesUseCaseInterface
         $this->courseRepository = $courseRepository;
     }
 
-    public function execute(): Collection
+    public function execute(Course $course, CourseDto $dto): Course
     {
-        return $this->courseRepository->getCourses();
+        return $this->courseRepository->updateCourse($course, $dto);
     }
 }

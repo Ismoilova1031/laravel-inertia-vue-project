@@ -1,28 +1,80 @@
 <template>
-    <v-container>
-        <h1 class="mb-6">{{ course.title }}</h1>
-        <v-card-title>{{ course.category }}</v-card-title>
-        <v-card-title>{{ course.status }}</v-card-title>
+    <v-container class="py-8">
+        <v-card
+            max-width="900"
+            class="mx-auto"
+            rounded="lg"
+            elevation="3"
+        >
+            <v-card-item>
+                <v-card-title class="text-h4 font-weight-bold">
+                    {{ course.title }}
+                </v-card-title>
 
-        <v-card-text>
-            {{ course.description }}
-        </v-card-text>
+                <v-card-subtitle class="mt-2">
+                    Course #{{ course.id }}
+                </v-card-subtitle>
+            </v-card-item>
+
+            <v-card-text>
+                <div class="d-flex ga-2 mb-6">
+                    <v-chip
+                        color="primary"
+                        variant="tonal"
+                    >
+                        {{ course.category }}
+                    </v-chip>
+
+                    <v-chip
+                        color="success"
+                        variant="tonal"
+                    >
+                        {{ course.status }}
+                    </v-chip>
+                </div>
+
+                <h2 class="text-h6 mb-3">
+                    Description
+                </h2>
+
+                <p class="text-body-1 text-medium-emphasis">
+                    {{ course.description }}
+                </p>
+            </v-card-text>
+
+            <v-divider />
+
+            <v-card-actions class="pa-4">
+                <Link :href="DashboardController.index().url">
+                    <v-btn
+                        variant="text"
+                        prepend-icon="mdi-arrow-left"
+                    >
+                        Back to Dashboard
+                    </v-btn>
+                </Link>
+
+                <v-spacer />
+
+                <Link :href="CourseController.edit(course.id).url">
+                    <v-btn
+                        color="primary"
+                        prepend-icon="mdi-pencil"
+                    >
+                        Edit Course
+                    </v-btn>
+                </Link>
+            </v-card-actions>
+        </v-card>
     </v-container>
 </template>
+
 <script setup lang="ts">
-interface Course {
-    id: number;
-    title: string;
-    description: string;
-    category: {
-        value: number;
-        label: string;
-    };
-    status: {
-        value: number;
-        label: string;
-    }
-}
+import { Link } from '@inertiajs/vue3';
+import type { Course } from '../../types/course';
+import CourseController from '../../actions/App/Http/Controllers/CourseController';
+import DashboardController from '../../actions/App/Http/Controllers/DashboardController';
+
 defineProps<{
     course: Course;
 }>();

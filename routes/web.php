@@ -11,11 +11,12 @@ Route::get('/', function () {
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->name('dashboard');
 
-Route::get('/courses/create', [CourseController::class, 'create'])
-    ->name('courses.create');
-
-Route::get('/courses/{course}', [CourseController::class, 'show'])
-    ->name('courses.show');
-
-Route::post('/courses', [CourseController::class, 'store'])
-    ->name('courses.store');
+Route::resource('courses', CourseController::class)
+    ->only([
+        'create',
+        'store',
+        'show',
+        'edit',
+        'update',
+        'destroy',
+    ]);

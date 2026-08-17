@@ -3,10 +3,10 @@
 namespace App\UseCases;
 
 use App\Contracts\Repositories\CourseRepositoryInterface;
-use App\Contracts\UseCases\GetCoursesUseCaseInterface;
-use Illuminate\Support\Collection;
+use App\Contracts\UseCases\DeleteCourseUseCaseInterface;
+use App\Models\Course;
 
-class GetCoursesUseCase implements GetCoursesUseCaseInterface
+class DeleteCourseUseCase implements DeleteCourseUseCaseInterface
 {
     private CourseRepositoryInterface $courseRepository;
 
@@ -15,8 +15,8 @@ class GetCoursesUseCase implements GetCoursesUseCaseInterface
         $this->courseRepository = $courseRepository;
     }
 
-    public function execute(): Collection
+    public function execute(Course $course): void
     {
-        return $this->courseRepository->getCourses();
+        $this->courseRepository->delete($course);
     }
 }
