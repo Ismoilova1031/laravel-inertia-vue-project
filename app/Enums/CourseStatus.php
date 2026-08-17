@@ -7,7 +7,6 @@ enum CourseStatus: int
     case Draft = 0;
     case Published = 1;
     case Archived = 2;
-    case None = 3;
 
     public function label(): string
     {
@@ -15,7 +14,6 @@ enum CourseStatus: int
             self::Draft => 'Draft',
             self::Published => 'Published',
             self::Archived => 'Archived',
-            self::None => 'None',
         };
     }
 

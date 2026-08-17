@@ -14,7 +14,6 @@ enum CourseCategory: int
     case HealthAndFitness = 7;
     case PersonalDevelopment = 8;
     case FinanceAndAccounting = 9;
-    case None = 10;
 
     public function label(): string
     {
@@ -29,7 +28,6 @@ enum CourseCategory: int
             self::HealthAndFitness => 'Health and Fitness',
             self::PersonalDevelopment => 'Personal Development',
             self::FinanceAndAccounting => 'Finance and Accounting',
-            self::None => 'None',
         };
     }
     public static function labels(): array
