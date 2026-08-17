@@ -1,0 +1,26 @@
+<?php
+
+namespace App\Enums;
+
+enum CourseStatus: int
+{
+    case Draft = 0;
+    case Published = 1;
+    case Archived = 2;
+    case None = 3;
+
+    public function label(): string
+    {
+        return match ($this) {
+            self::Draft => 'Draft',
+            self::Published => 'Published',
+            self::Archived => 'Archived',
+            self::None => 'None',
+        };
+    }
+
+    public static function labels(): array
+    {
+        return collect(self::cases())->map(fn($case) => ['title' => $case->label(), 'value' => $case->value])->toArray();
+    }
+}

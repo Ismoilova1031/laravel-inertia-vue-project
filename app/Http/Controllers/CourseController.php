@@ -7,6 +7,8 @@ use App\Models\Course;
 use App\Http\Requests\StoreCourseRequest;
 use App\Contracts\UseCases\CreateCourseUseCaseInterface;
 use App\Dtos\CourseDto;
+use App\Enums\CourseCategory;
+use App\Enums\CourseStatus;
 
 class CourseController extends Controller
 {
@@ -19,13 +21,22 @@ class CourseController extends Controller
     public function show(Course $course)
     {
         return Inertia::render('Courses/Show', [
-            'course' => $course->only(['id', 'title', 'description']),
+            'course' => [
+                'id' => $course->id,
+                'title' => $course->title,
+                'description' => $course->description,
+                'category' =>  $course->category->label(),
+                'status' => $course->status->label(),
+            ],
         ]);
     }
 
     public function create()
     {
-        return Inertia::render('Courses/Create');
+        return Inertia::render('Courses/Create', [
+            'categories' => CourseCategory::labels(),
+            'statuses' => CourseStatus::labels(),
+        ]);
     }
 
     public function store(StoreCourseRequest $request){
@@ -33,7 +44,9 @@ class CourseController extends Controller
 
         $dto = new CourseDto(
             title: $validated['title'],
-            description: $validated['description']
+            description: $validated['description'],
+            category: $validated['category'],
+            status: $validated['status']
         );
 
         $course = $this->createCourseUseCase->execute($dto);

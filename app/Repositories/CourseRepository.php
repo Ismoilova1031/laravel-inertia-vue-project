@@ -14,6 +14,8 @@ class CourseRepository implements CourseRepositoryInterface
             'id',
             'title',
             'description',
+            'category',
+            'status',
         ]);
     }
 

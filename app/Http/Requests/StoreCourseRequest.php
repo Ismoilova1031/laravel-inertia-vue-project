@@ -24,6 +24,8 @@ class StoreCourseRequest extends FormRequest
         return [
             'title' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
+            'category' => ['required', 'integer', 'between:0,9'],
+            'status' => ['required', 'integer', 'between:0,2'],
         ];
     }
 }

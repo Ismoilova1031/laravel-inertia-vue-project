@@ -1,7 +1,51 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, applyUrlDefaults } from './../../../../wayfinder'
 /**
+* @see \App\Http\Controllers\CourseController::create
+* @see app/Http/Controllers/CourseController.php:34
+* @route '/courses/create'
+*/
+export const create = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: create.url(options),
+    method: 'get',
+})
+
+create.definition = {
+    methods: ["get","head"],
+    url: '/courses/create',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \App\Http\Controllers\CourseController::create
+* @see app/Http/Controllers/CourseController.php:34
+* @route '/courses/create'
+*/
+create.url = (options?: RouteQueryOptions) => {
+    return create.definition.url + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\CourseController::create
+* @see app/Http/Controllers/CourseController.php:34
+* @route '/courses/create'
+*/
+create.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: create.url(options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\CourseController::create
+* @see app/Http/Controllers/CourseController.php:34
+* @route '/courses/create'
+*/
+create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: create.url(options),
+    method: 'head',
+})
+
+/**
 * @see \App\Http\Controllers\CourseController::show
-* @see app/Http/Controllers/CourseController.php:19
+* @see app/Http/Controllers/CourseController.php:21
 * @route '/courses/{course}'
 */
 export const show = (args: { course: number | { id: number } } | [course: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -16,7 +60,7 @@ show.definition = {
 
 /**
 * @see \App\Http\Controllers\CourseController::show
-* @see app/Http/Controllers/CourseController.php:19
+* @see app/Http/Controllers/CourseController.php:21
 * @route '/courses/{course}'
 */
 show.url = (args: { course: number | { id: number } } | [course: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -49,7 +93,7 @@ show.url = (args: { course: number | { id: number } } | [course: number | { id: 
 
 /**
 * @see \App\Http\Controllers\CourseController::show
-* @see app/Http/Controllers/CourseController.php:19
+* @see app/Http/Controllers/CourseController.php:21
 * @route '/courses/{course}'
 */
 show.get = (args: { course: number | { id: number } } | [course: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -59,7 +103,7 @@ show.get = (args: { course: number | { id: number } } | [course: number | { id: 
 
 /**
 * @see \App\Http\Controllers\CourseController::show
-* @see app/Http/Controllers/CourseController.php:19
+* @see app/Http/Controllers/CourseController.php:21
 * @route '/courses/{course}'
 */
 show.head = (args: { course: number | { id: number } } | [course: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -68,52 +112,8 @@ show.head = (args: { course: number | { id: number } } | [course: number | { id:
 })
 
 /**
-* @see \App\Http\Controllers\CourseController::create
-* @see app/Http/Controllers/CourseController.php:26
-* @route '/courses/create'
-*/
-export const create = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: create.url(options),
-    method: 'get',
-})
-
-create.definition = {
-    methods: ["get","head"],
-    url: '/courses/create',
-} satisfies RouteDefinition<["get","head"]>
-
-/**
-* @see \App\Http\Controllers\CourseController::create
-* @see app/Http/Controllers/CourseController.php:26
-* @route '/courses/create'
-*/
-create.url = (options?: RouteQueryOptions) => {
-    return create.definition.url + queryParams(options)
-}
-
-/**
-* @see \App\Http\Controllers\CourseController::create
-* @see app/Http/Controllers/CourseController.php:26
-* @route '/courses/create'
-*/
-create.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: create.url(options),
-    method: 'get',
-})
-
-/**
-* @see \App\Http\Controllers\CourseController::create
-* @see app/Http/Controllers/CourseController.php:26
-* @route '/courses/create'
-*/
-create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
-    url: create.url(options),
-    method: 'head',
-})
-
-/**
 * @see \App\Http\Controllers\CourseController::store
-* @see app/Http/Controllers/CourseController.php:31
+* @see app/Http/Controllers/CourseController.php:42
 * @route '/courses'
 */
 export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -128,7 +128,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\CourseController::store
-* @see app/Http/Controllers/CourseController.php:31
+* @see app/Http/Controllers/CourseController.php:42
 * @route '/courses'
 */
 store.url = (options?: RouteQueryOptions) => {
@@ -137,7 +137,7 @@ store.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\CourseController::store
-* @see app/Http/Controllers/CourseController.php:31
+* @see app/Http/Controllers/CourseController.php:42
 * @route '/courses'
 */
 store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -145,6 +145,6 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     method: 'post',
 })
 
-const CourseController = { show, create, store }
+const CourseController = { create, show, store }
 
 export default CourseController
