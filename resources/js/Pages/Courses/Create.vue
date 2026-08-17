@@ -9,24 +9,35 @@
       </v-card-item>
 
       <v-divider />
-      
+
       <v-card-text class="pa-6">
-        <CourseForm :form="form" :categories="categories" :statuses="statuses" submitLabel="Create Course" :submit="submit" />
+        <CourseForm :form="form" :categories="categories" :statuses="statuses" submitLabel="Create Course"
+          :submit="submit" />
       </v-card-text>
+
+      <v-divider />
+
+      <v-card-actions class="px-6 py-4">
+        <Link :href="DashboardController.index().url">
+          <v-btn variant="text" prepend-icon="mdi-arrow-left">Back to Dashboard</v-btn>
+        </Link>
+      </v-card-actions>
     </v-card>
   </v-container>
 </template>
 <script setup lang="ts">
+import { Link } from "@inertiajs/vue3";
 import CourseForm from "../../Components/CourseForm.vue";
+import DashboardController from "../../actions/App/Http/Controllers/DashboardController";
 import { useCourseForm } from "../../forms/courseForm";
 
 defineProps<{
   categories: {
-    title: string;
+    label: string;
     value: number;
   }[];
   statuses: {
-    title: string;
+    label: string;
     value: number;
   }[];
 }>();

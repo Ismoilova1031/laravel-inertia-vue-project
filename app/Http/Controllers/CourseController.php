@@ -11,6 +11,8 @@ use App\Contracts\UseCases\DeleteCourseUseCaseInterface;
 use App\Dtos\CourseDto;
 use App\Enums\CourseCategory;
 use App\Enums\CourseStatus;
+use App\Dtos\CourseResponseDto;
+use App\Dtos\CourseEditResponseDto;
 
 class CourseController extends Controller
 {
@@ -23,13 +25,7 @@ class CourseController extends Controller
     public function show(Course $course)
     {
         return Inertia::render('Courses/Show', [
-            'course' => [
-                'id' => $course->id,
-                'title' => $course->title,
-                'description' => $course->description,
-                'category' =>  $course->category->label(),
-                'status' => $course->status->label(),
-            ],
+            'course' => CourseResponseDto::fromModel($course),
         ]);
     }
 
@@ -44,12 +40,7 @@ class CourseController extends Controller
     public function store(CourseRequest $request){
         $validated = $request->validated();
 
-        $dto = new CourseDto(
-            title: $validated['title'],
-            description: $validated['description'],
-            category: $validated['category'],
-            status: $validated['status']
-        );
+        $dto = CourseDto::fromArray($validated);
 
         $course = $this->createCourseUseCase->execute($dto);
 
@@ -59,19 +50,7 @@ class CourseController extends Controller
 public function edit(Course $course)
 {
     return Inertia::render('Courses/Edit', [
-        'course' => [
-            'id' => $course->id,
-            'title' => $course->title,
-            'description' => $course->description,
-            'category' => [
-                'value' => $course->category->value,
-                'label' => $course->category->label(),
-            ],
-            'status' => [
-                'value' => $course->status->value,
-                'label' => $course->status->label(),
-            ],
-        ],
+        'course' => CourseEditResponseDto::fromModel($course),
         'categories' => CourseCategory::labels(),
         'statuses' => CourseStatus::labels(),
     ]);
@@ -81,12 +60,7 @@ public function edit(Course $course)
     {
         $validated = $request->validated();
 
-       $dto = new CourseDto(
-            title: $validated['title'],
-            description: $validated['description'],
-            category: $validated['category'],
-            status: $validated['status']
-        );
+       $dto = CourseDto::fromArray($validated);
 
         $course = $this->updateCourseUseCase->execute($course, $dto);
 

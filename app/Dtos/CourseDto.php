@@ -12,6 +12,16 @@ class CourseDto
     ) {
     }
 
+    public static function fromArray(array $data): self
+    {
+        return new self(
+            title: $data['title'],
+            description: $data['description'],
+            category: $data['category'],
+            status: $data['status'],
+        );
+    }
+
     public function toArray(): array
     {
         return [

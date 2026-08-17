@@ -1,16 +1,16 @@
 <template>
     <form @submit.prevent="submit">
-        <v-text-field name="title" placeholder="Course Title" v-model="form.title" variant="outlined"
+        <v-text-field name="title" placeholder="Course Title" v-model="form.title" variant="outlined" label="Course Title"
             :error-messages="form.errors.title" />
-        <v-textarea name="description" placeholder="Course Description" v-model="form.description" variant="outlined"
+        <v-textarea name="description" placeholder="Course Description" v-model="form.description" variant="outlined" label="Course Description"
             rows="4" class="mt-4" :error-messages="form.errors.description" />
         <v-row class="mt-1">
             <v-col cols="12" md="6">
-                <v-select v-model="form.category" :items="categories" item-title="title" item-value="value"
+                <v-select v-model="form.category" :items="categories" item-title="label" item-value="value" variant="outlined"
                     label="Course Category" :error-messages="form.errors.category" />
             </v-col>
             <v-col cols="12" md="6">
-                <v-select v-model="form.status" :items="statuses" item-title="title" item-value="value"
+                <v-select v-model="form.status" :items="statuses" item-title="label" item-value="value" variant="outlined"
                     label="Course Status" :error-messages="form.errors.status" />
             </v-col>
         </v-row>
@@ -27,11 +27,11 @@ import type { CourseFormInstance } from "../forms/courseForm";
 defineProps<{
     form: CourseFormInstance;
     categories: {
-        title: string;
+        label: string;
         value: number;
     }[];
     statuses: {
-        title: string;
+        label: string;
         value: number;
     }[];
     submitLabel: string;

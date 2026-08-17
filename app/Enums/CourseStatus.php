@@ -19,6 +19,6 @@ enum CourseStatus: int
 
     public static function labels(): array
     {
-        return collect(self::cases())->map(fn($case) => ['title' => $case->label(), 'value' => $case->value])->toArray();
+        return collect(self::cases())->map(fn($case) => ['label' => $case->label(), 'value' => $case->value])->toArray();
     }
 }
