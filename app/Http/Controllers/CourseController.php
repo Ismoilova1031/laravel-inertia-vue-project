@@ -24,6 +24,10 @@ class CourseController extends Controller
 
     public function show(Course $course)
     {
+        $course->load([
+            'lessons',
+            'students',
+        ]);
         return Inertia::render('Courses/Show', [
             'course' => CourseResponseDto::fromModel($course),
         ]);

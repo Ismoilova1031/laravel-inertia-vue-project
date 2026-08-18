@@ -10,6 +10,7 @@ use App\Enums\CourseStatus;
 use App\Models\Lesson;
 use App\Models\CourseStudent;
 use App\Models\Notification;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Course extends Model
 {
@@ -35,6 +36,16 @@ class Course extends Model
     public function courseStudents(): HasMany
     {
         return $this->hasMany(CourseStudent::class);
+    }
+
+    public function students(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Student::class,
+            'course_student'
+        )->withPivot([
+            'is_liked',
+        ]);
     }
 
     public function notifications(): HasMany
