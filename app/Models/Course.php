@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Enums\CourseCategory;
 use App\Enums\CourseStatus;
+use App\Models\Lesson;
+use App\Models\CourseStudent;
+use App\Models\Notification;
 
 class Course extends Model
 {
@@ -27,5 +30,15 @@ class Course extends Model
     public function lessons(): HasMany
     {
         return $this->hasMany(Lesson::class);
+    }
+
+    public function courseStudents(): HasMany
+    {
+        return $this->hasMany(CourseStudent::class);
+    }
+
+    public function notifications(): HasMany
+    {
+        return $this->hasMany(Notification::class);
     }
 }
