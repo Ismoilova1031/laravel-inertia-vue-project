@@ -17,9 +17,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-
-        User::factory()->create();
-
         Course::factory(10)->create()->each(function ($course) {
             $course->lessons()->saveMany(Lesson::factory(5)->make());
         });

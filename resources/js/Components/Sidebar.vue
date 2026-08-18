@@ -5,7 +5,8 @@
                 title="Soliha Ismoilova" subtitle="teacher" class="border-b pa-2"></v-list-item>
 
             <v-list-item link title="Dashboard"
-                :to="DashboardController.index().url">
+                :component="Link"
+                :href="DashboardController.index().url">
                     <template #prepend>
                         <v-icon size="small">mdi-view-dashboard</v-icon>
                     </template>
@@ -32,7 +33,7 @@
                 </v-list-item>
             </v-list-group>
 
-            <v-list-item link title="Create Course" :to="CourseController.create().url">
+            <v-list-item link title="Create Course" :component="Link" :href="CourseController.create().url">
                 <template #prepend>
                     <v-icon size="small">mdi-plus</v-icon>
                 </template>
@@ -46,6 +47,7 @@
     </v-navigation-drawer>
 </template>
 <script setup lang="ts">
+import { Link } from "@inertiajs/vue3";
 import DashboardController from "../actions/App/Http/Controllers/DashboardController";
 import CourseController from "../actions/App/Http/Controllers/CourseController";
 
