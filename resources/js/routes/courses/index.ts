@@ -1,4 +1,5 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, applyUrlDefaults } from './../../wayfinder'
+import lessons from './lessons'
 /**
 * @see \App\Http\Controllers\CourseController::create
 * @see app/Http/Controllers/CourseController.php:36
@@ -346,6 +347,7 @@ const courses = {
     edit: Object.assign(edit, edit),
     update: Object.assign(update, update),
     destroy: Object.assign(destroy, destroy),
+    lessons: Object.assign(lessons, lessons),
 }
 
 export default courses

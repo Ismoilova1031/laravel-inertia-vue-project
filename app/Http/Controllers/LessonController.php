@@ -8,14 +8,17 @@ use Inertia\Inertia;
 use App\Contracts\UseCases\CreateLessonUseCaseInterface;
 use App\Dtos\LessonDto;
 use App\Models\Course;
+use App\Http\Requests\ReorderLessonsRequest;
+use App\UseCases\ReorderLessonsUseCase;
 
 class LessonController extends Controller
 {
     private CreateLessonUseCaseInterface $createLessonUseCase;
-
-    public function __construct(CreateLessonUseCaseInterface $createLessonUseCase)
+    private ReorderLessonsUseCase $reorderLessonsUseCase;
+    public function __construct(CreateLessonUseCaseInterface $createLessonUseCase, ReorderLessonsUseCase $reorderLessonsUseCase)
     {
         $this->createLessonUseCase = $createLessonUseCase;
+        $this->reorderLessonsUseCase = $reorderLessonsUseCase;
     }
 
     public function create(Course $course)
@@ -46,5 +49,15 @@ class LessonController extends Controller
        $lesson = $this->createLessonUseCase->execute($dto);
 
        return redirect()->route('courses.show', ['course' => $lesson->course_id]);
+    }
+
+    public function reorder(
+        ReorderLessonsRequest $request,
+    ) {
+        $this->reorderLessonsUseCase->execute(
+            $request->validated('lessons')
+        );
+
+        return back();
     }
 }

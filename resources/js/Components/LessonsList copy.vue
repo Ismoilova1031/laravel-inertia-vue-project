@@ -42,6 +42,7 @@
                     </v-list-item>
                 </template>
             </draggable>
+
             <v-list-item v-if="lessons.length === 0" class=" text-center py-10">
                 <v-icon size="40" color="medium-emphasis">
                     mdi-book-open-page-variant

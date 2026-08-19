@@ -21,12 +21,14 @@ Route::resource('courses', CourseController::class)
         'update',
         'destroy',
     ]);
+    
+Route::put(
+    '/courses/{course}/lessons/reorder',
+    [LessonController::class, 'reorder']
+)->name('courses.lessons.reorder');
+
 Route::resource('/courses/{course}/lessons', LessonController::class)
     ->only([
         'create',
         'store',
-        'show',
-        'edit',
-        'update',
-        'destroy',
     ]);

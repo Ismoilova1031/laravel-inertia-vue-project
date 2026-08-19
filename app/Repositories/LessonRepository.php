@@ -11,4 +11,19 @@ class LessonRepository implements LessonRepositoryInterface
     {
         return Lesson::create($data);
     }
+
+    public function update(int $id, array $data): bool
+    {
+        $lesson = $this->find($id);
+        return $lesson->update($data);
+    }
+
+    private function find(int $id): Lesson
+    {
+        $lesson = Lesson::find($id);
+        if (!$lesson) {
+            return false;
+        }
+        return $lesson;
+    }
 }
