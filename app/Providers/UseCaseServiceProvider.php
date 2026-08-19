@@ -6,11 +6,13 @@ use App\Contracts\UseCases\GetCoursesUseCaseInterface;
 use App\Contracts\UseCases\CreateCourseUseCaseInterface;
 use App\Contracts\UseCases\UpdateCourseUseCaseInterface;
 use App\Contracts\UseCases\DeleteCourseUseCaseInterface;
+use App\Contracts\UseCases\CreateLessonUseCaseInterface;
 
 use App\UseCases\GetCoursesUseCase;
 use App\UseCases\CreateCourseUseCase;
 use App\UseCases\UpdateCourseUseCase;
 use App\UseCases\DeleteCourseUseCase;
+use App\UseCases\CreateLessonUseCase;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -22,5 +24,6 @@ class UseCaseServiceProvider extends ServiceProvider
         $this->app->bind(CreateCourseUseCaseInterface::class, CreateCourseUseCase::class);
         $this->app->bind(UpdateCourseUseCaseInterface::class, UpdateCourseUseCase::class);
         $this->app->bind(DeleteCourseUseCaseInterface::class, DeleteCourseUseCase::class);
+        $this->app->bind(CreateLessonUseCaseInterface::class, CreateLessonUseCase::class);
     }
 }

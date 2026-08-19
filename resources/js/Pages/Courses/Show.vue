@@ -1,9 +1,9 @@
 <template>
     <v-container class="py-8">
-        <v-card class="mx-auto" rounded="lg" elevation="2">
+        <v-card class="mx-auto border" rounded="lg" elevation="0" >
             <v-card-text class="d-flex justify-space-between align-center ga-4 pa-6">
-                <div class="d-flex flex-column ga-2">
-                    <v-card-title class="text-h4 font-weight-bold pa-0">
+                <div class="d-flex flex-column">
+                    <v-card-title class="text-title-large font-weight-bold pa-0">
                         {{ course.title }}
                     </v-card-title>
 
@@ -46,7 +46,7 @@
 
         <v-tabs-window v-model="tab" class="mt-4">
             <v-tabs-window-item value="Lessons">
-               <LessonsList :lessons="course.lessons" />
+               <LessonsList :lessons="course.lessons" :course="course" />
             </v-tabs-window-item>
             <v-tabs-window-item value="Students">
                 <StudentList :students="course.students" />

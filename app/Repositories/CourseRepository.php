@@ -30,4 +30,9 @@ class CourseRepository implements CourseRepositoryInterface
     {
         $course->delete();
     }
+
+    public function findById(int $id): ?Course
+    {
+        return Course::find($id);
+    }
 }

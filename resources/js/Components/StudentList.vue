@@ -2,7 +2,7 @@
     <v-card rounded="lg" elevation="1">
         <v-list lines="two" class="py-0">
             <v-list-item
-                v-for="student in students"
+                v-for="(student, index) in students"
                 :key="student.id"
                 class="px-5 py-3"
             >
@@ -12,10 +12,10 @@
                         variant="tonal"
                         size="42"
                     >
-                        {{ student.name.charAt(0) }}
+                        {{ index + 1 }}
                     </v-avatar>
                 </template>
-
+                
                 <v-list-item-title class="font-weight-medium">
                     {{ student.name }} {{ student.surname }}
                 </v-list-item-title>
@@ -28,8 +28,8 @@
                     <div class="d-flex align-center ga-3">
                         <v-chip
                             size="small"
-                            variant="tonal"
                             color="primary"
+                            variant="tonal"
                         >
                             @{{ student.username }}
                         </v-chip>
@@ -39,9 +39,7 @@
                             variant="text"
                             size="small"
                         >
-                            <v-icon>
-                                mdi-dots-vertical
-                            </v-icon>
+                            <v-icon>mdi-dots-vertical</v-icon>
                         </v-btn>
                     </div>
                 </template>
@@ -51,21 +49,19 @@
                 v-if="students.length === 0"
                 class="text-center py-10"
             >
-                <template #prepend>
                     <v-icon
                         size="40"
                         color="medium-emphasis"
                     >
                         mdi-account-group-outline
                     </v-icon>
-                </template>
-
+                
                 <v-list-item-title>
                     No students yet
                 </v-list-item-title>
 
-                <v-list-item-subtitle class="mt-1">
-                    No students are enrolled in this course.
+                <v-list-item-subtitle class="text-body-2 text-medium-emphasis">
+                    Add the first student to this course.
                 </v-list-item-subtitle>
             </v-list-item>
         </v-list>
@@ -73,7 +69,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Student } from "../types/student";
+import type { Student } from '../types/student';
 
 defineProps<{
     students: Student[];
