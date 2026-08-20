@@ -23,13 +23,10 @@
 import LessonForm from "../../Components/LessonForm.vue";
 import { useLessonForm } from "../../forms/lessonForm";
 import type { Course } from "../../types/course";
-
+import type { SelectOption } from "../../types/common";
 const props = defineProps<{
     course: Course;
-    types: {
-        label: string;
-        value: number;
-    }[];
+    types: SelectOption[];
 }>();
 
 const { form, submit } = useLessonForm(props.course.id);

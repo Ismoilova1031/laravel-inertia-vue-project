@@ -15,12 +15,13 @@ class Task extends Model
     protected $fillable = [
         'lesson_id',
         'task_type',
-        'title',
-        'description',
+        'deadline',
+        'allowed_file_extensions',
     ];
 
     protected $casts = [
         'task_type' => TaskType::class,
+        'allowed_file_extensions' => 'array',
     ];
 
     public function lesson(): BelongsTo

@@ -22,15 +22,12 @@
 
                 <LessonVideoUpload v-else-if="type.value === LessonType.VIDEO" v-model="form.video"
                     :error-messages="form.errors.video" />
-
-                <!-- <TaskForm v-else-if="type.value === LessonType.TASK" :form="form.task" :submit-label="submitLabel" /> -->
+                
+                <TaskForm v-else-if="type.value === LessonType.TASK" />
             </v-tabs-window-item>
         </v-tabs-window>
 
         <div class="d-flex justify-end mt-6">
-            <v-btn border variant="flat" class="mr-4" @click="emit('cancel')">
-                Cancel
-            </v-btn>
             <v-btn type="submit" color="primary" border variant="flat" :loading="form.processing"
                 :disabled="form.processing">
                 {{ submitLabel }}
@@ -45,6 +42,7 @@ import type { LessonFormInstance } from "../forms/lessonForm";
 import { LessonType } from "../types/lessonTypes";
 import RichTextEditor from "./RichTextEditor.vue";
 import LessonVideoUpload from "./LessonVideoUpload.vue";
+import TaskForm from "./TaskForm.vue";
 
 defineProps<{
     form: LessonFormInstance;
