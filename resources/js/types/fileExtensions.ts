@@ -1,12 +1,12 @@
-export const FileExtensions = [
-    '.pdf',
-    '.doc',
-    '.docx',
-    '.xls',
-    '.xlsx',
-    '.pptx',
-    '.txt',
-    '.jpg',
-    '.png',
-    '.gif'
-]
+export enum FileExtensions {
+    PDF = 'pdf',
+    DOC = 'doc',
+    DOCX = 'docx',
+    XLS = 'xls',
+    XLSX = 'xlsx',
+    PPTX = 'pptx',
+    TXT = 'txt',
+    JPG = 'jpg',
+    PNG = 'png',
+    GIF = 'gif'
+}

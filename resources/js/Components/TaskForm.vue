@@ -13,10 +13,14 @@
                 </v-col>
 
                 <v-col cols="12" md="4">
-                    <v-text-field label="Deadline" :min="minDateTime" type="datetime-local" variant="outlined" icon-left />
+                    <v-text-field label="Deadline" :min="minDateTime" type="datetime-local" variant="outlined"
+                        icon-left />
                 </v-col>
             </v-row>
-            <v-select v-if="selectedTaskType === TaskTypes[1].value" max-width="500" label="Allowed file extensions" :items="fileExtensions" multiple />
+            <v-select v-if="selectedTaskType === TaskTypes.FILE_UPLOAD" max-width="500" label="Allowed file extensions"
+                :items="fileExtensions" multiple />
+
+            <QuestionList v-if="selectedTaskType === TaskTypes.QUIZ" />
         </form>
     </v-card>
 </template>
@@ -24,10 +28,16 @@
 import { ref } from 'vue'
 import { TaskTypes } from "../types/taskTypes"
 import { FileExtensions } from "../types/fileExtensions"
+import QuestionList from "./QuestionList.vue"
 
 const selectedTaskType = ref(null)
-const taskTypes = TaskTypes
-const fileExtensions = FileExtensions
+const taskTypes = Object.entries(TaskTypes)
+    .filter(([key]) => isNaN(Number(key)))
+    .map(([key, value]) => ({
+        title: key,
+        value,
+    }));
+const fileExtensions = Object.entries(FileExtensions).map(([key, value]) => ({ title: key, value }))
 
 const minDateTime = new Date().toISOString().slice(0, 16)
 </script>

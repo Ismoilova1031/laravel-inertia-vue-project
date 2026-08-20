@@ -1,7 +1,5 @@
-export const TaskTypes = [
-    { title: 'Quiz', value: 1 },
-    { title: 'File', value: 2 },
-    { title: 'Discussion', value: 3 },
-] as const
-
-export type TaskType = typeof TaskTypes[number]['value']
+export enum TaskTypes {
+    QUIZ = 1,
+    FILE_UPLOAD = 2,
+    DISCUSSION = 3,
+}
