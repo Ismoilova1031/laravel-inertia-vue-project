@@ -23,19 +23,13 @@
 </template>
 <script setup lang="ts">
 import type { CourseFormInstance } from "../forms/courseForm";
-
+import type { SelectOption } from "../types/common";
 defineProps<{
     form: CourseFormInstance;
-    categories: {
-        label: string;
-        value: number;
-    }[];
-    statuses: {
-        label: string;
-        value: number;
-    }[];
+    categories: SelectOption[];
+    statuses: SelectOption[];
     submitLabel: string;
-
+    
     submit: () => void;
 }>();
 </script>

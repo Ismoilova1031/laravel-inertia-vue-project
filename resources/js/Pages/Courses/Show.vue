@@ -63,12 +63,12 @@
 </template>
 
 <script setup lang="ts">
-import type { Course } from "../../types/course";
+import type { CourseDetail } from "../../types/course";
 import { ref } from "vue";
 import LessonsList from "../../Components/LessonsList.vue";
 import StudentList from "../../Components/StudentList.vue";
 const { course } = defineProps<{
-    course: Course;
+    course: CourseDetail;
 }>();
 
 const lessons = course.lessons.length;

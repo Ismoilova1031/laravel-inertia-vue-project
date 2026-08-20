@@ -30,16 +30,12 @@ import { Link } from "@inertiajs/vue3";
 import CourseForm from "../../Components/CourseForm.vue";
 import DashboardController from "../../actions/App/Http/Controllers/DashboardController";
 import { useCourseForm } from "../../forms/courseForm";
+import type { SelectOption } from "../../types/common";
 
 defineProps<{
-  categories: {
-    label: string;
-    value: number;
-  }[];
-  statuses: {
-    label: string;
-    value: number;
-  }[];
+  categories: SelectOption[];
+  statuses: SelectOption[];
 }>();
+
 const { form, submit } = useCourseForm();
 </script>

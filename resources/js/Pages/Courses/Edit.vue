@@ -30,30 +30,15 @@ import CourseForm from "../../Components/CourseForm.vue";
 import { Link } from "@inertiajs/vue3";
 import CourseController from "../../actions/App/Http/Controllers/CourseController";
 import { useCourseForm } from "../../forms/courseForm";
+import type { CourseEdit } from "../../types/course";
+import type { SelectOption } from "../../types/common";
 
 const props = defineProps<{
-  course: {
-    id: number;
-    title: string;
-    description: string;
-    category: {
-      label: string;
-      value: number;
-    };
-    status: {
-      label: string;
-      value: number;
-    };
-  };
-  categories: {
-    label: string;
-    value: number;
-  }[];
-  statuses: {
-    label: string;
-    value: number;
-  }[];
+  course: CourseEdit;
+  categories: SelectOption[];
+  statuses: SelectOption[];
 }>();
+
 const { form, submit } = useCourseForm({
   'title': props.course.title,
   'description': props.course.description,
