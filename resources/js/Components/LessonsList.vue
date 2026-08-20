@@ -72,14 +72,14 @@
 import { Link } from "@inertiajs/vue3";
 import type { Lesson } from "../types/lesson";
 import LessonController from "../actions/App/Http/Controllers/LessonController";
-import type { Course } from "../types/course";
+import type { CourseDetail } from "../types/course";
 import draggable from "vuedraggable";
 import { ref } from "vue";
 import { router } from "@inertiajs/vue3";
 
 const props = defineProps<{
     lessons: Lesson[];
-    course: Course;
+    course: CourseDetail;
 }>();
 
 const lessons = ref([...props.lessons]);

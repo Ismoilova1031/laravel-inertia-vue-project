@@ -81,11 +81,7 @@ export function useCourseForm(
         }
 
         if (courseId) {
-            form.put(`/courses/${courseId}`, {
-                onSuccess: () => {
-                    form.reset();
-                },
-            });
+            form.put(`/courses/${courseId}`);
 
             return;
         }

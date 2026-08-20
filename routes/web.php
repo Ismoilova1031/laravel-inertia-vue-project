@@ -17,7 +17,6 @@ Route::resource('courses', CourseController::class)
         'create',
         'store',
         'show',
-        'edit',
         'update',
         'destroy',
     ]);

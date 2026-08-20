@@ -1,6 +1,6 @@
 <template>
     <v-container class="py-8">
-        <v-card class="mx-auto border" rounded="lg" elevation="0" >
+        <v-card class="mx-auto border" rounded="lg" elevation="0">
             <v-card-text class="d-flex justify-space-between align-center ga-4 pa-6">
                 <div class="d-flex flex-column">
                     <v-card-title class="text-title-large font-weight-bold pa-0">
@@ -14,11 +14,11 @@
 
                 <div class="d-flex ga-2 flex-shrink-0">
                     <v-chip color="primary" variant="tonal">
-                        {{ course.category }}
+                        {{ course.category.label }}
                     </v-chip>
 
                     <v-chip color="success" variant="tonal">
-                        {{ course.status }}
+                        {{ course.status.label }}
                     </v-chip>
                 </div>
             </v-card-text>
@@ -46,15 +46,32 @@
 
         <v-tabs-window v-model="tab" class="mt-4">
             <v-tabs-window-item value="Lessons">
-               <LessonsList :lessons="course.lessons" :course="course" />
+                <LessonsList :lessons="course.lessons" :course="course" />
             </v-tabs-window-item>
             <v-tabs-window-item value="Students">
                 <StudentList :students="course.students" />
             </v-tabs-window-item>
             <v-tabs-window-item value="Settings">
-                <v-card flat>
-                    <v-card-text>
-                        <p>Settings content goes here.</p>
+                <v-card max-width="900" class="mx-auto" rounded="lg" elevation="2">
+                    <v-card-item>
+                        <v-card-title class="text-h4 font-weight-bold">Course Settings</v-card-title>
+
+                        <v-card-subtitle class="mt-2">Update the course settings below.</v-card-subtitle>
+                    </v-card-item>
+
+                    <v-divider />
+
+                    <v-card-text class="pa-6">
+                        <CourseForm :form="form" :categories="categories" :statuses="statuses"
+                            submit-label="Update Course" :submit="submit" />
+                        <v-snackbar 
+                           color="success"
+                           location="top center"
+                           prepend-icon="mdi-check-circle"
+                           title="Updated"
+                           text="Course updated successfully!"
+                           timeout="2000"
+                           v-model="form.recentlySuccessful" />
                     </v-card-text>
                 </v-card>
             </v-tabs-window-item>
@@ -64,14 +81,29 @@
 
 <script setup lang="ts">
 import type { CourseDetail } from "../../types/course";
+import type { SelectOption } from "../../types/common";
 import { ref } from "vue";
 import LessonsList from "../../Components/LessonsList.vue";
 import StudentList from "../../Components/StudentList.vue";
+import { useCourseForm } from "../../forms/courseForm";
+import CourseForm from "../../Components/CourseForm.vue";
+
 const { course } = defineProps<{
     course: CourseDetail;
+    categories: SelectOption[];
+    statuses: SelectOption[];
 }>();
 
 const lessons = course.lessons.length;
 const students = course.students.length;
-  const tab = ref('Lessons');
+const tab = ref("Lessons");
+const { form, submit } = useCourseForm(
+    {
+        title: course.title,
+        description: course.description,
+        category: course.category.value,
+        status: course.status.value,
+    },
+    course.id
+);
 </script>

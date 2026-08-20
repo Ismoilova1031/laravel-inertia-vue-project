@@ -13,12 +13,9 @@ export interface Course extends CourseBase {
     status: string;
 }
 
-export interface CourseDetail extends Course {
-    lessons: Lesson[];
-    students: Student[];
-}
-
-export interface CourseEdit extends CourseBase {
+export interface CourseDetail extends CourseBase {
     category: SelectOption;
     status: SelectOption;
+    lessons: Lesson[];
+    students: Student[];
 }

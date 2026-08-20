@@ -2,7 +2,12 @@
 
 namespace App\Dtos;
 
-class CourseEditResponseDto
+use App\Models\Lesson;
+use App\Models\Student;
+use App\Dtos\LessonResponseDto;
+use App\Dtos\StudentResponseDto;
+
+class CourseDetailResponseDto
 {
     public function __construct(
         public int $id,
@@ -10,6 +15,8 @@ class CourseEditResponseDto
         public string $description,
         public array $category,
         public array $status,
+        public array $lessons = [],
+        public array $students = [],
     ) {
     }
 
@@ -27,6 +34,12 @@ class CourseEditResponseDto
                 'value' => $course->status->value,
                 'label' => $course->status->label(),
             ],
+            lessons: $course->lessons->map(
+                fn (Lesson $lesson) => LessonResponseDto::fromModel($lesson)
+            )->toArray(),
+            students: $course->students->map(
+                fn (Student $student) => StudentResponseDto::fromModel($student)
+            )->toArray(),
         );
     }
 }

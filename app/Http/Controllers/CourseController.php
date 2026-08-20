@@ -11,8 +11,7 @@ use App\Contracts\UseCases\DeleteCourseUseCaseInterface;
 use App\Dtos\CourseDto;
 use App\Enums\CourseCategory;
 use App\Enums\CourseStatus;
-use App\Dtos\CourseResponseDto;
-use App\Dtos\CourseEditResponseDto;
+use App\Dtos\CourseDetailResponseDto;
 
 class CourseController extends Controller
 {
@@ -29,7 +28,9 @@ class CourseController extends Controller
             'students',
         ]);
         return Inertia::render('Courses/Show', [
-            'course' => CourseResponseDto::fromModel($course),
+            'course' => CourseDetailResponseDto::fromModel($course),
+            'categories' => CourseCategory::labels(),
+            'statuses' => CourseStatus::labels(),
         ]);
     }
 
@@ -50,15 +51,6 @@ class CourseController extends Controller
 
         return redirect()->route('courses.show', ['course' => $course]);
     }
-
-public function edit(Course $course)
-{
-    return Inertia::render('Courses/Edit', [
-        'course' => CourseEditResponseDto::fromModel($course),
-        'categories' => CourseCategory::labels(),
-        'statuses' => CourseStatus::labels(),
-    ]);
-}
 
     public function update(CourseRequest $request, Course $course)
     {
