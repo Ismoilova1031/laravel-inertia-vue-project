@@ -25,12 +25,7 @@
                 <LessonVideoUpload v-else-if="type.value === LessonType.VIDEO" v-model="form.video"
                     :error-messages="form.errors.video" />
 
-                <TaskForm v-else-if="type.value === LessonType.TASK" v-model="form.task" :errors="{
-                    type: form.errors['task.type'],
-                    deadline: form.errors['task.deadline'],
-                    file_extensions: form.errors['task.file_extensions'],
-                    questions: form.errors['task.questions'],
-                }" />
+                <TaskForm v-else-if="type.value === LessonType.TASK" v-model="form.task" :errors="taskErrors" />
             </v-tabs-window-item>
         </v-tabs-window>
 
@@ -50,8 +45,9 @@ import { LessonType } from "../types/lessonTypes";
 import RichTextEditor from "./RichTextEditor.vue";
 import LessonVideoUpload from "./LessonVideoUpload.vue";
 import TaskForm from "./TaskForm.vue";
+import { computed } from "vue";
 
-defineProps<{
+const props = defineProps<{
     form: LessonFormInstance;
 
     types: {
@@ -63,6 +59,16 @@ defineProps<{
 
     submit: () => void;
 }>();
+
+const taskErrors = computed(() => {
+    const result: Record<string, string> = {};
+    for (const key in props.form.errors) {
+        if(key.startsWith("task.")){
+            result[key.replace("task.", "")] = (props.form.errors as Record<string, string>)[key];
+        }
+    }
+    return result;
+})
 
 const emit = defineEmits<{
     cancel: [];

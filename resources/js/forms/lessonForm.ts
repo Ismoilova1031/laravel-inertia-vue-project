@@ -71,12 +71,21 @@ export const lessonFormSchema = z
             });
         }
 
-        if (data.lesson_type === LessonType.TASK && !data.task?.type) {
-            ctx.addIssue({
-                code: "custom",
-                path: ["task", "type"],
-                message: "Task type is required",
-            });
+        if (data.lesson_type === LessonType.TASK) {
+            if (!data.task?.type) {
+                ctx.addIssue({
+                    code: "custom",
+                    path: ["task", "type"],
+                    message: "Task type is required",
+                });
+            }
+            if (!data.task?.deadline) {
+                ctx.addIssue({
+                    code: "custom",
+                    path: ["task", "deadline"],
+                    message: "Deadline is required",
+                });
+            }
         }
     });
 

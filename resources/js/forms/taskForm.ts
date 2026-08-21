@@ -1,5 +1,6 @@
-import z, { array } from "zod";
+import z from "zod";
 import { TaskTypes } from "../types/taskTypes";
+import { questionFormSchema } from "./questionForm";
 export const taskFormSchema = z
     .object({
         type: z.union([
@@ -18,25 +19,10 @@ export const taskFormSchema = z
             .nullable(),
 
         questions: z
-            .array(z.any())
+            .array(questionFormSchema)
             .nullable(),
     })
     .superRefine((data, ctx) => {
-        if (!data.type) {
-            ctx.addIssue({
-                code: "custom",
-                path: ["type"],
-                message: "Task type is required",
-            });
-        }
-
-        if (!data.deadline) {
-            ctx.addIssue({
-                code: "custom",
-                path: ["deadline"],
-                message: "Deadline is required",
-            });
-        }
 
         if (
             data.type === TaskTypes.FILE_UPLOAD &&
@@ -46,6 +32,17 @@ export const taskFormSchema = z
                 code: "custom",
                 path: ["file_extensions"],
                 message: "File extensions are required for file upload tasks",
+            });
+        }
+
+        if (
+            data.type === TaskTypes.QUIZ &&
+            (!data.questions || data.questions.length === 0)
+        ) {
+            ctx.addIssue({
+                code: "custom",
+                path: ["questions"],
+                message: "At least one question is required",
             });
         }
     });
