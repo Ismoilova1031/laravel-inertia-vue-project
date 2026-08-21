@@ -4,7 +4,7 @@
 
         <v-radio-group v-if="type === 'single_choice'" v-model="correctOptionId" hide-details>
             <div v-for="option in options" :key="option.id" class="d-flex align-center ga-2 mb-3">
-                <v-radio :value="option.id" />
+                <v-radio :value="option.id" class="flex-grow-0"/>
 
                 <v-text-field v-model="option.text" label="Option" placeholder="Enter option..." variant="outlined"
                     hide-details />
