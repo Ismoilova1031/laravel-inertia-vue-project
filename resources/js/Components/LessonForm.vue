@@ -23,7 +23,7 @@
                 <LessonVideoUpload v-else-if="type.value === LessonType.VIDEO" v-model="form.video"
                     :error-messages="form.errors.video" />
                 
-                <TaskForm v-else-if="type.value === LessonType.TASK" />
+                <TaskForm v-else-if="type.value === LessonType.TASK" v-model="form.task" :error-messages="form.errors.task"/>
             </v-tabs-window-item>
         </v-tabs-window>
 

@@ -9,18 +9,18 @@
         <form>
             <v-row class="mt-4">
                 <v-col cols="12" md="8">
-                    <v-select label="Task Type" :items="taskTypes" v-model="selectedTaskType" variant="outlined" />
+                    <v-select label="Task Type" :items="taskTypes" v-model="task.type" variant="outlined" />
                 </v-col>
 
                 <v-col cols="12" md="4">
-                    <v-text-field label="Deadline" :min="minDateTime" type="datetime-local" variant="outlined"
+                    <v-text-field label="Deadline" :min="minDateTime" type="datetime-local" variant="outlined" v-model="task.deadline"
                         icon-left />
                 </v-col>
             </v-row>
-            <v-select v-if="selectedTaskType === TaskTypes.FILE_UPLOAD" max-width="500" label="Allowed file extensions"
-                :items="fileExtensions" multiple />
+            <v-select v-if="task.type === TaskTypes.FILE_UPLOAD" max-width="500" label="Allowed file extensions"
+                :items="fileExtensions" multiple v-model="task.file_extensions" />
 
-            <QuestionList v-if="selectedTaskType === TaskTypes.QUIZ" />
+            <QuestionList v-if="task.type === TaskTypes.QUIZ"  />
         </form>
     </v-card>
 </template>
@@ -29,8 +29,12 @@ import { ref } from 'vue'
 import { TaskTypes } from "../types/taskTypes"
 import { FileExtensions } from "../types/fileExtensions"
 import QuestionList from "./QuestionList.vue"
+import type { TaskFormData } from "../forms/taskForm"
 
-const selectedTaskType = ref(null)
+const task = defineModel<TaskFormData>({
+    required: true,
+});
+
 const taskTypes = Object.entries(TaskTypes)
     .filter(([key]) => isNaN(Number(key)))
     .map(([key, value]) => ({

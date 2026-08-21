@@ -1,6 +1,7 @@
 import z from "zod";
 import { useForm } from "@inertiajs/vue3";
 import { LessonType } from "../types/lessonTypes";
+import { taskFormSchema } from "./taskForm";
 export const lessonFormSchema = z
     .object({
         title: z
@@ -47,6 +48,8 @@ export const lessonFormSchema = z
             ),
 
         content: z.string(),
+
+        task: taskFormSchema,
     })
     .superRefine((data, ctx) => {
         if (data.lesson_type === LessonType.VIDEO && !data.video) {
@@ -67,6 +70,14 @@ export const lessonFormSchema = z
                 message: "Content is required",
             });
         }
+
+        if( data.lesson_type === LessonType.TASK && !data.task ){
+            ctx.addIssue({
+                code: "custom",
+                path: ["task"],
+                message: "Task configuration is required",
+            });
+        }
     });
 
 export type LessonForm = z.infer<typeof lessonFormSchema>;
@@ -84,6 +95,13 @@ export function useLessonForm(
         lesson_type: initialData?.lesson_type ?? LessonType.VIDEO,
         video: initialData?.video ?? null,
         content: initialData?.content ?? "",
+
+        task: initialData?.task ?? {
+            type: null,
+            deadline: null,
+            file_extensions: null,
+            questions: null,
+        },
     });
 
     function validate(): boolean {

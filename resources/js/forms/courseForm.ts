@@ -96,7 +96,6 @@ export function useCourseForm(
     return {
         form,
         submit,
-        validate,
     };
 }
 
