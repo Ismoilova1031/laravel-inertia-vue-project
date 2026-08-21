@@ -71,11 +71,11 @@ export const lessonFormSchema = z
             });
         }
 
-        if( data.lesson_type === LessonType.TASK && !data.task ){
+        if (data.lesson_type === LessonType.TASK && !data.task?.type) {
             ctx.addIssue({
                 code: "custom",
-                path: ["task"],
-                message: "Task configuration is required",
+                path: ["task", "type"],
+                message: "Task type is required",
             });
         }
     });
@@ -106,25 +106,25 @@ export function useLessonForm(
 
     function validate(): boolean {
         form.clearErrors();
-
         const result = lessonFormSchema.safeParse(form.data());
 
         if (!result.success) {
-            const errors = result.error.flatten().fieldErrors;
+            const errors: Record<string, string> = {};
 
-            for (const key of Object.keys(errors) as Array<keyof LessonFormData>) {
-                const messages = errors[key];
-
-                if (messages?.[0]) {
-                    form.setError(key, messages[0]);
+            for (const issue of result.error.issues) {
+                const path = issue.path.join(".");
+                if (path && !errors[path]) {
+                    errors[path] = issue.message;
                 }
             }
-            console.log("Validation failed but result not success:", errors);
+
+            form.setError(errors as Partial<Record<keyof typeof form.errors, string>>);
             return false;
         }
 
         return true;
     }
+
     function submit() {
         if (!validate()) {
             return;

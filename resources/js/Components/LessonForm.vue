@@ -7,7 +7,8 @@
         <v-textarea name="description" placeholder="Lesson Description" v-model="form.description" variant="outlined"
             label="Lesson Description" rows="4" class="mt-4" :error-messages="form.errors.description" />
 
-        <v-number-input control-variant="split" v-model="form.sort_order" label="Sort Order" :error-messages="form.errors.sort_order" width="300"/>
+        <v-number-input control-variant="split" v-model="form.sort_order" label="Sort Order"
+            :error-messages="form.errors.sort_order" width="300" />
 
 
         <v-tabs v-model="form.lesson_type" class="mt-6">
@@ -18,12 +19,18 @@
 
         <v-tabs-window v-model="form.lesson_type" class="mt-4">
             <v-tabs-window-item v-for="type in types" :key="type.value" :value="type.value">
-                <RichTextEditor v-if="type.value === LessonType.TEXT" v-model="form.content" :error-messages="form.errors.content"/>
+                <RichTextEditor v-if="type.value === LessonType.TEXT" v-model="form.content"
+                    :error-messages="form.errors.content" />
 
                 <LessonVideoUpload v-else-if="type.value === LessonType.VIDEO" v-model="form.video"
                     :error-messages="form.errors.video" />
-                
-                <TaskForm v-else-if="type.value === LessonType.TASK" v-model="form.task" :error-messages="form.errors.task"/>
+
+                <TaskForm v-else-if="type.value === LessonType.TASK" v-model="form.task" :errors="{
+                    type: form.errors['task.type'],
+                    deadline: form.errors['task.deadline'],
+                    file_extensions: form.errors['task.file_extensions'],
+                    questions: form.errors['task.questions'],
+                }" />
             </v-tabs-window-item>
         </v-tabs-window>
 

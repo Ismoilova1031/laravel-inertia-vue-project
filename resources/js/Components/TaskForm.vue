@@ -9,18 +9,20 @@
         <form>
             <v-row class="mt-4">
                 <v-col cols="12" md="8">
-                    <v-select label="Task Type" :items="taskTypes" v-model="task.type" variant="outlined" />
+                    <v-select label="Task Type" :items="taskTypes" v-model="task.type" variant="outlined"
+                        :error-messages="errors?.type" />
                 </v-col>
 
                 <v-col cols="12" md="4">
-                    <v-text-field label="Deadline" :min="minDateTime" type="datetime-local" variant="outlined" v-model="task.deadline"
-                        icon-left />
+                    <v-text-field label="Deadline" :min="minDateTime" type="datetime-local" variant="outlined"
+                        v-model="task.deadline" icon-left :error-messages="errors?.deadline" />
                 </v-col>
             </v-row>
             <v-select v-if="task.type === TaskTypes.FILE_UPLOAD" max-width="500" label="Allowed file extensions"
-                :items="fileExtensions" multiple v-model="task.file_extensions" />
+                :items="fileExtensions" multiple v-model="task.file_extensions"
+                :error-messages="errors?.file_extensions" />
 
-            <QuestionList v-if="task.type === TaskTypes.QUIZ"  />
+            <QuestionList v-if="task.type === TaskTypes.QUIZ" />
         </form>
     </v-card>
 </template>
@@ -34,7 +36,9 @@ import type { TaskFormData } from "../forms/taskForm"
 const task = defineModel<TaskFormData>({
     required: true,
 });
-
+defineProps<{
+    errors?: Partial<Record<"type" | "deadline" | "file_extensions" | "questions", string>>;
+}>();
 const taskTypes = Object.entries(TaskTypes)
     .filter(([key]) => isNaN(Number(key)))
     .map(([key, value]) => ({

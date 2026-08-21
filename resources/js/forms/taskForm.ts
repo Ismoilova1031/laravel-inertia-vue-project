@@ -1,4 +1,4 @@
-import z, { array }  from "zod";
+import z, { array } from "zod";
 import { TaskTypes } from "../types/taskTypes";
 export const taskFormSchema = z
     .object({
@@ -6,17 +6,42 @@ export const taskFormSchema = z
             z.literal(TaskTypes.QUIZ),
             z.literal(TaskTypes.FILE_UPLOAD),
             z.literal(TaskTypes.DISCUSSION),
-            z.literal(null)
+            z.literal(null),
         ]),
+
         deadline: z
-            .string().nullable(),
+            .string()
+            .nullable(),
+
         file_extensions: z
             .array(z.string())
             .nullable(),
-        questions: array(z.any()).nullable()
+
+        questions: z
+            .array(z.any())
+            .nullable(),
     })
     .superRefine((data, ctx) => {
-        if(data.type === TaskTypes.FILE_UPLOAD && !data.file_extensions) {
+        if (!data.type) {
+            ctx.addIssue({
+                code: "custom",
+                path: ["type"],
+                message: "Task type is required",
+            });
+        }
+
+        if (!data.deadline) {
+            ctx.addIssue({
+                code: "custom",
+                path: ["deadline"],
+                message: "Deadline is required",
+            });
+        }
+
+        if (
+            data.type === TaskTypes.FILE_UPLOAD &&
+            (!data.file_extensions || data.file_extensions.length === 0)
+        ) {
             ctx.addIssue({
                 code: "custom",
                 path: ["file_extensions"],
