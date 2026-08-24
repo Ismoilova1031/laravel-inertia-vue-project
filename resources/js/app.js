@@ -6,29 +6,35 @@ import "@mdi/font/css/materialdesignicons.css"
 import "vuetify/styles"
 
 import { createVuetify } from "vuetify"
-import * as components from "vuetify/components"
-import * as directives from "vuetify/directives"
 import AppLayout from "./Layouts/AppLayout.vue"
 
-const vuetify = createVuetify({
-  components,
-  directives,
-})
+const vuetify = createVuetify()
 
 const appName = import.meta.env.VITE_APP_NAME || "Laravel"
 
+const pages = Object.fromEntries(
+  Object.entries(import.meta.glob("/resources/js/Pages/**/*.vue", { eager: true }))
+    .map(([path, page]) => [path.replace("/resources/js", "."), page])
+);
+
+console.log("PAGES:", Object.keys(pages));
+
 createInertiaApp({
-  title: title => `${title} - ${appName}`,
+    title: title => `${title} - ${appName}`,
 
-  resolve: async name => {
-    const page = await resolvePageComponent(
-      `./Pages/${name}.vue`,
-      import.meta.glob("./Pages/**/*.vue")
-    )
-    page.default.layout = page.default.layout || AppLayout
+    resolve: async name => {
+        console.log("INERTIA PAGE:", name)
+        console.log("LOOKING FOR:", `./Pages/${name}.vue`)
 
-    return page
-  },
+        const page = await resolvePageComponent(
+            `./Pages/${name}.vue`,
+            pages
+        )
+
+        page.default.layout = page.default.layout || AppLayout
+
+        return page
+    },
 
   setup({ el, App, props, plugin }) {
     return createApp({
