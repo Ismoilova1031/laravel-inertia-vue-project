@@ -28,45 +28,23 @@
           <td>{{ question.type }}</td>
           <td>{{ question.points }}</td>
           <td class="text-end">
-            <v-btn
-              icon="mdi-pencil"
-              variant="text"
-              size="small"
-              @click="editQuestion(index)"
-            />
-            <v-btn
-              icon="mdi-delete"
-              variant="text"
-              size="small"
-              @click="removeQuestion(index)"
-            />
+            <v-btn icon="mdi-pencil" variant="text" size="small" @click="editQuestion(index)" />
+            <v-btn icon="mdi-delete" variant="text" size="small" @click="removeQuestion(index)" />
           </td>
         </tr>
       </tbody>
     </v-table>
   </v-card>
-  <v-card
-    v-if="!isQuestionFormVisible"
-    link
-    rounded="lg"
-    class="border border-dashed bg-transparent mt-4"
-    elevation="0"
-    @click="openQuestionForm"
-  >
+  <v-card v-if="!isQuestionFormVisible" link rounded="lg" class="border border-dashed bg-transparent mt-4" elevation="0"
+    @click="openQuestionForm">
     <div class="d-flex align-center justify-center px-5 py-3">
       <v-btn icon="mdi-plus" variant="text" size="medium" class="mr-4" />
       <span class="font-weight-medium"> Add Question </span>
     </div>
   </v-card>
 
-  <QuestionForm
-    v-if="isQuestionFormVisible"
-    v-model="activeQuestion"
-    :errors="activeQuestionErrors"
-    @cancel="closeQuestionForm"
-    @save="saveQuestion"
-    class="mt-4"
-  />
+  <QuestionForm v-if="isQuestionFormVisible" v-model="activeQuestion" :errors="activeQuestionErrors"
+    @cancel="closeQuestionForm" @save="saveQuestion" class="mt-4" />
 </template>
 <script setup lang="ts">
 import { ref, computed } from "vue";

@@ -80,13 +80,13 @@
 </template>
 
 <script setup lang="ts">
-import type { CourseDetail } from "../../types/course";
-import type { SelectOption } from "../../types/common";
+import type { CourseDetail } from "../../types/course.ts";
+import type { SelectOption } from "../../types/common.ts";
 import { ref } from "vue";
-import LessonsList from "../../Components/LessonsList.vue";
-import StudentList from "../../Components/StudentList.vue";
-import { useCourseForm } from "../../forms/courseForm";
-import CourseForm from "../../Components/CourseForm.vue";
+import LessonsList from "../../components/LessonsList.vue";
+import StudentList from "../../components/StudentList.vue";
+import { useCourseForm } from "../../forms/courseForm.ts";
+import CourseForm from "../../components/CourseForm.vue";
 
 const { course } = defineProps<{
     course: CourseDetail;

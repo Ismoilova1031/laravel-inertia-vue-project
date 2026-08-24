@@ -1,9 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LessonController;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
@@ -20,7 +20,7 @@ Route::resource('courses', CourseController::class)
         'update',
         'destroy',
     ]);
-    
+
 Route::put(
     '/courses/{course}/lessons/reorder',
     [LessonController::class, 'reorder']

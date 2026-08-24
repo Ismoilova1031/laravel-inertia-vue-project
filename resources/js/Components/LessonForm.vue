@@ -63,7 +63,7 @@ const props = defineProps<{
 const taskErrors = computed(() => {
     const result: Record<string, string> = {};
     for (const key in props.form.errors) {
-        if(key.startsWith("task.")){
+        if (key.startsWith("task.")) {
             result[key.replace("task.", "")] = (props.form.errors as Record<string, string>)[key];
         }
     }

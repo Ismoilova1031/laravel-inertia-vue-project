@@ -35,7 +35,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import OptionList from './OptionList.vue'
-import { questionFormSchema, type QuestionFormData } from '../forms/questionForm'
+import { questionFormSchema, type QuestionFormData } from '../forms/questionForm.ts'
 
 const props = defineProps<{
     errors?: Record<string, string>;
