@@ -11,8 +11,7 @@ class CourseRepository implements CourseRepositoryInterface
 {
     public function getCourses(): Collection
     {
-        return Course::all()
-            ->with(['lessons', 'students']);
+        return Course::all();
     }
 
     public function createCourse(CourseDto $dto): Course

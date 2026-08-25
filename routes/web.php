@@ -15,6 +15,7 @@ Route::resource('courses', CourseController::class)
         'show',
         'update',
         'destroy',
+        'index',
     ]);
 
 Route::put(

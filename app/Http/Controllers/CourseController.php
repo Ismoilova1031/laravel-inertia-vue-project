@@ -2,16 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use Inertia\Inertia;
-use App\Models\Course;
-use App\Http\Requests\CourseRequest;
 use App\Contracts\UseCases\CreateCourseUseCaseInterface;
-use App\Contracts\UseCases\UpdateCourseUseCaseInterface;
 use App\Contracts\UseCases\DeleteCourseUseCaseInterface;
+use App\Contracts\UseCases\UpdateCourseUseCaseInterface;
+use App\Contracts\UseCases\GetCoursesUseCaseInterface;
+use App\Dtos\CourseDetailResponseDto;
 use App\Dtos\CourseDto;
+use App\Dtos\CourseResponseDto;
 use App\Enums\CourseCategory;
 use App\Enums\CourseStatus;
-use App\Dtos\CourseDetailResponseDto;
+use App\Http\Requests\CourseRequest;
+use App\Http\Resources\CourseListResource;
+use App\Http\Resources\CourseShowResource;
+use App\Models\Course;
+use Inertia\Inertia;
 
 class CourseController extends Controller
 {
@@ -19,12 +23,13 @@ class CourseController extends Controller
         private CreateCourseUseCaseInterface $createCourseUseCase,
         private UpdateCourseUseCaseInterface $updateCourseUseCase,
         private DeleteCourseUseCaseInterface $deleteCourseUseCase,
+        private GetCoursesUseCaseInterface $getCoursesUseCase
     ) {}
 
     public function show(Course $course)
     {
         return Inertia::render('Courses/Show', [
-            'course' => CourseDetailResponseDto::fromModel($course),
+            'course' => CourseShowResource::make($course)->resolve(),
             'categories' => CourseCategory::labels(),
             'statuses' => CourseStatus::labels(),
         ]);
@@ -38,7 +43,8 @@ class CourseController extends Controller
         ]);
     }
 
-    public function store(CourseRequest $request){
+    public function store(CourseRequest $request)
+    {
         $validated = $request->validated();
 
         $dto = CourseDto::fromArray($validated);
@@ -52,7 +58,7 @@ class CourseController extends Controller
     {
         $validated = $request->validated();
 
-       $dto = CourseDto::fromArray($validated);
+        $dto = CourseDto::fromArray($validated);
 
         $course = $this->updateCourseUseCase->execute($course, $dto);
 
@@ -63,6 +69,15 @@ class CourseController extends Controller
     {
         $this->deleteCourseUseCase->execute($course);
 
-        return redirect()->route('dashboard');
+        return redirect()->route('courses.index');
+    }
+
+    public function index()
+    {
+        $courses = $this->getCoursesUseCase->execute();
+
+        return Inertia::render('Courses/Index', [
+            'courses' => CourseListResource::collection($courses)->resolve(),
+        ]);
     }
 }

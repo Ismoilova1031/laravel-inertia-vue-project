@@ -85,7 +85,7 @@ import type { SelectOption } from "../../types/common.ts";
 import { ref } from "vue";
 import LessonsList from "../../components/LessonsList.vue";
 import StudentList from "../../components/StudentList.vue";
-import { useCourseForm } from "../../forms/courseForm.ts";
+import { useCourseForm } from "../../forms/courseForm.js";
 import CourseForm from "../../components/CourseForm.vue";
 
 const { course } = defineProps<{

@@ -27,8 +27,8 @@
                                 </v-list-item-subtitle>
                             </div>
 
-                            <v-chip size="small" variant="tonal" :color="lessonTypeColor(lesson.lessonType)">
-                                {{ lessonTypeLabel(lesson.lessonType) }}
+                            <v-chip size="small" variant="tonal" :color="lessonTypeColor(lesson.lessonType.value)">
+                                {{ lesson.lessonType.label }}
                             </v-chip>
                         </div>
 
@@ -82,6 +82,7 @@ const props = defineProps<{
     course: CourseDetail;
 }>();
 
+
 const lessons = ref([...props.lessons]);
 
 const reorderLessons = () => {
@@ -97,19 +98,6 @@ const reorderLessons = () => {
             preserveScroll: true,
         }
     );
-};
-
-const lessonTypeLabel = (type: number): string => {
-    switch (type) {
-        case 1:
-            return "Video";
-        case 2:
-            return "Text";
-        case 3:
-            return "Task";
-        default:
-            return "Unknown";
-    }
 };
 
 const lessonTypeColor = (type: number): string => {

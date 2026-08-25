@@ -18,14 +18,10 @@ const pages = Object.fromEntries(
     ).map(([path, page]) => [path.replace("/resources/js", "."), page]),
 );
 
-console.log("PAGES:", Object.keys(pages));
-
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
 
     resolve: async (name) => {
-        console.log("INERTIA PAGE:", name);
-        console.log("LOOKING FOR:", `./pages/${name}.vue`);
 
         const page = await resolvePageComponent(`./pages/${name}.vue`, pages);
 
