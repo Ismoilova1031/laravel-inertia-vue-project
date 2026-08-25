@@ -22,8 +22,13 @@ class LessonRepository implements LessonRepositoryInterface
     {
         $lesson = Lesson::find($id);
         if (!$lesson) {
-            return false;
+            return abort(404, 'Lesson not found');
         }
         return $lesson;
+    }
+
+    public function delete(Lesson $lesson): bool
+    {
+        return $lesson->delete();
     }
 }

@@ -27,4 +27,7 @@ Route::resource('/courses/{course}/lessons', LessonController::class)
     ->only([
         'create',
         'store',
+        'show',
+        'update',
+        'destroy',
     ]);

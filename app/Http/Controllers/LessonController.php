@@ -6,20 +6,21 @@ use App\Enums\LessonType;
 use App\Http\Requests\LessonRequest;
 use Inertia\Inertia;
 use App\Contracts\UseCases\CreateLessonUseCaseInterface;
+use App\Contracts\UseCases\DeleteLessonUseCaseInterface;
 use App\Dtos\LessonDto;
 use App\Models\Course;
+use App\Models\Lesson;
 use App\Http\Requests\ReorderLessonsRequest;
 use App\UseCases\ReorderLessonsUseCase;
 
 class LessonController extends Controller
 {
-    private CreateLessonUseCaseInterface $createLessonUseCase;
-    private ReorderLessonsUseCase $reorderLessonsUseCase;
-    public function __construct(CreateLessonUseCaseInterface $createLessonUseCase, ReorderLessonsUseCase $reorderLessonsUseCase)
-    {
-        $this->createLessonUseCase = $createLessonUseCase;
-        $this->reorderLessonsUseCase = $reorderLessonsUseCase;
-    }
+    
+    public function __construct(
+        private CreateLessonUseCaseInterface $createLessonUseCase,
+        private ReorderLessonsUseCase $reorderLessonsUseCase,
+        private DeleteLessonUseCaseInterface $deleteLessonUseCase
+    ){}
 
     public function create(Course $course)
     {
@@ -36,6 +37,9 @@ class LessonController extends Controller
    public function store(Course $course, LessonRequest $request)
     {
         $validated = $request->validated();
+        if(!$validated) {
+            return back()->withErrors($request->errors());
+        }
         $dto = new LessonDto(
             title: $request->title,
             description: $request->description,
@@ -59,5 +63,12 @@ class LessonController extends Controller
         );
 
         return back();
+    }
+
+    public function destroy(Course $course, Lesson $lesson)
+    {
+        $this->deleteLessonUseCase->execute($lesson);
+        
+        return redirect()->route('courses.show', ['course' => $course]);
     }
 }

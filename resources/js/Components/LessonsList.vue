@@ -11,11 +11,10 @@
                                 </v-icon>
 
                                 <span class="font-weight mr-4">
-                                    {{ String(index + 1).padStart(2, '0') }}
+                                    {{ lesson.sortOrder }}
                                 </span>
                             </div>
                         </template>
-
                         <div class="items d-flex align-center justify-space-between">
                             <div>
                                 <v-list-item-title class="font-weight-medium">
@@ -36,7 +35,8 @@
                             <div class="d-flex align-center ga-3">
                                 <v-btn icon="mdi-pencil-outline" variant="text" size="medium" />
 
-                                <v-btn icon="mdi-delete-outline" variant="text" size="medium" />
+                                <v-btn icon="mdi-delete-outline" variant="text" size="medium"
+                                    @click="openDeleteDialog(lesson)" />
                             </div>
                         </template>
                     </v-list-item>
@@ -67,6 +67,34 @@
             </div>
         </v-card>
     </Link>
+    <v-dialog v-model="deleteDialog" max-width="500">
+        <v-card>
+            <v-card-title class="text-h6 font-weight-bold">
+                Delete Lesson
+            </v-card-title>
+
+            <v-card-text>
+                Are you sure you want to delete
+                <span class="font-weight-bold">
+                    {{ selectedLesson?.title }}
+                </span>
+                ? <br>
+                This action cannot be undone.
+            </v-card-text>
+
+            <v-card-actions>
+                <v-spacer />
+
+                <v-btn color="primary" variant="text" @click="closeDeleteDialog">
+                    Cancel
+                </v-btn>
+
+                <v-btn color="error" variant="text" @click="confirmDelete">
+                    Delete
+                </v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
 </template>
 <script setup lang="ts">
 import { Link } from "@inertiajs/vue3";
@@ -112,6 +140,46 @@ const lessonTypeColor = (type: number): string => {
             return "grey";
     }
 };
+
+const deleteDialog = ref(false);
+const selectedLesson = ref<Lesson | null>(null);
+
+function openDeleteDialog(lesson: Lesson) {
+    selectedLesson.value = lesson;
+    deleteDialog.value = true;
+}
+
+function closeDeleteDialog() {
+    deleteDialog.value = false;
+    selectedLesson.value = null;
+}
+
+function confirmDelete() {
+    if (!selectedLesson.value) {
+        return;
+    }
+
+    const lessonId = selectedLesson.value.id;
+
+    router.delete(
+        LessonController.destroy({
+            course: props.course.id,
+            lesson: selectedLesson.value.id,
+        }).url,
+        {
+            preserveScroll: true,
+
+            onSuccess: () => {
+                lessons.value = lessons.value.filter(
+                    lesson => lesson.id !== lessonId
+                );
+            },
+
+            onFinish: closeDeleteDialog,
+        }
+    );
+}
+
 </script>
 
 <style lang="css" scoped>
