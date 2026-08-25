@@ -50,8 +50,8 @@
 </template>
 <script setup lang="ts">
 import { computed } from "vue";
-import { TaskTypes } from "../types/taskTypes";
-import { FileExtensions } from "../types/fileExtensions";
+import { TaskTypes } from "../types/task-types";
+import { FileExtensions } from "../types/file-extensions";
 import QuestionList from "./QuestionList.vue";
 import type { TaskFormData } from "../forms/taskForm";
 

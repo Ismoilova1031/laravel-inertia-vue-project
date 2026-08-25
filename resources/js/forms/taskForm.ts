@@ -1,5 +1,5 @@
 import z from "zod";
-import { TaskTypes } from "../types/taskTypes";
+import { TaskTypes } from "../types/task-types";
 import { questionFormSchema } from "./questionForm";
 export const taskFormSchema = z
     .object({

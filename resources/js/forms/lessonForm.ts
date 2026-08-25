@@ -1,6 +1,6 @@
 import z from "zod";
 import { useForm } from "@inertiajs/vue3";
-import { LessonType } from "../types/lessonTypes";
+import { LessonType } from "../types/lesson-types";
 import { taskFormSchema } from "./taskForm";
 export const lessonFormSchema = z
     .object({
