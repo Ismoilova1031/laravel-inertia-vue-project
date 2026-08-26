@@ -5,6 +5,7 @@ namespace App\UseCases;
 use App\Contracts\UseCases\DeleteLessonUseCaseInterface;
 use App\Models\Lesson;
 use App\Contracts\Repositories\LessonRepositoryInterface;
+use Illuminate\Support\Facades\DB;
 
 class DeleteLessonUseCase implements DeleteLessonUseCaseInterface
 {
@@ -14,6 +15,14 @@ class DeleteLessonUseCase implements DeleteLessonUseCaseInterface
 
     public function execute(Lesson $lesson): void
     {
-        $this->lessonRepository->delete($lesson);
+        DB::transaction(function () use ($lesson){
+            $this->lessonRepository->delete($lesson);
+
+            $lessons = $this->lessonRepository->getByCourseId($lesson->course_id);
+
+            foreach ($lessons as $index => $lesson) {
+                $this->lessonRepository->update($lesson->id, ['sort_order' => $index + 1]);
+            }
+        });
     }
 }

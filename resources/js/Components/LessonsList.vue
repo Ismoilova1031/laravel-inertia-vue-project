@@ -170,9 +170,12 @@ function confirmDelete() {
             preserveScroll: true,
 
             onSuccess: () => {
-                lessons.value = lessons.value.filter(
-                    lesson => lesson.id !== lessonId
-                );
+                lessons.value = lessons.value
+                .filter(lesson => lesson.id !== lessonId)
+                .map((lesson, index) => ({
+                    ...lesson,
+                    sortOrder: index + 1,
+                }));
             },
 
             onFinish: closeDeleteDialog,

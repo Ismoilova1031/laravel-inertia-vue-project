@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Contracts\Repositories\LessonRepositoryInterface;
 use App\Models\Lesson;
+use Illuminate\Support\Collection;
 
 class LessonRepository implements LessonRepositoryInterface
 {
@@ -30,5 +31,10 @@ class LessonRepository implements LessonRepositoryInterface
     public function delete(Lesson $lesson): bool
     {
         return $lesson->delete();
+    }
+
+    public function getByCourseId(int $courseId): Collection
+    {
+        return Lesson::where('course_id', $courseId)->orderBy('sort_order')->get();
     }
 }
