@@ -7,7 +7,7 @@ export const questionFormSchema = z
         question: z.string().min(1, { message: "Question text is required" }),
         type: z.union([
             z.literal("single_choice"),
-            z.literal("multiple_choice"),
+            z.literal("multiple_select"),
             z.literal("short_answer"),
             z.literal("open_ended"),
         ]),
@@ -20,7 +20,7 @@ export const questionFormSchema = z
     .superRefine((data, ctx) => {
         if (
             (data.type === "single_choice" ||
-                data.type === "multiple_choice") &&
+                data.type === "multiple_select") &&
             (!data.options || data.options.length < 2)
         ) {
             ctx.addIssue({
@@ -33,7 +33,7 @@ export const questionFormSchema = z
 
         if (
             (data.type === "single_choice" ||
-                data.type === "multiple_choice") &&
+                data.type === "multiple_select") &&
             data.options?.every((o) => !o.is_correct)
         ) {
             ctx.addIssue({

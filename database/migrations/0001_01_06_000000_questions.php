@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('question_type');
             $table->integer('points');
             $table->integer('sort_order');
+            $table->text('correct_answer')->nullable();
             $table->timestamps();
         });
     }

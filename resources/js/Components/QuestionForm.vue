@@ -16,7 +16,7 @@
 
         <OptionList v-if="
             question.type === 'single_choice' ||
-            question.type === 'multiple_choice'
+            question.type === 'multiple_select'"
         " v-model="options" :type="question.type" :errors="optionErrors" />
 
         <v-text-field v-if="question.type === 'short_answer'" v-model="question.correct_answer" label="Correct Answer"
@@ -35,7 +35,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import OptionList from './OptionList.vue'
-import { questionFormSchema, type QuestionFormData } from '../forms/questionForm.ts'
+import { questionFormSchema, type QuestionFormData } from '../forms/questionForm'
 
 const props = defineProps<{
     errors?: Record<string, string>;
@@ -52,7 +52,7 @@ const emit = defineEmits<{
 
 const questionTypes = [
     { title: 'Single Choice', value: 'single_choice' },
-    { title: 'Multiple Choice', value: 'multiple_choice' },
+    { title: 'Multiple Select', value: 'multiple_select' },
     { title: 'Short Answer', value: 'short_answer' },
     { title: 'Open Ended', value: 'open_ended' },
 ]

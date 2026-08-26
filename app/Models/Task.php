@@ -21,6 +21,7 @@ class Task extends Model
 
     protected $casts = [
         'task_type' => TaskType::class,
+        'deadline' => 'datetime',
         'allowed_file_extensions' => 'array',
     ];
 

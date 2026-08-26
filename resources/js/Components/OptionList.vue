@@ -17,7 +17,7 @@
         </v-radio-group>
 
 
-        <div v-else-if="type === 'multiple_choice'">
+        <div v-else-if="type === 'multiple_select'">
             <div v-for="(option, index) in options" :key="option.id" class="d-flex align-center ga-2 mb-3">
                 <v-checkbox v-model="option.is_correct" hide-details />
 
@@ -38,7 +38,7 @@ import { computed } from "vue";
 import type { OptionFormData } from "../forms/optionForm";
 
 defineProps<{
-    type: "single_choice" | "multiple_choice";
+    type: "single_choice" | "multiple_select";
     errors?: Record<string, string>;
 }>();
 
