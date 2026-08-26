@@ -14,6 +14,7 @@
                 :types="types"
                 submit-label="Update Lesson"
                 :submit="submit"
+                :videoUrl="lesson.video_src"
             />
         </v-container>
     </v-app>
@@ -30,14 +31,15 @@ const props = defineProps<{
     lesson: Lesson;
     types: SelectOption[];
 }>();
-console.log("Lesson Props sort_order:", props.lesson.sort_order); // Debugging line
+
 const { form, submit } = useLessonForm(props.course.id, {
     title: props.lesson.title,
     description: props.lesson.description,
     sort_order: props.lesson.sort_order,
     lesson_type: props.lesson.lesson_type as unknown as LessonType,
-    video: null as File | null,
-    content: props.lesson.lesson_content ?? "",
+    video: null,
+    lesson_content: props.lesson.lesson_content ?? "",
     task: props.lesson.task,
-}, props.lesson.id);
+}, props.lesson.id, props.lesson.video_src);
+
 </script>

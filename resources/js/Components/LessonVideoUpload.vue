@@ -1,6 +1,5 @@
 <template>
     <div>
-        <!-- Hidden file input -->
         <input
             ref="fileInput"
             type="file"
@@ -9,7 +8,6 @@
             @change="handleFileChange"
         />
 
-        <!-- Upload -->
         <v-file-upload
             v-if="!videoUrl"
             v-model="video"
@@ -20,7 +18,6 @@
             @update:model-value="handleVideo"
         />
 
-        <!-- Preview -->
         <v-card
             v-else
             variant="outlined"
@@ -39,7 +36,6 @@
 
                 <v-spacer />
 
-                <!-- Replace -->
                 <v-btn
                     variant="text"
                     prepend-icon="mdi-swap-horizontal"
@@ -48,7 +44,6 @@
                     Replace
                 </v-btn>
 
-                <!-- Delete -->
                 <v-btn
                     variant="text"
                     color="error"
@@ -68,6 +63,7 @@ import { computed, onBeforeUnmount, ref } from 'vue';
 const props = defineProps<{
     modelValue: File | null;
     errorMessages?: string | string[];
+    videoUrl?: string | null;
 }>();
 
 const emit = defineEmits<{
@@ -80,7 +76,7 @@ const fileInput = ref<HTMLInputElement | null>(null);
 
 const videoUrl = computed(() => {
     if (!video.value) {
-        return null;
+        return props.videoUrl;
     }
 
     return URL.createObjectURL(video.value);
@@ -113,7 +109,6 @@ function handleFileChange(event: Event) {
 
     emit('update:modelValue', file);
 
-    // Keyin aynan shu faylni yana tanlashga ham imkon beradi
     target.value = '';
 }
 

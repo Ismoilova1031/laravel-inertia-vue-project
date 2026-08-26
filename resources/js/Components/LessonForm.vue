@@ -19,11 +19,11 @@
 
         <v-tabs-window v-model="form.lesson_type" class="mt-4">
             <v-tabs-window-item v-for="type in types" :key="type.value" :value="type.value">
-                <RichTextEditor v-if="type.value === LessonType.TEXT" v-model="form.content"
-                    :error-messages="form.errors.content" />
+                <RichTextEditor v-if="type.value === LessonType.TEXT" v-model="form.lesson_content"
+                    :error-messages="form.errors.lesson_content" />
 
                 <LessonVideoUpload v-else-if="type.value === LessonType.VIDEO" v-model="form.video"
-                    :error-messages="form.errors.video" />
+                    :error-messages="form.errors.video" :video-url="videoUrl" />
 
                 <TaskForm v-else-if="type.value === LessonType.TASK" v-model="form.task" :errors="taskErrors" />
             </v-tabs-window-item>
@@ -56,6 +56,8 @@ const props = defineProps<{
     }[];
 
     submitLabel: string;
+
+    videoUrl?: string | null;
 
     submit: () => void;
 }>();

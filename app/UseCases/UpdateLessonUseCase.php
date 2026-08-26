@@ -23,40 +23,46 @@ class UpdateLessonUseCase implements UpdateLessonUseCaseInterface
 
     public function execute(Lesson $lesson, LessonDto $dto): Lesson
     {
-        if($lesson->lesson_type != $dto->lesson_type) {
-           $this->deleteOthers($lesson, $dto);
+        if ($lesson->lesson_type->value != $dto->lesson_type) {
+            $this->deleteOthers($lesson, $dto);
         }
-        
-        $course = $this->courseRepository->findById($lesson->course_id);
-
-        $videoPath = null;
 
         if ($dto->video) {
-            $videoPath = 'courses/' .
-                Str::slug($course->category->label()) . '/' .
-                Str::slug($course->title) . '/' .
-                Str::uuid() . '.' .
-                $dto->video->getClientOriginalExtension();
+            if ($lesson->lesson_type === LessonType::VIDEO) {
+                $this->storageRepository->deleteFile($lesson->video_url);
+            }
+            $course = $this->courseRepository->findById($lesson->course_id);
 
-            $this->storageRepository->storeFile(
-                $videoPath,
-                $dto->video
-            );
+            $videoPath = null;
+
+            if ($dto->video) {
+                $videoPath = 'courses/' .
+                    Str::slug($course->category->label()) . '/' .
+                    Str::slug($course->title) . '/' .
+                    Str::uuid() . '.' .
+                    $dto->video->getClientOriginalExtension();
+
+                $this->storageRepository->storeFile(
+                    $videoPath,
+                    $dto->video
+                );
+            }
+            return $this->lessonRepository->update($lesson, $dto->toArray($videoPath));
+        } else {
+            return $this->lessonRepository->update($lesson, $dto->toArray($lesson->video_url));
         }
-
-        return $this->lessonRepository->update($lesson, $dto->toArray($videoPath));
     }
 
     private function deleteOthers(Lesson $lesson, LessonDto $dto): void
     {
-        if($lesson->lesson_type === LessonType::VIDEO) {
+        if ($lesson->lesson_type === LessonType::VIDEO) {
 
             $this->storageRepository->deleteFile($lesson->video_url);
             $dto->video = null;
-        }else if($lesson->lesson_type === LessonType::TASK) {
+        } else if ($lesson->lesson_type === LessonType::TASK) {
             $this->taskRepository->deleteByLessonId($lesson->id);
-        }else{
-            $dto->content = null;
+        } else {
+            $dto->lesson_content = null;
         }
     }
 }

@@ -11,6 +11,7 @@ use App\Models\Course;
 use App\Models\Task;
 use App\Models\LessonStudent;
 use App\Models\Notification;
+use Illuminate\Support\Facades\Storage;
 
 class Lesson extends Model
 {
@@ -25,6 +26,19 @@ class Lesson extends Model
         'video_url',
         'sort_order',
     ];
+
+    protected $appends = [
+        'video_src',
+    ];
+
+    public function getVideoSrcAttribute(): ?string
+    {
+        if (!$this->video_url) {
+            return null;
+        }
+
+        return Storage::url($this->video_url);
+    }
 
     protected $casts = [
         'lesson_type' => LessonType::class,

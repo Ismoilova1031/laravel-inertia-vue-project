@@ -10,16 +10,19 @@ class StorageRepository implements StorageRepositoryInterface
 {
     public function storeFile(string $path, UploadedFile $content): void
     {
-        Storage::put($path, $content->getContent());
+        Storage::disk('public')->put(
+            $path,
+            $content->getContent()
+        );
     }
 
     public function getFile(string $path): ?string
     {
-        return Storage::get($path);
+        return Storage::disk('public')->get($path);
     }
 
     public function deleteFile(string $path): void
     {
-        Storage::delete($path);
+        Storage::disk('public')->delete($path);
     }
 }

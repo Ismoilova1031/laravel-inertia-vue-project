@@ -45,7 +45,7 @@ class LessonController extends Controller
         $dto = new LessonDto(
             title: $request->title,
             description: $request->description,
-            content: $request->content,
+            lesson_content: $request->lesson_content,
             lesson_type: $request->lesson_type,
             sort_order: $request->sort_order,
             course_id: $course->id,

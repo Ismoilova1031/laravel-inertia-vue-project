@@ -9,7 +9,7 @@ class LessonDto
     public function __construct(
         public string $title,
         public string $description,
-        public ?string $content,
+        public ?string $lesson_content,
         public int $lesson_type,
         public ?UploadedFile $video,
         public int $sort_order,
@@ -23,7 +23,7 @@ class LessonDto
 
             title: $data['title'],
             description: $data['description'] ?? '',
-            content: $data['content'] ?? null,
+            lesson_content: $data['lesson_content'] ?? null,
             lesson_type: $data['lesson_type'],
             video: $data['video'] ?? null,
             sort_order: $data['sort_order'],
@@ -36,7 +36,7 @@ class LessonDto
         return [
             'title' => $this->title,
             'description' => $this->description,
-            'lesson_content' => $this->content,
+            'lesson_content' => $this->lesson_content,
             'lesson_type' => $this->lesson_type,
             'video_url' => $videoPath,
             'sort_order' => $this->sort_order,

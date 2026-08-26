@@ -45,26 +45,18 @@ export const lessonFormSchema = z
                 message: "Video must be less than 100MB",
             }),
 
-        content: z.string(),
+        lesson_content: z.string(),
 
         task: taskFormSchema,
     })
     .superRefine((data, ctx) => {
-        if (data.lesson_type === LessonType.VIDEO && !data.video) {
-            ctx.addIssue({
-                code: "custom",
-                path: ["video"],
-                message: "Video is required",
-            });
-        }
-
         if (
             data.lesson_type === LessonType.TEXT &&
-            data.content.replace(/<[^>]*>/g, "").trim() === ""
+            data.lesson_content.replace(/<[^>]*>/g, "").trim() === ""
         ) {
             ctx.addIssue({
                 code: "custom",
-                path: ["content"],
+                path: ["lesson_content"],
                 message: "Content is required",
             });
         }
@@ -94,15 +86,15 @@ export function useLessonForm(
     courseId: number,
     initialData?: LessonFormData,
     lessonId?: number,
+    existingVideoUrl?: string | null,
 ) {
-    console.log("Initial Data:", initialData); // Debugging line
     const form = useForm<LessonFormData>({
         title: initialData?.title ?? "",
         description: initialData?.description ?? "",
         sort_order: initialData?.sort_order ?? 0,
         lesson_type: initialData?.lesson_type ?? LessonType.VIDEO,
         video: initialData?.video ?? null,
-        content: initialData?.content ?? "",
+        lesson_content: initialData?.lesson_content ?? "",
 
         task: initialData?.task ?? {
             type: null,
@@ -115,6 +107,8 @@ export function useLessonForm(
     function validate(): boolean {
         form.clearErrors();
         const result = lessonFormSchema.safeParse(form.data());
+
+        const data = form.data();
 
         if (!result.success) {
             const errors: Record<string, string> = {};
@@ -132,13 +126,31 @@ export function useLessonForm(
             return false;
         }
 
+        if (
+            data.lesson_type === LessonType.VIDEO &&
+            !data.video &&
+            !existingVideoUrl
+        ) {
+            form.setError("video", "Video is required");
+            return false;
+        }
+
         return true;
     }
 
     function submit() {
-        if (!validate()) {
+        console.log("1. submit called");
+
+        const isValid = validate();
+
+        console.log("2. validation:", isValid);
+        console.log("3. errors:", form.errors);
+
+        if (!isValid) {
             return;
         }
+
+        console.log("4. sending request");
 
         if (lessonId) {
             form.put(
