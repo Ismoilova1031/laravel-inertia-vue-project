@@ -2,6 +2,7 @@ import z from "zod";
 import { useForm } from "@inertiajs/vue3";
 import { LessonType } from "../types/lesson-types";
 import { taskFormSchema } from "./taskForm";
+import LessonController from "../actions/App/Http/Controllers/LessonController";
 export const lessonFormSchema = z
     .object({
         title: z
@@ -40,12 +41,9 @@ export const lessonFormSchema = z
         video: z
             .instanceof(File)
             .nullable()
-            .refine(
-                (file) => !file || file.size <= 100 * 1024 * 1024,
-                {
-                    message: "Video must be less than 100MB",
-                }
-            ),
+            .refine((file) => !file || file.size <= 100 * 1024 * 1024, {
+                message: "Video must be less than 100MB",
+            }),
 
         content: z.string(),
 
@@ -97,6 +95,7 @@ export function useLessonForm(
     initialData?: LessonFormData,
     lessonId?: number,
 ) {
+    console.log("Initial Data:", initialData); // Debugging line
     const form = useForm<LessonFormData>({
         title: initialData?.title ?? "",
         description: initialData?.description ?? "",
@@ -127,7 +126,9 @@ export function useLessonForm(
                 }
             }
 
-            form.setError(errors as Partial<Record<keyof typeof form.errors, string>>);
+            form.setError(
+                errors as Partial<Record<keyof typeof form.errors, string>>,
+            );
             return false;
         }
 
@@ -140,13 +141,24 @@ export function useLessonForm(
         }
 
         if (lessonId) {
-            form.put(`/lessons/${lessonId}`, {
-                preserveScroll: true,
-            });
+            form.put(
+                LessonController.update({
+                    course: courseId,
+                    lesson: lessonId,
+                }).url,
+                {
+                    preserveScroll: true,
+                },
+            );
         } else {
-            form.post(`/courses/${courseId}/lessons`, {
-                preserveScroll: true,
-            });
+            form.post(
+                LessonController.store({
+                    course: courseId,
+                }).url,
+                {
+                    preserveScroll: true,
+                },
+            );
         }
     }
     return {

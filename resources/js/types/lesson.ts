@@ -1,11 +1,17 @@
 import { SelectOption } from "./common";
-
 export interface Lesson {
     id: number;
     title: string;
     description: string;
-    lessonType: SelectOption;
-    lessonContent: string | null;
-    videoUrl: string | null;
-    sortOrder: number;
+    lesson_type: SelectOption;
+    lesson_content: string | null;
+    video_url: string | null;
+    sort_order: number;
+
+    task: {
+            type: null,
+            deadline: null,
+            file_extensions: null,
+            questions: null,
+        };
 }

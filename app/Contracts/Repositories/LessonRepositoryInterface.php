@@ -9,7 +9,9 @@ interface LessonRepositoryInterface
 {
     public function create(array $data): Lesson;
 
-    public function update(int $id, array $data): bool;
+    public function update(Lesson $lesson, array $data): Lesson;
+
+    public function updateById(int $id, array $data): Lesson;
 
     public function delete(Lesson $lesson): bool;
 

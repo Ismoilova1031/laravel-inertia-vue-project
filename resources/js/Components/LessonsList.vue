@@ -33,8 +33,13 @@
 
                         <template #append>
                             <div class="d-flex align-center ga-3">
-                                <v-btn icon="mdi-pencil-outline" variant="text" size="medium" />
-
+                                <Link :href="LessonController.edit({
+                                    course: course.id,
+                                    lesson: lesson.id,
+                                    
+                                }).url" class="update-lesson-link">
+                                    <v-btn icon="mdi-pencil-outline" variant="text" size="medium" />
+                                </Link>
                                 <v-btn icon="mdi-delete-outline" variant="text" size="medium"
                                     @click="openDeleteDialog(lesson)" />
                             </div>
@@ -171,11 +176,11 @@ function confirmDelete() {
 
             onSuccess: () => {
                 lessons.value = lessons.value
-                .filter(lesson => lesson.id !== lessonId)
-                .map((lesson, index) => ({
-                    ...lesson,
-                    sortOrder: index + 1,
-                }));
+                    .filter(lesson => lesson.id !== lessonId)
+                    .map((lesson, index) => ({
+                        ...lesson,
+                        sortOrder: index + 1,
+                    }));
             },
 
             onFinish: closeDeleteDialog,

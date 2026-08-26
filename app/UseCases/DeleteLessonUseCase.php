@@ -21,7 +21,7 @@ class DeleteLessonUseCase implements DeleteLessonUseCaseInterface
             $lessons = $this->lessonRepository->getByCourseId($lesson->course_id);
 
             foreach ($lessons as $index => $lesson) {
-                $this->lessonRepository->update($lesson->id, ['sort_order' => $index + 1]);
+                $this->lessonRepository->update($lesson, ['sort_order' => $index + 1]);
             }
         });
     }

@@ -7,37 +7,39 @@ use App\Http\Requests\LessonRequest;
 use Inertia\Inertia;
 use App\Contracts\UseCases\CreateLessonUseCaseInterface;
 use App\Contracts\UseCases\DeleteLessonUseCaseInterface;
+use App\Contracts\UseCases\ReorderLessonsUseCaseInterface;
+use App\Contracts\UseCases\UpdateLessonUseCaseInterface;
 use App\Dtos\LessonDto;
 use App\Models\Course;
 use App\Models\Lesson;
 use App\Http\Requests\ReorderLessonsRequest;
-use App\UseCases\ReorderLessonsUseCase;
 
 class LessonController extends Controller
 {
-    
+
     public function __construct(
         private CreateLessonUseCaseInterface $createLessonUseCase,
-        private ReorderLessonsUseCase $reorderLessonsUseCase,
-        private DeleteLessonUseCaseInterface $deleteLessonUseCase
-    ){}
+        private ReorderLessonsUseCaseInterface $reorderLessonsUseCase,
+        private DeleteLessonUseCaseInterface $deleteLessonUseCase,
+        private UpdateLessonUseCaseInterface $updateLessonUseCase
+    ) {}
 
     public function create(Course $course)
     {
         return Inertia::render('Lessons/Create', [
             'course' => $course,
             'types' => collect(LessonType::cases())
-                ->map(fn (LessonType $type) => [
+                ->map(fn(LessonType $type) => [
                     'label' => $type->label(),
                     'value' => $type->value,
                 ]),
         ]);
     }
 
-   public function store(Course $course, LessonRequest $request)
+    public function store(Course $course, LessonRequest $request)
     {
         $validated = $request->validated();
-        if(!$validated) {
+        if (!$validated) {
             return back()->withErrors($request->errors());
         }
         $dto = new LessonDto(
@@ -50,9 +52,8 @@ class LessonController extends Controller
             video: $request->file('video'),
         );
 
-       $lesson = $this->createLessonUseCase->execute($dto);
-
-       return redirect()->route('courses.show', ['course' => $lesson->course_id]);
+        $lesson = $this->createLessonUseCase->execute($dto);
+        return redirect()->route('courses.show', ['course' => $lesson->course_id]);
     }
 
     public function reorder(
@@ -68,7 +69,33 @@ class LessonController extends Controller
     public function destroy(Course $course, Lesson $lesson)
     {
         $this->deleteLessonUseCase->execute($lesson);
-        
+
         return redirect()->route('courses.show', ['course' => $course]);
+    }
+    public function edit(Course $course, Lesson $lesson)
+    {
+        return Inertia::render('Lessons/Edit', [
+            'course' => $course,
+            'lesson' => $lesson,
+            'types' => collect(LessonType::cases())
+                ->map(fn(LessonType $type) => [
+                    'label' => $type->label(),
+                    'value' => $type->value,
+                ]),
+        ]);
+    }
+
+    public function update(LessonRequest $request, Course $course, Lesson $lesson)
+    {
+        $validated = $request->validated();
+        if (!$validated) {
+            return back()->withErrors($request->errors());
+        }
+        $validated['course_id'] = $course->id;
+        $dto = LessonDto::fromArray($validated);
+        $lesson = $this->updateLessonUseCase->execute($lesson, $dto);
+        return redirect()->route('courses.show', [
+            'course' => $course->id,
+        ]);
     }
 }

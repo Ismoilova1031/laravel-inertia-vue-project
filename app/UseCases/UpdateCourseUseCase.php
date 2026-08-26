@@ -9,12 +9,10 @@ use App\Models\Course;
 
 class UpdateCourseUseCase implements UpdateCourseUseCaseInterface
 {
-    private CourseRepositoryInterface $courseRepository;
 
-    public function __construct(CourseRepositoryInterface $courseRepository)
-    {
-        $this->courseRepository = $courseRepository;
-    }
+    public function __construct(
+        private CourseRepositoryInterface $courseRepository
+    ){}
 
     public function execute(Course $course, CourseDto $dto): Course
     {

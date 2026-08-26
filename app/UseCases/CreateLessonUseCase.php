@@ -41,14 +41,6 @@ class CreateLessonUseCase implements CreateLessonUseCaseInterface
             );
         }
 
-        return $this->lessonRepository->create([
-            'title' => $lessonDto->title,
-            'description' => $lessonDto->description,
-            'content' => $lessonDto->content,
-            'lesson_type' => $lessonDto->lesson_type,
-            'video_path' => $videoPath,
-            'sort_order' => $lessonDto->sort_order,
-            'course_id' => $lessonDto->course_id,
-        ]);
+        return $this->lessonRepository->create($lessonDto->toArray($videoPath));
     }
 }

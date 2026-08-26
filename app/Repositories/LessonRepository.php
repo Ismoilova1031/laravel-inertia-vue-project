@@ -13,19 +13,17 @@ class LessonRepository implements LessonRepositoryInterface
         return Lesson::create($data);
     }
 
-    public function update(int $id, array $data): bool
+    public function update(Lesson $lesson, array $data): Lesson
     {
-        $lesson = $this->find($id);
-        return $lesson->update($data);
+        $lesson->update($data);
+        return $lesson->fresh();
     }
 
-    private function find(int $id): Lesson
+    public function updateById(int $id, array $data): Lesson
     {
         $lesson = Lesson::find($id);
-        if (!$lesson) {
-            return abort(404, 'Lesson not found');
-        }
-        return $lesson;
+        $lesson->update($data);
+        return $lesson->fresh();
     }
 
     public function delete(Lesson $lesson): bool

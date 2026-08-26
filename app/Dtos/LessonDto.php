@@ -31,14 +31,14 @@ class LessonDto
         );
     }
 
-    public function toArray(): array
+    public function toArray(?string $videoPath = null): array
     {
         return [
             'title' => $this->title,
             'description' => $this->description,
-            'content' => $this->content,
+            'lesson_content' => $this->content,
             'lesson_type' => $this->lesson_type,
-            'video' => $this->video,
+            'video_url' => $videoPath,
             'sort_order' => $this->sort_order,
             'course_id' => $this->course_id,
         ];

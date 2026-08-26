@@ -9,6 +9,7 @@ use App\Contracts\UseCases\DeleteCourseUseCaseInterface;
 use App\Contracts\UseCases\CreateLessonUseCaseInterface;
 use App\Contracts\UseCases\ReorderLessonsUseCaseInterface;
 use App\Contracts\UseCases\DeleteLessonUseCaseInterface;
+use App\Contracts\UseCases\UpdateLessonUseCaseInterface;
 
 use App\UseCases\GetCoursesUseCase;
 use App\UseCases\CreateCourseUseCase;
@@ -17,6 +18,7 @@ use App\UseCases\DeleteCourseUseCase;
 use App\UseCases\CreateLessonUseCase;
 use App\UseCases\ReorderLessonsUseCase;
 use App\UseCases\DeleteLessonUseCase;   
+use App\UseCases\UpdateLessonUseCase;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -31,5 +33,6 @@ class UseCaseServiceProvider extends ServiceProvider
         $this->app->bind(CreateLessonUseCaseInterface::class, CreateLessonUseCase::class);
         $this->app->bind(ReorderLessonsUseCaseInterface::class, ReorderLessonsUseCase::class);
         $this->app->bind(DeleteLessonUseCaseInterface::class, DeleteLessonUseCase::class);
+        $this->app->bind(UpdateLessonUseCaseInterface::class, UpdateLessonUseCase::class);
     }
 }
