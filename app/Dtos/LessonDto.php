@@ -3,7 +3,7 @@
 namespace App\Dtos;
 
 use Illuminate\Http\UploadedFile;
-
+use App\Dtos\TaskDto;
 class LessonDto
 {
     public function __construct(
@@ -14,6 +14,8 @@ class LessonDto
         public ?UploadedFile $video,
         public int $sort_order,
         public int $course_id,
+
+        public ?TaskDto $tasks = null
     ) {
     }
 
@@ -28,6 +30,7 @@ class LessonDto
             video: $data['video'] ?? null,
             sort_order: $data['sort_order'],
             course_id: $data['course_id'],
+            tasks: $data['tasks'] ?? null
         );
     }
 
@@ -41,6 +44,7 @@ class LessonDto
             'video_url' => $videoPath,
             'sort_order' => $this->sort_order,
             'course_id' => $this->course_id,
+            'tasks' => $this->tasks,
         ];
     }
 }

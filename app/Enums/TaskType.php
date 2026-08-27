@@ -16,4 +16,14 @@ enum TaskType: int
             self::DISCUSSION => 'Discussion',
         };
     }
+
+    public static function fromValue(int $value): self
+    {
+        return match ($value) {
+            1 => self::QUIZ,
+            2 => self::FILE,
+            3 => self::DISCUSSION,
+            default => throw new \InvalidArgumentException("Invalid TaskType value: $value"),
+        };
+    }
 }

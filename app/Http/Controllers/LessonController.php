@@ -12,6 +12,8 @@ use App\Contracts\UseCases\UpdateLessonUseCaseInterface;
 use App\Dtos\LessonDto;
 use App\Models\Course;
 use App\Models\Lesson;
+use App\Dtos\TaskDto;
+use App\Enums\TaskType;
 use App\Http\Requests\ReorderLessonsRequest;
 
 class LessonController extends Controller
@@ -50,8 +52,13 @@ class LessonController extends Controller
             sort_order: $request->sort_order,
             course_id: $course->id,
             video: $request->file('video'),
+            tasks: $request->task ? new TaskDto(
+                type: TaskType::fromValue($request->task['type']),
+                deadline: $request->task['deadline'],
+                file_extensions: $request->task['file_extensions'] ?? null,
+                questions: $request->task['questions'] ?? null
+            ) : null
         );
-
         $lesson = $this->createLessonUseCase->execute($dto);
         return redirect()->route('courses.show', ['course' => $lesson->course_id]);
     }
