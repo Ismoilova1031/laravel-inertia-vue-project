@@ -5,8 +5,8 @@
 
         <v-row>
             <v-col cols="12" md="4">
-                <v-select v-model="question.type" label="Question Type" :items="questionTypes" variant="outlined"
-                    :error-messages="mergedErrors?.type" />
+                <v-select v-model="question.question_type" label="Question Type" :items="questionTypes" variant="outlined"
+                    :error-messages="mergedErrors?.question_type" />
             </v-col>
             <v-col cols="12" md="4">
                 <v-text-field v-model.number="question.points" label="Points value" type="number" variant="outlined"
@@ -15,14 +15,14 @@
         </v-row>
 
         <OptionList v-if="
-            question.type === 1 ||
-            question.type === 2"
-        " v-model="options" :type="question.type" :errors="optionErrors" />
+            question.question_type === 1 ||
+            question.question_type === 2"
+        " v-model="options" :question_type="question.question_type" :errors="optionErrors" />
 
-        <v-text-field v-if="question.type === 3" v-model="question.correct_answer" label="Correct Answer"
+        <v-text-field v-if="question.question_type === 3" v-model="question.correct_answer" label="Correct Answer"
             variant="outlined" placeholder="Enter the expected answer" :error-messages="mergedErrors?.correct_answer" />
 
-        <v-alert v-if="question.type === 4" type="info" variant="tonal">
+        <v-alert v-if="question.question_type === 4" type="info" variant="tonal">
             Open-ended questions are manually graded by the teacher.
         </v-alert>
 

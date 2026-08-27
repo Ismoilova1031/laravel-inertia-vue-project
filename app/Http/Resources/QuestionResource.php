@@ -19,7 +19,10 @@ class QuestionResource extends JsonResource
         return [
             'id' => $this->id,
             'question' => $this->question,
-            'question_type' => $this->question_type,
+            'question_type' => [
+                'value' => $this->question_type->value,
+                'label' => $this->question_type->label(),
+            ],
             'points' => $this->points,
             'sort_order' => $this->sort_order,
             'correct_answer' => $this->correct_answer,

@@ -54,7 +54,7 @@ class LessonController extends Controller
             course_id: $course->id,
             video: $request->file('video'),
             tasks: $request->task ? new TaskDto(
-                type: TaskType::fromValue($request->task['type']),
+                type: TaskType::fromValue($request->task['task_type']),
                 deadline: $request->task['deadline'],
                 file_extensions: $request->task['file_extensions'] ?? null,
                 questions: $request->task['questions'] ?? null

@@ -18,12 +18,15 @@ class TaskResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'task_type' => $this->task_type,
-            'deadline' => $this->deadline,
+            'task_type' => [
+                'value' => $this->task_type->value,
+                'label' => $this->task_type->label(),
+            ],
+            'deadline' => $this->deadline?->format('Y-m-d\TH:i'),
             'allowed_file_extensions' => $this->allowed_file_extensions,
             'questions' => $this->when(
                 $this->task_type === TaskType::QUIZ,
-                fn() => QuestionResource::collection($this->questions),
+                fn() => QuestionResource::collection($this->questions)->resolve(),
             ),
         ];
     }

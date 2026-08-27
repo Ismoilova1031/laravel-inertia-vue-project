@@ -12,9 +12,9 @@
           <v-select
             label="Task Type"
             :items="taskTypes"
-            v-model="task.type"
+            v-model="task.task_type"
             variant="outlined"
-            :error-messages="errors?.type"
+            :error-messages="errors?.task_type"
           />
         </v-col>
 
@@ -31,7 +31,7 @@
         </v-col>
       </v-row>
       <v-select
-        v-if="task.type === TaskTypes.FILE_UPLOAD"
+        v-if="task.task_type === TaskTypes.FILE_UPLOAD"
         max-width="500"
         label="Allowed file extensions"
         :items="fileExtensions"
@@ -41,7 +41,7 @@
       />
 
       <QuestionList
-        v-if="task.type === TaskTypes.QUIZ"
+        v-if="task.task_type === TaskTypes.QUIZ"
         v-model="questions"
         :errors="questionListErrors"
       />
@@ -58,6 +58,7 @@ import type { TaskFormData } from "../forms/taskForm";
 const task = defineModel<TaskFormData>({
   required: true,
 });
+console.log("task:", task.value);
 const props = defineProps<{
   errors?: Record<string, string>;
 }>();

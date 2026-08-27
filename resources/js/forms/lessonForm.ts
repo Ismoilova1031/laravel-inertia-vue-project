@@ -62,10 +62,10 @@ export const lessonFormSchema = z
         }
 
         if (data.lesson_type === LessonType.TASK) {
-            if (!data.task?.type) {
+            if (!data.task?.task_type) {
                 ctx.addIssue({
                     code: "custom",
-                    path: ["task", "type"],
+                    path: ["task", "task_type"],
                     message: "Task type is required",
                 });
             }
@@ -97,7 +97,7 @@ export function useLessonForm(
         lesson_content: initialData?.lesson_content ?? "",
 
         task: initialData?.task ?? {
-            type: null,
+            task_type: null,
             deadline: null,
             file_extensions: null,
             questions: null,

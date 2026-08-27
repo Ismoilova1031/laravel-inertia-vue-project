@@ -5,7 +5,7 @@ export const questionFormSchema = z
     .object({
         id: z.union([z.number(), z.string()]).optional(),
         question: z.string().min(1, { message: "Question text is required" }),
-        type: z.union([
+        question_type: z.union([
             z.literal(1),
             z.literal(2),
             z.literal(3),
@@ -19,8 +19,8 @@ export const questionFormSchema = z
     })
     .superRefine((data, ctx) => {
         if (
-            (data.type === 1 ||
-                data.type === 2) &&
+            (data.question_type === 1 ||
+                data.question_type === 2) &&
             (!data.options || data.options.length < 2)
         ) {
             ctx.addIssue({
@@ -32,8 +32,8 @@ export const questionFormSchema = z
         }
 
         if (
-            (data.type === 1 ||
-                data.type === 2) &&
+            (data.question_type === 1 ||
+                data.question_type === 2) &&
             data.options?.every((o) => !o.is_correct)
         ) {
             ctx.addIssue({
@@ -44,7 +44,7 @@ export const questionFormSchema = z
             });
         }
 
-        if (data.type === 3 && !data.correct_answer?.trim()) {
+        if (data.question_type === 3 && !data.correct_answer?.trim()) {
             ctx.addIssue({
                 code: "custom",
                 path: ["correct_answer"],

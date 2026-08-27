@@ -10,9 +10,9 @@ export interface Lesson {
     sort_order: number;
 
     task: {
-            type: null,
+            task_type: SelectOption | null,
             deadline: null,
             file_extensions: null,
-            questions: null,
+            questions: {},
         };
 }

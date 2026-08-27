@@ -25,7 +25,7 @@
             {{ index + 1 }}
           </td>
           <td>{{ question.question }}</td>
-          <td>{{ question.type }}</td>
+          <td>{{ question.question_type }}</td>
           <td>{{ question.points }}</td>
           <td class="text-end">
             <v-btn icon="mdi-pencil" variant="text" size="small" @click="editQuestion(index)" />
@@ -67,7 +67,7 @@ const draftQuestion = ref<QuestionFormData>(emptyQuestion());
 function emptyQuestion(): QuestionFormData {
   return {
     question: "",
-    type: 1,
+    question_type: 1,
     points: 1,
     options: [],
     correct_answer: null,

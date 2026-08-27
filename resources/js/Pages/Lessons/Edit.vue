@@ -9,13 +9,8 @@
                 Structure individual modules and attach dynamic tasks or reading assets
             </p>
 
-            <LessonForm
-                :form="form"
-                :types="types"
-                submit-label="Update Lesson"
-                :submit="submit"
-                :videoUrl="lesson.video_src"
-            />
+            <LessonForm :form="form" :types="types" submit-label="Update Lesson" :submit="submit"
+                :videoUrl="lesson.video_src" />
         </v-container>
     </v-app>
 </template>
@@ -24,22 +19,38 @@ import LessonForm from "../../components/LessonForm.vue";
 import { useLessonForm } from "../../forms/lessonForm";
 import type { Course } from "../../types/course";
 import type { Lesson } from "../../types/lesson";
-import type { LessonType } from "../../types/lesson-types";
 import type { SelectOption } from "../../types/common";
 const props = defineProps<{
     course: Course;
     lesson: Lesson;
     types: SelectOption[];
 }>();
-console.log("Edit.vue props:", props.lesson);
 const { form, submit } = useLessonForm(props.course.id, {
     title: props.lesson.title,
     description: props.lesson.description,
     sort_order: props.lesson.sort_order,
-    lesson_type: props.lesson.lesson_type as unknown as LessonType,
+    lesson_type: props.lesson.lesson_type.value,
     video: null,
     lesson_content: props.lesson.lesson_content ?? "",
-    task: props.lesson.task,
+    task: props.lesson.task
+        ? {
+            ...props.lesson.task,
+
+            task_type: props.lesson.task.task_type?.value ?? null,
+
+            questions: Array.isArray(props.lesson.task.questions)
+                ? props.lesson.task.questions.map((question) => ({
+                ...question,
+                question_type: question.question_type.value,
+                }))
+                : null,
+        }
+        : {
+            task_type: null,
+            deadline: null,
+            file_extensions: null,
+            questions: null,
+        },
 }, props.lesson.id, props.lesson.video_src);
 
 </script>

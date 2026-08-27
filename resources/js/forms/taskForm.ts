@@ -3,7 +3,7 @@ import { TaskTypes } from "../types/task-types";
 import { questionFormSchema } from "./questionForm";
 export const taskFormSchema = z
     .object({
-        type: z.union([
+        task_type: z.union([
             z.literal(TaskTypes.QUIZ),
             z.literal(TaskTypes.FILE_UPLOAD),
             z.literal(TaskTypes.DISCUSSION),
@@ -25,7 +25,7 @@ export const taskFormSchema = z
     .superRefine((data, ctx) => {
 
         if (
-            data.type === TaskTypes.FILE_UPLOAD &&
+            data.task_type === TaskTypes.FILE_UPLOAD &&
             (!data.file_extensions || data.file_extensions.length === 0)
         ) {
             ctx.addIssue({
@@ -36,7 +36,7 @@ export const taskFormSchema = z
         }
 
         if (
-            data.type === TaskTypes.QUIZ &&
+            data.task_type === TaskTypes.QUIZ &&
             (!data.questions || data.questions.length === 0)
         ) {
             ctx.addIssue({
