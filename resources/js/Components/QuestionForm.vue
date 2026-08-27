@@ -15,14 +15,14 @@
         </v-row>
 
         <OptionList v-if="
-            question.type === 'single_choice' ||
-            question.type === 'multiple_select'"
+            question.type === 1 ||
+            question.type === 2"
         " v-model="options" :type="question.type" :errors="optionErrors" />
 
-        <v-text-field v-if="question.type === 'short_answer'" v-model="question.correct_answer" label="Correct Answer"
+        <v-text-field v-if="question.type === 3" v-model="question.correct_answer" label="Correct Answer"
             variant="outlined" placeholder="Enter the expected answer" :error-messages="mergedErrors?.correct_answer" />
 
-        <v-alert v-if="question.type === 'open_ended'" type="info" variant="tonal">
+        <v-alert v-if="question.type === 4" type="info" variant="tonal">
             Open-ended questions are manually graded by the teacher.
         </v-alert>
 
@@ -51,10 +51,10 @@ const emit = defineEmits<{
 }>();
 
 const questionTypes = [
-    { title: 'Single Choice', value: 'single_choice' },
-    { title: 'Multiple Select', value: 'multiple_select' },
-    { title: 'Short Answer', value: 'short_answer' },
-    { title: 'Open Ended', value: 'open_ended' },
+    { title: 'Single Choice', value: 1 },
+    { title: 'Multiple Select', value: 2 },
+    { title: 'Short Answer', value: 3 },
+    { title: 'Open Ended', value: 4 },
 ]
 
 const options = computed({

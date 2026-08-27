@@ -6,10 +6,10 @@ export const questionFormSchema = z
         id: z.union([z.number(), z.string()]).optional(),
         question: z.string().min(1, { message: "Question text is required" }),
         type: z.union([
-            z.literal("single_choice"),
-            z.literal("multiple_select"),
-            z.literal("short_answer"),
-            z.literal("open_ended"),
+            z.literal(1),
+            z.literal(2),
+            z.literal(3),
+            z.literal(4),
         ]),
         points: z
             .number()
@@ -19,8 +19,8 @@ export const questionFormSchema = z
     })
     .superRefine((data, ctx) => {
         if (
-            (data.type === "single_choice" ||
-                data.type === "multiple_select") &&
+            (data.type === 1 ||
+                data.type === 2) &&
             (!data.options || data.options.length < 2)
         ) {
             ctx.addIssue({
@@ -32,8 +32,8 @@ export const questionFormSchema = z
         }
 
         if (
-            (data.type === "single_choice" ||
-                data.type === "multiple_select") &&
+            (data.type === 1 ||
+                data.type === 2) &&
             data.options?.every((o) => !o.is_correct)
         ) {
             ctx.addIssue({
@@ -44,7 +44,7 @@ export const questionFormSchema = z
             });
         }
 
-        if (data.type === "short_answer" && !data.correct_answer?.trim()) {
+        if (data.type === 3 && !data.correct_answer?.trim()) {
             ctx.addIssue({
                 code: "custom",
                 path: ["correct_answer"],

@@ -67,7 +67,7 @@ const draftQuestion = ref<QuestionFormData>(emptyQuestion());
 function emptyQuestion(): QuestionFormData {
   return {
     question: "",
-    type: "single_choice",
+    type: 1,
     points: 1,
     options: [],
     correct_answer: null,

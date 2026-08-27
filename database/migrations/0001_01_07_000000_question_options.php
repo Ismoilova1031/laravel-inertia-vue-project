@@ -16,7 +16,6 @@ return new class extends Migration
             $table->foreignId('question_id')->constrained()->cascadeOnDelete();
             $table->string('option');
             $table->boolean('is_correct')->default(false);
-            $table->integer('sort_order');
             $table->timestamps();
         });
     }

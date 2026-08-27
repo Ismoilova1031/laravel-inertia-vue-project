@@ -5,7 +5,7 @@
         <div v-if="errors?.options" class="text-error text-caption mb-2">
             {{ errors.options }}
         </div>
-        <v-radio-group v-if="type === 'single_choice'" v-model="correctOptionId" hide-details>
+        <v-radio-group v-if="type === 1" v-model="correctOptionId" hide-details>
             <div v-for="(option, index) in options" :key="option.id" class="d-flex align-center ga-2 mb-3">
                 <v-radio :value="option.id" class="flex-grow-0"/>
 
@@ -17,7 +17,7 @@
         </v-radio-group>
 
 
-        <div v-else-if="type === 'multiple_select'">
+        <div v-else-if="type === 2">
             <div v-for="(option, index) in options" :key="option.id" class="d-flex align-center ga-2 mb-3">
                 <v-checkbox v-model="option.is_correct" hide-details />
 
@@ -38,7 +38,7 @@ import { computed } from "vue";
 import type { OptionFormData } from "../forms/optionForm";
 
 defineProps<{
-    type: "single_choice" | "multiple_select";
+    type: 1 | 2;
     errors?: Record<string, string>;
 }>();
 

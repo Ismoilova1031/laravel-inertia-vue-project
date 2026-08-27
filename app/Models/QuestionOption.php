@@ -14,7 +14,6 @@ class QuestionOption extends Model
         'question_id',
         'option',
         'is_correct',
-        'sort_order',
     ];
 
     public function question(): BelongsTo
