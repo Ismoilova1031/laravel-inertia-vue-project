@@ -31,7 +31,7 @@ const props = defineProps<{
     lesson: Lesson;
     types: SelectOption[];
 }>();
-
+console.log("Edit.vue props:", props.lesson);
 const { form, submit } = useLessonForm(props.course.id, {
     title: props.lesson.title,
     description: props.lesson.description,

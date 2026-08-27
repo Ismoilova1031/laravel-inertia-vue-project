@@ -45,12 +45,6 @@ class CreateLessonService implements CreateLessonServiceInterface
             ]);
 
         if ($task->type === TaskType::QUIZ) {
-            $createdTask = $this->taskRepository->create([
-                'lesson_id' => $lessonId,
-                'task_type' => $task->type->value,
-                'deadline' => $task->deadline,
-            ]);
-
             $this->createQuestion($task->questions, $createdTask->id);
         }
     }

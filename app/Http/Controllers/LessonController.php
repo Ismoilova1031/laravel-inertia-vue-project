@@ -15,6 +15,7 @@ use App\Models\Lesson;
 use App\Dtos\TaskDto;
 use App\Enums\TaskType;
 use App\Http\Requests\ReorderLessonsRequest;
+use App\Http\Resources\LessonEditResource;
 
 class LessonController extends Controller
 {
@@ -83,7 +84,7 @@ class LessonController extends Controller
     {
         return Inertia::render('Lessons/Edit', [
             'course' => $course,
-            'lesson' => $lesson,
+            'lesson' => LessonEditResource::make($lesson)->resolve(),
             'types' => collect(LessonType::cases())
                 ->map(fn(LessonType $type) => [
                     'label' => $type->label(),

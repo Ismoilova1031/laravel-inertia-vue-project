@@ -139,18 +139,14 @@ export function useLessonForm(
     }
 
     function submit() {
-        console.log("1. submit called");
 
         const isValid = validate();
 
-        console.log("2. validation:", isValid);
-        console.log("3. errors:", form.errors);
 
         if (!isValid) {
             return;
         }
 
-        console.log("4. sending request");
 
         if (lessonId) {
             form.put(

@@ -11,6 +11,7 @@ use App\Models\Course;
 use App\Models\Task;
 use App\Models\LessonStudent;
 use App\Models\Notification;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Storage;
 
 class Lesson extends Model
@@ -49,9 +50,9 @@ class Lesson extends Model
         return $this->belongsTo(Course::class);
     }
 
-    public function tasks(): HasMany
+    public function task(): HasOne
     {
-        return $this->hasMany(Task::class);
+        return $this->hasOne(Task::class);
     }
 
     public function lessonStudents(): HasMany
