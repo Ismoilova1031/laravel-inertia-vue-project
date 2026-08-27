@@ -57,13 +57,13 @@ class CreateLessonService implements CreateLessonServiceInterface
 
     private function createQuestion(array $questions, int $taskId): void
     {
-        foreach ($questions as $question) {
+        foreach ($questions as $index => $question) {
             $createdQuestion = $this->questionRepository->create([
                 'task_id' => $taskId,
                 'question' => $question['question'],
                 'question_type' => QuestionType::from($question['type'])->value,
                 'points' => $question['points'],
-                'sort_order' => $question['sort_order'] ?? 1,
+                'sort_order' => $index + 1,
                 'correct_answer' => $question['correct_answer'],
             ]);
             if ($question['type'] === QuestionType::MULTIPLE_SELECT->value || $question['type'] === QuestionType::SINGLE_CHOICE->value) {
@@ -74,7 +74,7 @@ class CreateLessonService implements CreateLessonServiceInterface
 
     private function createQuestionOptions(array $options, int $questionId): void
     {
-        foreach ($options['options'] as $option) {
+        foreach ($options as $option) {
             $this->questionOptionRepository->create([
                 'question_id' => $questionId,
                 'option' => $option['text'],
