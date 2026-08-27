@@ -12,7 +12,7 @@ class UpdateCourseUseCase implements UpdateCourseUseCaseInterface
 
     public function __construct(
         private CourseRepositoryInterface $courseRepository
-    ){}
+    ) {}
 
     public function execute(Course $course, CourseDto $dto): Course
     {

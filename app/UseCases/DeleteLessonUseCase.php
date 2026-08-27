@@ -15,7 +15,7 @@ class DeleteLessonUseCase implements DeleteLessonUseCaseInterface
 
     public function execute(Lesson $lesson): void
     {
-        DB::transaction(function () use ($lesson){
+        DB::transaction(function () use ($lesson) {
             $this->lessonRepository->delete($lesson);
 
             $lessons = $this->lessonRepository->getByCourseId($lesson->course_id);

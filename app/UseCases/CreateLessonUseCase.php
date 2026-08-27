@@ -9,18 +9,15 @@ use App\Contracts\Repositories\CourseRepositoryInterface;
 use App\Dtos\LessonDto;
 use App\Models\Lesson;
 use Illuminate\Support\Str;
+
 class CreateLessonUseCase implements CreateLessonUseCaseInterface
 {
-    private LessonRepositoryInterface $lessonRepository;
-    private StorageRepositoryInterface $storageRepository;
-    private CourseRepositoryInterface $courseRepository;
-    
-    public function __construct(LessonRepositoryInterface $lessonRepository, StorageRepositoryInterface $storageRepository, CourseRepositoryInterface $courseRepository)
-    {
-        $this->lessonRepository = $lessonRepository;
-        $this->storageRepository = $storageRepository;
-        $this->courseRepository = $courseRepository;
-    }
+
+    public function __construct(
+        private LessonRepositoryInterface $lessonRepository,
+        private StorageRepositoryInterface $storageRepository,
+        private CourseRepositoryInterface $courseRepository
+    ) {}
 
     public function execute(LessonDto $lessonDto): Lesson
     {

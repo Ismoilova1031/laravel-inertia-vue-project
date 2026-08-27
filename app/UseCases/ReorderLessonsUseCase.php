@@ -10,8 +10,7 @@ class ReorderLessonsUseCase implements ReorderLessonsUseCaseInterface
 {
     public function __construct(
         private LessonRepositoryInterface $lessonRepository,
-    ) {
-    }
+    ) {}
 
     public function execute(array $lessons): void
     {

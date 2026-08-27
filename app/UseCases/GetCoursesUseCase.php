@@ -8,12 +8,9 @@ use Illuminate\Support\Collection;
 
 class GetCoursesUseCase implements GetCoursesUseCaseInterface
 {
-    private CourseRepositoryInterface $courseRepository;
-
-    public function __construct(CourseRepositoryInterface $courseRepository)
-    {
-        $this->courseRepository = $courseRepository;
-    }
+    public function __construct(
+        private CourseRepositoryInterface $courseRepository
+    ) {}
 
     public function execute(): Collection
     {
