@@ -61,7 +61,7 @@ class LessonController extends Controller
             ) : null
         );
         $lesson = $this->createLessonUseCase->execute($dto);
-        return redirect()->route('courses.show', ['course' => $lesson->course_id]);
+        return to_route('courses.show', ['course' => $lesson->course_id]);
     }
 
     public function reorder(
@@ -78,7 +78,7 @@ class LessonController extends Controller
     {
         $this->deleteLessonUseCase->execute($lesson);
 
-        return redirect()->route('courses.show', ['course' => $course]);
+        return to_route('courses.show', ['course' => $course]);
     }
     public function edit(Course $course, Lesson $lesson)
     {
@@ -101,9 +101,9 @@ class LessonController extends Controller
         }
         $validated['course_id'] = $course->id;
         $dto = LessonDto::fromArray($validated);
-        $lesson = $this->updateLessonUseCase->execute($lesson, $dto);
-        return redirect()->route('courses.show', [
-            'course' => $course->id,
+        $this->updateLessonUseCase->execute($lesson, $dto);
+        return to_route('courses.show', [
+            'course' => $course,
         ]);
     }
 }

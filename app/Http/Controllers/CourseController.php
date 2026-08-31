@@ -49,7 +49,7 @@ class CourseController extends Controller
 
         $course = $this->createCourseUseCase->execute($dto);
 
-        return redirect()->route('courses.show', ['course' => $course]);
+        return to_route('courses.show', ['course' => $course]);
     }
 
     public function update(CourseRequest $request, Course $course)
@@ -60,14 +60,14 @@ class CourseController extends Controller
 
         $course = $this->updateCourseUseCase->execute($course, $dto);
 
-        return redirect()->route('courses.show', ['course' => $course]);
+        return to_route('courses.show', ['course' => $course]);
     }
 
     public function destroy(Course $course)
     {
         $this->deleteCourseUseCase->execute($course);
 
-        return redirect()->route('courses.index');
+        return to_route('courses.index');
     }
 
     public function index()
