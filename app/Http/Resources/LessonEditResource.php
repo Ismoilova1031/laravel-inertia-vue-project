@@ -28,6 +28,7 @@ class LessonEditResource extends JsonResource
             'video_url' => $this->video_url
                 ? Storage::url($this->video_url)
                 : null,
+            'lesson_content' => $this->lesson_content,
             'sort_order' => $this->sort_order,
             'task' => $this->when(
                 $this->lesson_type === LessonType::TASK,
