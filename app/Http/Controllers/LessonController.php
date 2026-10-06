@@ -53,7 +53,7 @@ class LessonController extends Controller
             sort_order: $request->sort_order,
             course_id: $course->id,
             video: $request->file('video'),
-            tasks: $request->task ? new TaskDto(
+            tasks: $request->task && $request->task['task_type'] ? new TaskDto(
                 type: TaskType::fromValue($request->task['task_type']),
                 deadline: $request->task['deadline'],
                 file_extensions: $request->task['file_extensions'] ?? null,

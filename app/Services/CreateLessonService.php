@@ -55,12 +55,12 @@ class CreateLessonService implements CreateLessonServiceInterface
             $createdQuestion = $this->questionRepository->create([
                 'task_id' => $taskId,
                 'question' => $question['question'],
-                'question_type' => QuestionType::from($question['type'])->value,
+                'question_type' => QuestionType::from($question['question_type'])->value,
                 'points' => $question['points'],
                 'sort_order' => $index + 1,
                 'correct_answer' => $question['correct_answer'],
             ]);
-            if ($question['type'] === QuestionType::MULTIPLE_SELECT->value || $question['type'] === QuestionType::SINGLE_CHOICE->value) {
+            if ($question['question_type'] === QuestionType::MULTIPLE_SELECT->value || $question['question_type'] === QuestionType::SINGLE_CHOICE->value) {
                 $this->createQuestionOptions($question['options'], $createdQuestion->id);
             }
         }

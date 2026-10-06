@@ -21,7 +21,7 @@
                     </v-list-item>
                 </template>
 
-                <v-list-item link title="All Courses" class="ml-0">
+                <v-list-item link title="All Courses" class="ml-0" :component="Link" :href="CourseController.index().url">
                     <template #prepend>
                         <v-icon size="small">mdi-format-list-bulleted</v-icon>
                     </template>
