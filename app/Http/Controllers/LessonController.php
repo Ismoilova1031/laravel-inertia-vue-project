@@ -100,7 +100,21 @@ class LessonController extends Controller
             return back()->withErrors($request->errors());
         }
         $validated['course_id'] = $course->id;
-        $dto = LessonDto::fromArray($validated);
+        $dto = new LessonDto(
+                title: $request->title,
+                description: $request->description,
+                lesson_content: $request->lesson_content,
+                lesson_type: $request->lesson_type,
+                sort_order: $request->sort_order,
+                course_id: $course->id,
+                video: $request->file('video'),
+                tasks: $request->task && $request->task['task_type'] ? new TaskDto(
+                    type: TaskType::fromValue($request->task['task_type']),
+                    deadline: $request->task['deadline'],
+                    file_extensions: $request->task['file_extensions'] ?? null,
+                    questions: $request->task['questions'] ?? null
+                ) : null
+            );
         $this->updateLessonUseCase->execute($lesson, $dto);
         return to_route('courses.show', [
             'course' => $course,

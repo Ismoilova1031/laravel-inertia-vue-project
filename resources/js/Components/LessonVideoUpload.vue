@@ -67,7 +67,7 @@ const props = defineProps<{
 }>();
 const emit = defineEmits<{
     'update:modelValue': [file: File | undefined];
-    
+    'update:videoUrl': [url: string | null];
 }>();
 
 const video = ref<File | undefined>(props.modelValue ?? undefined);
@@ -90,6 +90,10 @@ function handleVideo(file: File | File[] | undefined) {
     }
 
     emit('update:modelValue', video.value);
+
+    if (video.value) {
+        emit('update:videoUrl', null);
+    }
 }
 
 function openFilePicker() {
@@ -116,6 +120,7 @@ function deleteVideo() {
     video.value = undefined;
 
     emit('update:modelValue', undefined);
+    emit('update:videoUrl', null);
 }
 
 onBeforeUnmount(() => {

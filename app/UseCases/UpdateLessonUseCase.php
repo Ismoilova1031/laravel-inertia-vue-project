@@ -9,6 +9,7 @@ use App\Contracts\UseCases\UpdateLessonUseCaseInterface;
 use App\Contracts\Repositories\TaskRepositoryInterface;
 use App\Contracts\Repositories\StorageRepositoryInterface;
 use App\Contracts\Repositories\CourseRepositoryInterface;
+use App\Contracts\Services\UpdateLessonServiceInterface;
 use App\Enums\LessonType;
 use Illuminate\Support\Str;
 
@@ -18,7 +19,8 @@ class UpdateLessonUseCase implements UpdateLessonUseCaseInterface
         private LessonRepositoryInterface $lessonRepository,
         private TaskRepositoryInterface $taskRepository,
         private StorageRepositoryInterface $storageRepository,
-        private CourseRepositoryInterface $courseRepository
+        private CourseRepositoryInterface $courseRepository,
+        private UpdateLessonServiceInterface $service
     ) {}
 
     public function execute(Lesson $lesson, LessonDto $dto): Lesson
@@ -47,9 +49,9 @@ class UpdateLessonUseCase implements UpdateLessonUseCaseInterface
                     $dto->video
                 );
             }
-            return $this->lessonRepository->update($lesson, $dto->toArray($videoPath));
+            return $this->service->update($lesson, $dto, $videoPath);
         } else {
-            return $this->lessonRepository->update($lesson, $dto->toArray($lesson->video_url));
+            return $this->service->update($lesson, $dto, $lesson->video_url);
         }
     }
 
@@ -59,6 +61,9 @@ class UpdateLessonUseCase implements UpdateLessonUseCaseInterface
 
             $this->storageRepository->deleteFile($lesson->video_url);
             $dto->video = null;
+            $this->lessonRepository->update($lesson, [
+                'video_url' => null,
+            ]);
         } else if ($lesson->lesson_type === LessonType::TASK) {
             $this->taskRepository->deleteByLessonId($lesson->id);
         } else {

@@ -22,7 +22,7 @@
                 <RichTextEditor v-if="type.value === LessonType.TEXT" v-model="form.lesson_content"
                     :error-messages="form.errors.lesson_content" />
 
-                <LessonVideoUpload v-else-if="type.value === LessonType.VIDEO" v-model="form.video"
+                <LessonVideoUpload v-else-if="type.value === LessonType.VIDEO" v-model="form.video" @update:video-url="videoUrl = $event"
                     :error-messages="form.errors.video" :video-url="videoUrl" />
 
                 <TaskForm v-else-if="type.value === LessonType.TASK" v-model="form.task" :errors="taskErrors" />
@@ -46,6 +46,7 @@ import RichTextEditor from "./RichTextEditor.vue";
 import LessonVideoUpload from "./LessonVideoUpload.vue";
 import TaskForm from "./TaskForm.vue";
 import { computed } from "vue";
+import { ref } from "vue";
 
 const props = defineProps<{
     form: LessonFormInstance;
@@ -61,7 +62,7 @@ const props = defineProps<{
 
     submit: () => void;
 }>();
-console.log(props.form);
+const videoUrl = ref<string | null>(props.videoUrl ?? null);
 const taskErrors = computed(() => {
     const result: Record<string, string> = {};
     for (const key in props.form.errors) {

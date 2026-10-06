@@ -11,4 +11,9 @@ class QuestionRepository implements QuestionRepositoryInterface
     {
         return Question::create($data);
     }
+
+    public function deleteByTaskId(int $taskId): void
+    {
+        Question::where('task_id', $taskId)->delete();
+    }
 }

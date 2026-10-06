@@ -11,4 +11,9 @@ class QuestionOptionRepository implements QuestionOptionRepositoryInterface
     {
         QuestionOption::create($data);
     }
+
+    public function deleteByQuestionId(int $questionId): void
+    {
+        QuestionOption::where('question_id', $questionId)->delete();
+    }
 }
