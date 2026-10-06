@@ -36,8 +36,8 @@
         label="Allowed file extensions"
         :items="fileExtensions"
         multiple
-        v-model="task.file_extensions"
-        :error-messages="errors?.file_extensions"
+        v-model="task.allowed_file_extensions"
+        :error-messages="errors?.allowed_file_extensions"
       />
 
       <QuestionList

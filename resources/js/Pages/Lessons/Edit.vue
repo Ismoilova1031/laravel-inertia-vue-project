@@ -48,7 +48,7 @@ const { form, submit } = useLessonForm(props.course.id, {
         : {
             task_type: null,
             deadline: null,
-            file_extensions: null,
+            allowed_file_extensions: null,
             questions: null,
         },
 }, props.lesson.id, props.lesson.video_src);

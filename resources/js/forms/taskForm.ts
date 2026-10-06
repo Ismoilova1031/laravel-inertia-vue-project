@@ -14,7 +14,7 @@ export const taskFormSchema = z
             .string()
             .nullable(),
 
-        file_extensions: z
+        allowed_file_extensions: z
             .array(z.string())
             .nullable(),
 
@@ -26,11 +26,11 @@ export const taskFormSchema = z
 
         if (
             data.task_type === TaskTypes.FILE_UPLOAD &&
-            (!data.file_extensions || data.file_extensions.length === 0)
+            (!data.allowed_file_extensions || data.allowed_file_extensions.length === 0)
         ) {
             ctx.addIssue({
                 code: "custom",
-                path: ["file_extensions"],
+                path: ["allowed_file_extensions"],
                 message: "File extensions are required for file upload tasks",
             });
         }

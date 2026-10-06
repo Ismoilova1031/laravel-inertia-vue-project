@@ -99,7 +99,7 @@ export function useLessonForm(
         task: initialData?.task ?? {
             task_type: null,
             deadline: null,
-            file_extensions: null,
+            allowed_file_extensions: null,
             questions: null,
         },
     });
