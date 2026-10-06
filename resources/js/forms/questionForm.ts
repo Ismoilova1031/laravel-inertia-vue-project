@@ -14,7 +14,7 @@ export const questionFormSchema = z
         points: z
             .number()
             .min(0, { message: "Points must be a non-negative number" }),
-        options: z.array(optionFormSchema).nullable(),
+        options: z.array(optionFormSchema).optional(),
         correct_answer: z.string().nullable(),
     })
     .superRefine((data, ctx) => {
