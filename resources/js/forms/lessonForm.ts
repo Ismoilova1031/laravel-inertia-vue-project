@@ -40,7 +40,7 @@ export const lessonFormSchema = z
 
         video: z
             .instanceof(File)
-            .nullable()
+            .optional()
             .refine((file) => !file || file.size <= 100 * 1024 * 1024, {
                 message: "Video must be less than 100MB",
             }),
@@ -93,7 +93,7 @@ export function useLessonForm(
         description: initialData?.description ?? "",
         sort_order: initialData?.sort_order ?? 0,
         lesson_type: initialData?.lesson_type ?? LessonType.VIDEO,
-        video: initialData?.video ?? null,
+        video: initialData?.video ?? undefined,
         lesson_content: initialData?.lesson_content ?? "",
 
         task: initialData?.task ?? {

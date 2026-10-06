@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Enums\LessonType;
 use App\Http\Resources\TaskResource;
+use Illuminate\Support\Facades\Storage;
 
 class LessonEditResource extends JsonResource
 {
@@ -24,7 +25,9 @@ class LessonEditResource extends JsonResource
                 'value' => $this->lesson_type->value,
                 'label' => $this->lesson_type->label(),
             ],
-            'video_url' => $this->video_url,
+            'video_url' => $this->video_url
+                ? Storage::url($this->video_url)
+                : null,
             'sort_order' => $this->sort_order,
             'task' => $this->when(
                 $this->lesson_type === LessonType::TASK,

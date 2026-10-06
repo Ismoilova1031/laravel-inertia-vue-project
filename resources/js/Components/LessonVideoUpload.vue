@@ -61,16 +61,16 @@
 import { computed, onBeforeUnmount, ref } from 'vue';
 
 const props = defineProps<{
-    modelValue: File | null;
+    modelValue: File | undefined;
     errorMessages?: string | string[];
     videoUrl?: string | null;
 }>();
-
 const emit = defineEmits<{
-    'update:modelValue': [file: File | null];
+    'update:modelValue': [file: File | undefined];
+    
 }>();
 
-const video = ref<File | null>(props.modelValue);
+const video = ref<File | undefined>(props.modelValue ?? undefined);
 
 const fileInput = ref<HTMLInputElement | null>(null);
 
@@ -82,9 +82,9 @@ const videoUrl = computed(() => {
     return URL.createObjectURL(video.value);
 });
 
-function handleVideo(file: File | File[] | null) {
+function handleVideo(file: File | File[] | undefined) {
     if (Array.isArray(file)) {
-        video.value = file[0] ?? null;
+        video.value = file[0] ?? undefined;
     } else {
         video.value = file;
     }
@@ -99,7 +99,7 @@ function openFilePicker() {
 function handleFileChange(event: Event) {
     const target = event.target as HTMLInputElement;
 
-    const file = target.files?.[0] ?? null;
+    const file = target.files?.[0] ?? undefined;
 
     if (!file) {
         return;
@@ -113,9 +113,9 @@ function handleFileChange(event: Event) {
 }
 
 function deleteVideo() {
-    video.value = null;
+    video.value = undefined;
 
-    emit('update:modelValue', null);
+    emit('update:modelValue', undefined);
 }
 
 onBeforeUnmount(() => {

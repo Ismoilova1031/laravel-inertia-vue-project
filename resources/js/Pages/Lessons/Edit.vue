@@ -10,7 +10,7 @@
             </p>
 
             <LessonForm :form="form" :types="types" submit-label="Update Lesson" :submit="submit"
-                :videoUrl="lesson.video_src" />
+                :videoUrl="lesson.video_url" />
         </v-container>
     </v-app>
 </template>
@@ -30,7 +30,7 @@ const { form, submit } = useLessonForm(props.course.id, {
     description: props.lesson.description,
     sort_order: props.lesson.sort_order,
     lesson_type: props.lesson.lesson_type.value,
-    video: null,
+    video: undefined,
     lesson_content: props.lesson.lesson_content ?? "",
     task: props.lesson.task
         ? {

@@ -37,8 +37,8 @@ class UpdateLessonUseCase implements UpdateLessonUseCaseInterface
 
             if ($dto->video) {
                 $videoPath = 'courses/' .
-                    Str::slug($course->category->label()) . '/' .
-                    Str::slug($course->title) . '/' .
+                    $course->category->value . '/' .
+                    $course->id . '/' .
                     Str::uuid() . '.' .
                     $dto->video->getClientOriginalExtension();
 
