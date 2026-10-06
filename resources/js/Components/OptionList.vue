@@ -8,8 +8,7 @@
         <v-radio-group v-if="question_type === 1" v-model="correctOptionId" hide-details>
             <div v-for="(option, index) in options" :key="option.id" class="d-flex align-center ga-2 mb-3">
                 <v-radio :value="option.id" class="flex-grow-0"/>
-
-                <v-text-field v-model="option.text" label="Option" placeholder="Enter option..." variant="outlined"
+                <v-text-field v-model="option.option" label="Option" placeholder="Enter option..." variant="outlined"
                     hide-details="auto" :error-messages="errors?.[`${index}.text`]" />
 
                 <v-btn icon="mdi-delete" variant="text" color="error" size="small" @click="removeOption(option.id)" />
@@ -21,7 +20,7 @@
             <div v-for="(option, index) in options" :key="option.id" class="d-flex align-center ga-2 mb-3">
                 <v-checkbox v-model="option.is_correct" hide-details />
 
-                <v-text-field v-model="option.text" label="Option" placeholder="Enter option..." variant="outlined" hide-details="auto" :error-messages="errors?.[`${index}.text`]" />
+                <v-text-field v-model="option.option" label="Option" placeholder="Enter option..." variant="outlined" hide-details="auto" :error-messages="errors?.[`${index}.text`]" />
 
                 <v-btn icon="mdi-delete" variant="text" color="error" size="small" @click="removeOption(option.id)" />
 
@@ -46,6 +45,8 @@ const options = defineModel<OptionFormData[]>({
     required: true,
 });
 
+console.log(options.value);
+
 const correctOptionId = computed({
     get() {
         return options.value.find(option => option.is_correct)?.id ?? null;
@@ -63,7 +64,7 @@ function addOption() {
         ...options.value,
         {
             id: Date.now(),
-            text: "",
+            option: "",
             is_correct: false,
         },
     ];

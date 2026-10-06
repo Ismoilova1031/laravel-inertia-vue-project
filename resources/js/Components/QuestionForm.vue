@@ -63,7 +63,6 @@ const options = computed({
         question.value.options = value;
     }
 });
-
 const localErrors = ref<Record<string, string>>({});
 
 const mergedErrors = computed(() => ({
