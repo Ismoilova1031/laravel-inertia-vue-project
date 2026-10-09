@@ -12,7 +12,7 @@ final class Username
     {
         $value = mb_strtolower(trim($value));
 
-        if(!preg_match('/^[a-z0-9_]{3,20}$/', $value)){
+        if(!preg_match('/^[a-z0-9_]{3,30}$/', $value)){
             throw new InvalidArgumentException(
                 'Username 3-30 belgi bo\'lishi va faqat a-z, 0-9, _ dan iborat bo\'lishi kerak.'
             );

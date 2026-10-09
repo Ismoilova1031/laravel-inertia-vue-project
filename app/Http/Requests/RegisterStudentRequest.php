@@ -23,6 +23,23 @@ final class RegisterStudentRequest extends FormRequest
         ];
     }
 
+    public function messages(): array
+    {
+        return [
+            'name.required'      => 'Ism kiritilishi shart.',
+            'surname.required'   => 'Familiya kiritilishi shart.',
+            'email.required'     => 'Email kiritilishi shart.',
+            'email.email'        => 'Email manzil noto\'g\'ri.',
+            'email.unique'       => 'Bu email band.',
+            'username.required'  => 'Username kiritilishi shart.',
+            'username.regex'     => 'Username 3-30 belgi bo\'lib, faqat a-z, 0-9 va _ dan iborat bo\'lishi kerak.',
+            'username.unique'    => 'Bu username band.',
+            'password.required'  => 'Parol kiritilishi shart.',
+            'password.min'       => 'Parol kamida 8 belgidan iborat bo\'lishi kerak.',
+            'password.confirmed' => 'Parollar mos kelmadi.',
+        ];
+    }
+
     public function toCommand(): RegisterStudentCommand
     {
         $data = $this->validated();
