@@ -3,6 +3,7 @@
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LessonController;
+use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [DashboardController::class, 'index'])
@@ -31,3 +32,5 @@ Route::resource('courses.lessons', LessonController::class)
         'update',
         'destroy',
     ]);
+
+Route::post('/students', [StudentController::class, 'store'])->name('students.store');
