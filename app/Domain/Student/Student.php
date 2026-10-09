@@ -21,7 +21,7 @@ final class Student
         return new self(null, $name, $email, $username, $password);
     }
     
-    public static function reconostitute(
+    public static function reconstitute(
         StudentId $id,
         PersonName $name,
         EmailAddress $email,
