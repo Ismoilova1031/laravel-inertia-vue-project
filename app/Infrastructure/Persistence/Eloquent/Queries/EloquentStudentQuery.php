@@ -18,6 +18,14 @@ final class EloquentStudentQuery implements StudentQueryInterface
                 (int) $m->id, $m->name, $m->surname, $m->email, $m->username,
             ))
             ->all();
+    }
 
+    public function find(int $id): ?StudentListItem
+    {
+        $model = StudentModel::query()->find($id, ['id', 'name', 'surname', 'email', 'username']);
+
+        return $model ?
+            new StudentListItem((int) $model->id, $model->name, $model->surname, $model->email, $model->username) :
+            null;
     }
 }

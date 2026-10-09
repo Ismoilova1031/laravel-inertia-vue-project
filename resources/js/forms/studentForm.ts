@@ -1,7 +1,7 @@
 
 import z from "zod";
 import { useForm } from "@inertiajs/vue3";
-import { store } from '../actions/App/Http/Controllers/StudentController';
+import { store, update } from '../actions/App/Http/Controllers/StudentController';
 
 export const studentFormSchema = z
     .object({
@@ -46,31 +46,33 @@ export const studentFormSchema = z
 
         password: z
             .string()
-            .min(8, {
-                message: "Parol kamida 8 ta belgidan iborat bo‘lishi kerak.",
-            })
+            .refine(
+                (value) => value === "" || value.length >= 8,
+                { message: "Parol kamida 8 ta belgidan iborat bo‘lishi kerak." },
+            )
             .max(255, {
                 message: "Parol 255 ta belgidan oshmasligi kerak.",
             }),
 
-        password_confirmation: z
-            .string()
-            .min(8, {
-                message: "Parolni tasdiqlash maydoni to‘ldirilishi shart.",
-            })
-            .max(255, {
-                message: "Tasdiqlash paroli 255 ta belgidan oshmasligi kerak.",
-            }),
+        password_confirmation: z.string(),
     })
-    .refine((data) => data.password === data.password_confirmation, {
-        message: "Parollar bir-biriga mos kelmaydi.",
-        path: ["password_confirmation"],
-    });
+    .refine(
+        (data) =>
+            data.password === "" ||
+            data.password === data.password_confirmation,
+        {
+            message: "Parollar bir-biriga mos kelmaydi.",
+            path: ["password_confirmation"],
+        },
+    );
 
 export type StudentForm = z.infer<typeof studentFormSchema>;
 type StudentFormData = z.input<typeof studentFormSchema>;
 
-export function useStudentForm(initialData?: StudentFormData) {
+export function useStudentForm(
+    initialData?: StudentFormData,
+    studentId?: number,
+) {
     const form = useForm<StudentFormData>({
         name: initialData?.name ?? "",
         surname: initialData?.surname ?? "",
@@ -110,6 +112,11 @@ export function useStudentForm(initialData?: StudentFormData) {
         const isValid = validate();
 
         if (!isValid) {
+            return;
+        }
+
+        if (studentId !== undefined) {
+            form.put(update(studentId).url);
             return;
         }
 
