@@ -4,16 +4,16 @@ namespace App\Enums;
 
 enum CourseStatus: int
 {
-    case Draft = 0;
-    case Published = 1;
-    case Archived = 2;
+    case DRAFT = 0;
+    case PUBLISHED = 1;
+    case ARCHIVED = 2;
 
     public function label(): string
     {
         return match ($this) {
-            self::Draft => 'Draft',
-            self::Published => 'Published',
-            self::Archived => 'Archived',
+            self::DRAFT => 'Draft',
+            self::PUBLISHED => 'Published',
+            self::ARCHIVED => 'Archived',
         };
     }
 

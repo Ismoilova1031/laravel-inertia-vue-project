@@ -19,3 +19,4 @@ export interface CourseDetail extends CourseBase {
     lessons: Lesson[];
     students: Student[];
 }
+

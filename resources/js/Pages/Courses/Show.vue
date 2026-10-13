@@ -49,7 +49,7 @@
                 <LessonsList :lessons="course.lessons" :course="course" />
             </v-tabs-window-item>
             <v-tabs-window-item value="Students">
-                <StudentList :students="course.students" />
+                <StudentList :students="course.students" :available-students="availableStudents" :course-id="course.id" :is-published="course.status.value === 1" />
             </v-tabs-window-item>
             <v-tabs-window-item value="Settings">
                 <v-card max-width="900" class="mx-auto" rounded="lg" elevation="2">
@@ -87,11 +87,13 @@ import LessonsList from "../../components/LessonsList.vue";
 import StudentList from "../../components/StudentList.vue";
 import { useCourseForm } from "../../forms/courseForm.js";
 import CourseForm from "../../components/CourseForm.vue";
+import type { Student } from "../../types/student.ts";
 
 const { course } = defineProps<{
     course: CourseDetail;
     categories: SelectOption[];
     statuses: SelectOption[];
+    availableStudents: Student[];
 }>();
 
 const lessons = course.lessons.length;

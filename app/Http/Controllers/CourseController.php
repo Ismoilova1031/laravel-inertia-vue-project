@@ -12,6 +12,8 @@ use App\Enums\CourseStatus;
 use App\Http\Requests\CourseRequest;
 use App\Http\Resources\CourseListResource;
 use App\Http\Resources\CourseShowResource;
+use App\Http\Resources\StudentListResource;
+use App\Application\Student\GetStudents\GetAvailableStudentsUseCase;
 use App\Models\Course;
 use Inertia\Inertia;
 
@@ -21,7 +23,8 @@ class CourseController extends Controller
         private CreateCourseUseCaseInterface $createCourseUseCase,
         private UpdateCourseUseCaseInterface $updateCourseUseCase,
         private DeleteCourseUseCaseInterface $deleteCourseUseCase,
-        private GetCoursesUseCaseInterface $getCoursesUseCase
+        private GetCoursesUseCaseInterface $getCoursesUseCase,
+        private GetAvailableStudentsUseCase $getAvailableStudents,
     ) {}
 
     public function show(Course $course)
@@ -30,6 +33,9 @@ class CourseController extends Controller
             'course' => CourseShowResource::make($course)->resolve(),
             'categories' => CourseCategory::labels(),
             'statuses' => CourseStatus::labels(),
+            'availableStudents' => StudentListResource::collection(
+                $this->getAvailableStudents->execute($course->id)
+            )->resolve(),
         ]);
     }
 

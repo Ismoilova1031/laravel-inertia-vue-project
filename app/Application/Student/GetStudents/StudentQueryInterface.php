@@ -12,4 +12,7 @@ interface StudentQueryInterface
     public function all(): array;
 
     public function find(int $id): ?StudentListItem;
+
+    /** @return list<StudentListItem> */
+    public function availableForCourse(int $courseId): array;
 }

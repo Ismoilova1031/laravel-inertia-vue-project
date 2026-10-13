@@ -5,6 +5,7 @@ namespace App\Infrastructure\Persistence\Eloquent\Queries;
 use App\Application\Student\GetStudents\StudentListItem;
 use App\Application\Student\GetStudents\StudentQueryInterface;
 use App\Infrastructure\Persistence\Eloquent\Models\StudentModel;
+use App\Domain\Enrollment\EnrollmentStatus;
 
 final class EloquentStudentQuery implements StudentQueryInterface
 {
@@ -27,5 +28,22 @@ final class EloquentStudentQuery implements StudentQueryInterface
         return $model ?
             new StudentListItem((int) $model->id, $model->name, $model->surname, $model->email, $model->username) :
             null;
+    }
+
+    public function availableForCourse(int $courseId): array
+    {
+        return StudentModel::query()
+            ->whereNotIn('id', fn ($q) => $q
+                ->select('student_id')
+                ->from('course_student')
+                ->where('course_id', $courseId)
+                ->where('status', EnrollmentStatus::ACTIVE->value))
+            ->orderBy('surname')
+            ->orderBy('name')
+            ->get(['id', 'name', 'surname', 'email', 'username'])
+            ->map(fn (StudentModel $m) => new StudentListItem(
+                (int) $m->id, $m->name, $m->surname, $m->email, $m->username,
+            ))
+            ->all();
     }
 }
