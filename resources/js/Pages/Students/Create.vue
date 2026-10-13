@@ -23,5 +23,19 @@ import StudentForm from '../../components/StudentForm.vue';
 import { index } from '../../actions/App/Http/Controllers/StudentController.js';
 import { useStudentForm } from '../../forms/studentForm';
 
-const { form, submit } = useStudentForm();
+const props = defineProps<{
+    course_id?: number;
+}>();
+
+const { form, submit } = useStudentForm(
+    props.course_id,
+    {
+        name: '',
+        surname: '',
+        email: '',
+        username: '',
+        password: '',
+        password_confirmation: '',
+    },
+);
 </script>

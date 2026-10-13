@@ -1,7 +1,7 @@
 
 import z from "zod";
 import { useForm } from "@inertiajs/vue3";
-import { store, update } from '../actions/App/Http/Controllers/StudentController';
+import { store, update, storeForCourse } from '../actions/App/Http/Controllers/StudentController';
 
 export const studentFormSchema = z
     .object({
@@ -70,6 +70,7 @@ export type StudentForm = z.infer<typeof studentFormSchema>;
 type StudentFormData = z.input<typeof studentFormSchema>;
 
 export function useStudentForm(
+    course_id?: number,
     initialData?: StudentFormData,
     studentId?: number,
 ) {
@@ -117,6 +118,11 @@ export function useStudentForm(
 
         if (studentId !== undefined) {
             form.put(update(studentId).url);
+            return;
+        }
+
+        if (course_id !== undefined) {
+            form.post(storeForCourse(course_id).url);
             return;
         }
 

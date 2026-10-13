@@ -45,8 +45,6 @@ const options = defineModel<OptionFormData[]>({
     required: true,
 });
 
-console.log(options.value);
-
 const correctOptionId = computed({
     get() {
         return options.value.find(option => option.is_correct)?.id ?? null;

@@ -11,15 +11,18 @@ use App\Domain\Student\Student;
 use App\Domain\Student\StudentId;
 use App\Domain\Student\StudentRepositoryInterface;
 use App\Domain\Student\Username;
+use App\Application\Enrollment\EnrollStudent\EnrollStudentUseCase;
+use App\Application\Enrollment\EnrollStudent\EnrollStudentCommand;
 
 final class RegisterStudentUseCase
 {
     public function __construct(
         private readonly StudentRepositoryInterface $students,
-        private readonly PasswordHasherInterface $hasher
+        private readonly PasswordHasherInterface $hasher,
+        private readonly EnrollStudentUseCase $enrollStudent,
     ){}
 
-    public function execute(RegisterStudentCommand $command): StudentId
+    public function execute(RegisterStudentCommand $command, ?int $courseId = null): StudentId
     {
         $email = new EmailAddress($command->email);
         $username = new Username($command->username);
@@ -39,6 +42,10 @@ final class RegisterStudentUseCase
             $this->hasher->hash($command->password)
         );
 
-        return $this->students->save($student)->id();
+        $model = $this->students->save($student);
+        if($courseId !== null){
+            $this->enrollStudent->execute(new EnrollStudentCommand($courseId, $model->id()->value()));
+        }
+        return $model->id();
     }
 }

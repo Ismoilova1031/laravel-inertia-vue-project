@@ -58,10 +58,11 @@ import type { TaskFormData } from "../forms/taskForm";
 const task = defineModel<TaskFormData>({
   required: true,
 });
-console.log("task:", task.value);
+
 const props = defineProps<{
   errors?: Record<string, string>;
 }>();
+
 const taskTypes = Object.entries(TaskTypes)
   .filter(([key]) => isNaN(Number(key)))
   .map(([key, value]) => ({

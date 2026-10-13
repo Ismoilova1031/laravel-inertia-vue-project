@@ -17,6 +17,8 @@ use App\Application\Student\UpdateStudent\UpdateStudentUseCase;
 use App\Application\Student\DeleteStudent\DeleteStudentUseCase;
 use App\Domain\Student\Exception\StudentNotFoundException;
 use App\Http\Requests\UpdateStudentRequest;
+use App\Domain\Course\Exception\CourseNotFoundException;
+use App\Domain\Course\Exception\CourseNotPublishedException;
 
 enum StudentPages: string
 {
@@ -57,6 +59,32 @@ final class StudentController extends Controller
         }
 
         return redirect()->route('students.index');
+    }
+
+    public function createForCourse(int $course): Response
+    {
+        return Inertia::render(StudentPages::CREATE, [
+            'course_id' => $course,
+        ]);
+    }
+
+    public function storeForCourse(RegisterStudentRequest $request, int $course): RedirectResponse
+    {
+        try {
+            $this->registerStudent->execute($request->toCommand(), $course);
+        } catch (CourseNotFoundException) {
+            abort(404);
+        } catch (CourseNotPublishedException) {
+            throw ValidationException::withMessages([
+                'username' => 'Faqat e\'lon qilingan (Published) kursga student qo\'shish mumkin.',
+            ]);
+        } catch (UsernameAlreadyTakenException) {
+            throw ValidationException::withMessages(['username' => 'Bu username band.']);
+        } catch (EmailAlreadyTakenException) {
+            throw ValidationException::withMessages(['email' => 'Bu email band.']);
+        }
+
+        return redirect()->route('courses.show', $course);
     }
 
     public function edit(int $student): Response

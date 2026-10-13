@@ -43,3 +43,8 @@ Route::put('/students/{student}', [StudentController::class, 'update'])->name('s
 Route::delete('/students/{student}', [StudentController::class, 'destroy'])->name('students.destroy');
 Route::post('/courses/{course}/enrollments', [EnrollmentController::class, 'store'])->name('courses.enrollments.store');
 Route::delete('/courses/{course}/enrollments/{student}', [EnrollmentController::class, 'destroy'])->name('courses.enrollments.destroy');
+
+Route::get('/courses/{course}/students/create', [StudentController::class, 'createForCourse'])
+    ->name('courses.students.create');
+Route::post('/courses/{course}/students', [StudentController::class, 'storeForCourse'])
+    ->name('courses.students.store');
