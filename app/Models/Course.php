@@ -45,7 +45,7 @@ class Course extends Model
             Student::class,
             'course_student'
         )->withPivot([
-            'is_liked',
+            'status',
         ]);
     }
 

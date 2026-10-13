@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('course_id')->constrained()->cascadeOnDelete();
             $table->foreignId('student_id')->constrained()->cascadeOnDelete();
-            $table->boolean('is_liked')->default(false);
+            $table->unsignedTinyInteger('status')->default(1); 
+            $table->timestamp('enrolled_at');
+            $table->timestamp('deactivated_at')->nullable();
             $table->timestamps();
 
             $table->unique(['course_id', 'student_id']);

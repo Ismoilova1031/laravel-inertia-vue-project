@@ -4,25 +4,29 @@ namespace Database\Factories;
 
 use App\Models\Lesson;
 use Illuminate\Database\Eloquent\Factories\Factory;
-
+use App\Enums\LessonType;
+use App\Models\Task;
 /**
  * @extends Factory<Lesson>
  */
 class LessonFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+
     public function definition(): array
     {
         return [
-            'course_id' => $this->faker->numberBetween(1, 5),
-            'title' => $this->faker->sentence(),
+            'course_id'   => $this->faker->numberBetween(1, 5),
+            'title'       => $this->faker->sentence(),
             'description' => $this->faker->paragraph(),
-            'is_completed' => $this->faker->numberBetween(0, 2),
-            'order' => $this->faker->numberBetween(10000, 100000),
+            'lesson_type' => LessonType::TEXT,         
+            'lesson_content' => $this->faker->paragraphs(3, true),
+            'sort_order'  => $this->faker->numberBetween(1, 1000),
         ];
+    }
+
+    public function task(): static
+    {
+        return $this->state(['lesson_type' => LessonType::TASK, 'lesson_content' => null])
+            ->has(Task::factory(), 'task');
     }
 }

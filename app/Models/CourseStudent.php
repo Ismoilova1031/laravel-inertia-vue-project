@@ -12,7 +12,7 @@ class CourseStudent extends Model
     protected $fillable = [
         'course_id',
         'student_id',
-        'is_liked',
+        'status',
     ];
 
     public function course(): BelongsTo
