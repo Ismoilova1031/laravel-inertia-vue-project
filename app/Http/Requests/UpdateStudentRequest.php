@@ -1,7 +1,7 @@
 <?php
 namespace App\Http\Requests;
 
-use App\Application\Student\UpdateStudent\UpdateStudentCommand;
+use App\Application\UseCase\Student\UpdateStudentCommand;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 

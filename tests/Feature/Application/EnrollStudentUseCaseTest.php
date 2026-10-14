@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Application;
 
-use App\Application\Enrollment\DeactivateEnrollment\DeactivateEnrollmentCommand;
-use App\Application\Enrollment\DeactivateEnrollment\DeactivateEnrollmentUseCase;
-use App\Application\Enrollment\EnrollStudent\EnrollStudentCommand;
-use App\Application\Enrollment\EnrollStudent\EnrollStudentUseCase;
+use App\Application\UseCase\Enrollment\DeactivateEnrollmentCommand;
+use App\Application\UseCase\Enrollment\DeactivateEnrollmentUseCase;
+use App\Application\UseCase\Enrollment\EnrollStudentCommand;
+use App\Application\UseCase\Enrollment\EnrollStudentUseCase;
 use App\Domain\Course\Exception\CourseNotPublishedException;
 use App\Domain\Enrollment\Exception\AlreadyEnrolledException;
 use App\Enums\CourseStatus;
-use App\Infrastructure\Persistence\Eloquent\Models\StudentModel;
+use App\Infrastructure\Eloquent\StudentModel;
 use App\Models\Course;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;

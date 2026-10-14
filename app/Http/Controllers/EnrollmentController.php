@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Application\Enrollment\DeactivateEnrollment\DeactivateEnrollmentCommand;
-use App\Application\Enrollment\DeactivateEnrollment\DeactivateEnrollmentUseCase;
-use App\Application\Enrollment\EnrollStudent\EnrollStudentUseCase;
+use App\Application\UseCase\Enrollment\DeactivateEnrollmentCommand;
+use App\Application\UseCase\Enrollment\DeactivateEnrollmentUseCase;
+use App\Application\UseCase\Enrollment\EnrollStudentUseCase;
 use App\Domain\Course\Exception\CourseNotFoundException;
 use App\Domain\Course\Exception\CourseNotPublishedException;
 use App\Domain\Enrollment\Exception\AlreadyEnrolledException;

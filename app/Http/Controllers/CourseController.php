@@ -13,7 +13,7 @@ use App\Http\Requests\CourseRequest;
 use App\Http\Resources\CourseListResource;
 use App\Http\Resources\CourseShowResource;
 use App\Http\Resources\StudentListResource;
-use App\Application\Student\GetStudents\GetAvailableStudentsUseCase;
+use App\Application\UseCase\Student\GetAvailableStudentsUseCase;
 use App\Models\Course;
 use Inertia\Inertia;
 

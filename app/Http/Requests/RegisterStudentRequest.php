@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Application\Student\RegisterStudent\RegisterStudentCommand;
+use App\Application\UseCase\Student\RegisterStudentCommand;
 use Illuminate\Foundation\Http\FormRequest;
 
 final class RegisterStudentRequest extends FormRequest

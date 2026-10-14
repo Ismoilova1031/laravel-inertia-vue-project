@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Application;
 
-use App\Application\Student\RegisterStudent\RegisterStudentCommand;
-use App\Application\Student\RegisterStudent\RegisterStudentUseCase;
+use App\Application\UseCase\Student\RegisterStudentCommand;
+use App\Application\UseCase\Student\RegisterStudentUseCase;
 use App\Domain\Student\Exception\EmailAlreadyTakenException;
 use App\Domain\Student\Exception\UsernameAlreadyTakenException;
 use Illuminate\Foundation\Testing\RefreshDatabase;

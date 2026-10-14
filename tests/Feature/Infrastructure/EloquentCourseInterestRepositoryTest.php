@@ -9,7 +9,7 @@ use App\Domain\CourseInterest\CourseInterest;
 use App\Domain\CourseInterest\CourseInterestRepositoryInterface;
 use App\Domain\CourseInterest\InterestType;
 use App\Domain\Student\StudentId;
-use App\Infrastructure\Persistence\Eloquent\Models\StudentModel;
+use App\Infrastructure\Eloquent\StudentModel;
 use App\Models\Course;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;

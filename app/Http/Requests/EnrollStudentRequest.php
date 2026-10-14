@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Application\Enrollment\EnrollStudent\EnrollStudentCommand;
+use App\Application\UseCase\Enrollment\EnrollStudentCommand;
 use Illuminate\Foundation\Http\FormRequest;
 
 final class EnrollStudentRequest extends FormRequest

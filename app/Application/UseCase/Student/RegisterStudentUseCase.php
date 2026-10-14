@@ -1,0 +1,51 @@
+<?php
+
+namespace App\Application\UseCase\Student;
+
+use App\Domain\Student\EmailAddress;
+use App\Domain\Student\Exception\EmailAlreadyTakenException;
+use App\Domain\Student\Exception\UsernameAlreadyTakenException;
+use App\Domain\Student\PasswordHasherInterface;
+use App\Domain\Student\PersonName;
+use App\Domain\Student\Student;
+use App\Domain\Student\StudentId;
+use App\Domain\Student\StudentRepositoryInterface;
+use App\Domain\Student\Username;
+use App\Application\UseCase\Enrollment\EnrollStudentUseCase;
+use App\Application\UseCase\Enrollment\EnrollStudentCommand;
+
+final class RegisterStudentUseCase
+{
+    public function __construct(
+        private readonly StudentRepositoryInterface $students,
+        private readonly PasswordHasherInterface $hasher,
+        private readonly EnrollStudentUseCase $enrollStudent,
+    ){}
+
+    public function execute(RegisterStudentCommand $command, ?int $courseId = null): StudentId
+    {
+        $email = new EmailAddress($command->email);
+        $username = new Username($command->username);
+
+        if($this->students->existsByEmail($email)){
+            throw EmailAlreadyTakenException::withEmail($email);
+        }
+
+        if($this->students->existsByUsername($username)){
+            throw UsernameAlreadyTakenException::withUsername($username);
+        }
+
+        $student = Student::register(
+            new PersonName($command->name, $command->surname),
+            $email,
+            $username,
+            $this->hasher->hash($command->password)
+        );
+
+        $model = $this->students->save($student);
+        if($courseId !== null){
+            $this->enrollStudent->execute(new EnrollStudentCommand($courseId, $model->id()->value()));
+        }
+        return $model->id();
+    }
+}

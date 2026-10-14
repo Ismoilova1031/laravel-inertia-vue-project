@@ -9,7 +9,7 @@ use App\Domain\Enrollment\Enrollment;
 use App\Domain\Enrollment\EnrollmentRepositoryInterface;
 use App\Domain\Enrollment\EnrollmentStatus;
 use App\Domain\Student\StudentId;
-use App\Infrastructure\Persistence\Eloquent\Models\StudentModel;
+use App\Infrastructure\Eloquent\StudentModel;
 use App\Models\Course;
 use DateTimeImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
