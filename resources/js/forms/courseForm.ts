@@ -38,9 +38,7 @@ export const courseFormSchema = z.object({
         })
         .max(2)
         .nullable()
-        .refine((val) => val !== null, {
-            message: "Status is required",
-        }),
+        .optional(),
 });
 
 export type CourseForm = z.infer<typeof courseFormSchema>;

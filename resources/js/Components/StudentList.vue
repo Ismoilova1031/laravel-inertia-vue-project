@@ -1,11 +1,7 @@
 <template>
     <v-card rounded="lg" elevation="1">
         <v-list lines="two" class="py-0">
-            <v-list-item
-                v-for="(student, index) in students"
-                :key="student.id"
-                class="px-5 py-3"
-            >
+            <v-list-item v-for="(student, index) in students" :key="student.id" class="px-5 py-3">
                 <template #prepend>
                     <v-avatar color="primary" variant="tonal" size="42">
                         {{ index + 1 }}
@@ -28,28 +24,16 @@
 
                         <v-menu>
                             <template #activator="{ props }">
-                                <v-btn
-                                    v-bind="props"
-                                    icon="mdi-dots-vertical"
-                                    variant="text"
-                                    size="small"
-                                    aria-label="Student amallari"
-                                />
+                                <v-btn v-bind="props" icon="mdi-dots-vertical" variant="text" size="small"
+                                    aria-label="Student amallari" />
                             </template>
 
                             <v-list density="compact">
-                                <v-list-item
-                                    :href="edit(student.id).url"
-                                    prepend-icon="mdi-pencil-outline"
-                                    title="Tahrirlash"
-                                />
+                                <v-list-item :href="edit(student.id).url" prepend-icon="mdi-pencil-outline"
+                                    title="Tahrirlash" />
 
-                                <v-list-item
-                                    prepend-icon="mdi-delete-outline"
-                                    title="O‘chirish"
-                                    class="text-error"
-                                    @click="confirmDelete(student)"
-                                />
+                                <v-list-item prepend-icon="mdi-delete-outline" title="O‘chirish" class="text-error"
+                                    @click="confirmDelete(student)" />
                             </v-list>
                         </v-menu>
                     </div>
@@ -57,11 +41,9 @@
             </v-list-item>
 
             <v-list-item v-if="students.length === 0" class="text-center py-10">
-                <template #prepend>
-                    <v-icon size="40" color="medium-emphasis">
-                        mdi-account-group-outline
-                    </v-icon>
-                </template>
+                <v-icon size="40" color="medium-emphasis">
+                    mdi-account-group-outline
+                </v-icon>
 
                 <v-list-item-title>
                     Hozircha studentlar yo‘q
@@ -88,20 +70,11 @@
             </v-card-text>
 
             <v-card-actions class="pa-5 justify-end">
-                <v-btn
-                    variant="text"
-                    :disabled="deleting"
-                    @click="deleteDialog = false"
-                >
+                <v-btn variant="text" :disabled="deleting" @click="deleteDialog = false">
                     Bekor qilish
                 </v-btn>
 
-                <v-btn
-                    color="error"
-                    variant="flat"
-                    :loading="deleting"
-                    @click="deleteStudent"
-                >
+                <v-btn color="error" variant="flat" :loading="deleting" @click="deleteStudent">
                     O‘chirish
                 </v-btn>
             </v-card-actions>

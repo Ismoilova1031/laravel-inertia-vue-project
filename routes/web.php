@@ -47,3 +47,6 @@ Route::get('/courses/{course}/students/create', [StudentController::class, 'crea
     ->name('courses.students.create');
 Route::post('/courses/{course}/students', [StudentController::class, 'storeForCourse'])
     ->name('courses.students.store');
+
+Route::patch('/courses/{course}/status', [CourseController::class, 'changeStatus'])
+    ->name('courses.status.update');

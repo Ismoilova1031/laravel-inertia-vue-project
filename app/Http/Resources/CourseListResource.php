@@ -18,7 +18,10 @@ class CourseListResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'category' => $this->category->label(),
-            'status' => $this->status->label(),
+            'status' => [
+                'value' => $this->status->value,
+                'label' => $this->status->label(),
+            ],
             'description' => $this->description,
         ];
     }

@@ -14,8 +14,10 @@ final class DeleteCourseUseCase
     {
         $courseId = new CourseId($id);
 
-        $this->courses->findById($courseId)
+        $course = $this->courses->findById($courseId)
             ?? throw CourseNotFoundException::withId($courseId);
+
+        $course->assertDeletable();
 
         $this->courses->delete($courseId);
     }

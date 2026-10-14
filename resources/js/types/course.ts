@@ -10,7 +10,7 @@ export interface CourseBase {
 
 export interface Course extends CourseBase {
     category: string;
-    status: string;
+    status: SelectOption;
 }
 
 export interface CourseDetail extends CourseBase {

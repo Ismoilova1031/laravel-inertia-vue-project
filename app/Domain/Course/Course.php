@@ -3,7 +3,7 @@
 namespace App\Domain\Course;
 
 use App\Domain\Course\Exception\CannotPublishWithoutLessonsException;
-use App\Domain\Course\Exception\InvalidCourseStatusTransitionException;
+use App\Domain\Course\Exception\CannotDeleteNonDraftCourseException;
 
 final class Course
 {
@@ -43,10 +43,6 @@ final class Course
             return;
         }
 
-        if (! $this->status->canTransitionTo($target)) {
-            throw InvalidCourseStatusTransitionException::between($this->status, $target);
-        }
-
         if ($target === CourseStatus::PUBLISHED && $lessonCount < 1) {
             throw CannotPublishWithoutLessonsException::create();
         }
@@ -82,5 +78,12 @@ final class Course
     public function status(): CourseStatus
     {
         return $this->status;
+    }
+
+    public function assertDeletable(): void
+    {
+        if ($this->status !== CourseStatus::DRAFT) {
+            throw CannotDeleteNonDraftCourseException::create();
+        }
     }
 }

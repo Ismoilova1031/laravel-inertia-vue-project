@@ -8,15 +8,6 @@ enum CourseStatus: int
     case PUBLISHED = 1;
     case ARCHIVED = 2;
 
-    public function canTransitionTo(self $target): bool
-    {
-        return match ($this) {
-            self::DRAFT => in_array($target, [self::PUBLISHED, self::ARCHIVED], true),
-            self::PUBLISHED => $target === self::ARCHIVED,
-            self::ARCHIVED => false,
-        };
-    }
-
     public function label(): string
     {
         return match ($this) {

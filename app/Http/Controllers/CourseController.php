@@ -12,15 +12,17 @@ use App\Domain\Course\CourseCategory;
 use App\Domain\Course\CourseStatus;
 use App\Domain\Course\Exception\CannotPublishWithoutLessonsException;
 use App\Domain\Course\Exception\CourseNotFoundException;
-use App\Domain\Course\Exception\InvalidCourseStatusTransitionException;
 use App\Http\Requests\CourseRequest;
 use App\Http\Resources\CourseListResource;
 use App\Http\Resources\CourseShowResource;
-use App\Http\Resources\StudentListForCourseResource;
+use App\Http\Resources\StudentListResource;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Domain\Course\Exception\CannotDeleteNonDraftCourseException;
+use App\Application\UseCase\Course\ChangeCourseStatusUseCase;
+use App\Http\Requests\ChangeCourseStatusRequest;
 
 class CourseController extends Controller
 {
@@ -31,6 +33,7 @@ class CourseController extends Controller
         private readonly GetCoursesUseCase $getCourses,
         private readonly GetCourseUseCase $getCourse,
         private readonly GetAvailableStudentsUseCase $getAvailableStudents,
+        private readonly ChangeCourseStatusUseCase $changeCourseStatus,
     ) {}
 
     public function index(): Response
@@ -67,7 +70,7 @@ class CourseController extends Controller
             'course' => CourseShowResource::make($detail)->resolve(),
             'categories' => CourseCategory::labels(),
             'statuses' => CourseStatus::labels(),
-            'availableStudents' => StudentListForCourseResource::collection(
+            'availableStudents' => StudentListResource::collection(
                 $this->getAvailableStudents->execute($course)
             )->resolve(),
         ]);
@@ -79,7 +82,7 @@ class CourseController extends Controller
             $this->updateCourse->execute($request->toUpdateCommand());
         } catch (CourseNotFoundException) {
             abort(404);
-        } catch (CannotPublishWithoutLessonsException|InvalidCourseStatusTransitionException $e) {
+        } catch (CannotPublishWithoutLessonsException $e) {
             throw ValidationException::withMessages(['status' => $e->getMessage()]);
         }
 
@@ -92,8 +95,23 @@ class CourseController extends Controller
             $this->deleteCourse->execute($course);
         } catch (CourseNotFoundException) {
             abort(404);
+        } catch (CannotDeleteNonDraftCourseException $e) {
+            return back()->withErrors(['course' => $e->getMessage()]);
         }
 
         return to_route('courses.index');
+    }
+
+    public function changeStatus(ChangeCourseStatusRequest $request, int $course): RedirectResponse
+    {
+        try {
+            $this->changeCourseStatus->execute($request->toCommand());
+        } catch (CourseNotFoundException) {
+            abort(404);
+        } catch (CannotPublishWithoutLessonsException $e) {
+            throw ValidationException::withMessages(['course' => $e->getMessage()]);
+        }
+
+        return back();
     }
 }
