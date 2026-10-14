@@ -2,44 +2,45 @@
 
 namespace App\Http\Controllers;
 
-use App\Contracts\UseCases\CreateCourseUseCaseInterface;
-use App\Contracts\UseCases\DeleteCourseUseCaseInterface;
-use App\Contracts\UseCases\UpdateCourseUseCaseInterface;
-use App\Contracts\UseCases\GetCoursesUseCaseInterface;
-use App\Dtos\CourseDto;
-use App\Enums\CourseCategory;
-use App\Enums\CourseStatus;
+use App\Application\UseCase\Course\CreateCourseUseCase;
+use App\Application\UseCase\Course\DeleteCourseUseCase;
+use App\Application\UseCase\Course\GetCoursesUseCase;
+use App\Application\UseCase\Course\GetCourseUseCase;
+use App\Application\UseCase\Course\UpdateCourseUseCase;
+use App\Application\UseCase\Student\GetAvailableStudentsUseCase;
+use App\Domain\Course\CourseCategory;
+use App\Domain\Course\CourseStatus;
+use App\Domain\Course\Exception\CannotPublishWithoutLessonsException;
+use App\Domain\Course\Exception\CourseNotFoundException;
+use App\Domain\Course\Exception\InvalidCourseStatusTransitionException;
 use App\Http\Requests\CourseRequest;
 use App\Http\Resources\CourseListResource;
 use App\Http\Resources\CourseShowResource;
-use App\Http\Resources\StudentListResource;
-use App\Application\UseCase\Student\GetAvailableStudentsUseCase;
-use App\Models\Course;
+use App\Http\Resources\StudentListForCourseResource;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class CourseController extends Controller
 {
     public function __construct(
-        private CreateCourseUseCaseInterface $createCourseUseCase,
-        private UpdateCourseUseCaseInterface $updateCourseUseCase,
-        private DeleteCourseUseCaseInterface $deleteCourseUseCase,
-        private GetCoursesUseCaseInterface $getCoursesUseCase,
-        private GetAvailableStudentsUseCase $getAvailableStudents,
+        private readonly CreateCourseUseCase $createCourse,
+        private readonly UpdateCourseUseCase $updateCourse,
+        private readonly DeleteCourseUseCase $deleteCourse,
+        private readonly GetCoursesUseCase $getCourses,
+        private readonly GetCourseUseCase $getCourse,
+        private readonly GetAvailableStudentsUseCase $getAvailableStudents,
     ) {}
 
-    public function show(Course $course)
+    public function index(): Response
     {
-        return Inertia::render('Courses/Show', [
-            'course' => CourseShowResource::make($course)->resolve(),
-            'categories' => CourseCategory::labels(),
-            'statuses' => CourseStatus::labels(),
-            'availableStudents' => StudentListResource::collection(
-                $this->getAvailableStudents->execute($course->id)
-            )->resolve(),
+        return Inertia::render('Courses/Index', [
+            'courses' => CourseListResource::collection($this->getCourses->execute())->resolve(),
         ]);
     }
 
-    public function create()
+    public function create(): Response
     {
         return Inertia::render('Courses/Create', [
             'categories' => CourseCategory::labels(),
@@ -47,41 +48,52 @@ class CourseController extends Controller
         ]);
     }
 
-    public function store(CourseRequest $request)
+    public function store(CourseRequest $request): RedirectResponse
     {
-        $validated = $request->validated();
+        $id = $this->createCourse->execute($request->toCreateCommand());
 
-        $dto = CourseDto::fromArray($validated);
+        return to_route('courses.show', ['course' => $id->value()]);
+    }
 
-        $course = $this->createCourseUseCase->execute($dto);
+    public function show(int $course): Response
+    {
+        try {
+            $detail = $this->getCourse->execute($course);
+        } catch (CourseNotFoundException) {
+            abort(404);
+        }
+
+        return Inertia::render('Courses/Show', [
+            'course' => CourseShowResource::make($detail)->resolve(),
+            'categories' => CourseCategory::labels(),
+            'statuses' => CourseStatus::labels(),
+            'availableStudents' => StudentListForCourseResource::collection(
+                $this->getAvailableStudents->execute($course)
+            )->resolve(),
+        ]);
+    }
+
+    public function update(CourseRequest $request, int $course): RedirectResponse
+    {
+        try {
+            $this->updateCourse->execute($request->toUpdateCommand());
+        } catch (CourseNotFoundException) {
+            abort(404);
+        } catch (CannotPublishWithoutLessonsException|InvalidCourseStatusTransitionException $e) {
+            throw ValidationException::withMessages(['status' => $e->getMessage()]);
+        }
 
         return to_route('courses.show', ['course' => $course]);
     }
 
-    public function update(CourseRequest $request, Course $course)
+    public function destroy(int $course): RedirectResponse
     {
-        $validated = $request->validated();
-
-        $dto = CourseDto::fromArray($validated);
-
-        $course = $this->updateCourseUseCase->execute($course, $dto);
-
-        return to_route('courses.show', ['course' => $course]);
-    }
-
-    public function destroy(Course $course)
-    {
-        $this->deleteCourseUseCase->execute($course);
+        try {
+            $this->deleteCourse->execute($course);
+        } catch (CourseNotFoundException) {
+            abort(404);
+        }
 
         return to_route('courses.index');
-    }
-
-    public function index()
-    {
-        $courses = $this->getCoursesUseCase->execute();
-
-        return Inertia::render('Courses/Index', [
-            'courses' => CourseListResource::collection($courses)->resolve(),
-        ]);
     }
 }

@@ -23,7 +23,7 @@ final class EnrollStudentRequest extends FormRequest
     {
         return [
             'student_id.required' => 'Studentni tanlang.',
-            'student_id.exists'   => 'Bunday student topilmadi.',
+            'student_id.exists' => 'Bunday student topilmadi.',
         ];
     }
 

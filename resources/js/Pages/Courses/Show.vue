@@ -1,9 +1,13 @@
 <template>
     <v-container class="py-8">
         <v-card class="mx-auto border" rounded="lg" elevation="0">
-            <v-card-text class="d-flex justify-space-between align-center ga-4 pa-6">
+            <v-card-text
+                class="d-flex justify-space-between align-center ga-4 pa-6"
+            >
                 <div class="d-flex flex-column">
-                    <v-card-title class="text-title-large font-weight-bold pa-0">
+                    <v-card-title
+                        class="text-title-large font-weight-bold pa-0"
+                    >
                         {{ course.title }}
                     </v-card-title>
 
@@ -25,13 +29,21 @@
 
             <v-divider />
 
-            <v-card-item class="d-flex justify-space-between align-center px-6 py-4">
+            <v-card-item
+                class="d-flex justify-space-between align-center px-6 py-4"
+            >
                 <div class="informations">
-                    <v-icon size="small" class="me-2">mdi-account-multiple</v-icon>
-                    <span class="text-body-2 text-medium-emphasis">{{ students }} students enrolled</span>
+                    <v-icon size="small" class="me-2"
+                        >mdi-account-multiple</v-icon
+                    >
+                    <span class="text-body-2 text-medium-emphasis"
+                        >{{ students }} students enrolled</span
+                    >
 
                     <v-icon size="small" class="ms-4 me-2">mdi-book</v-icon>
-                    <span class="text-body-2 text-medium-emphasis">{{ lessons }} lessons</span>
+                    <span class="text-body-2 text-medium-emphasis"
+                        >{{ lessons }} lessons</span
+                    >
                 </div>
             </v-card-item>
         </v-card>
@@ -49,25 +61,49 @@
                 <LessonsList :lessons="course.lessons" :course="course" />
             </v-tabs-window-item>
             <v-tabs-window-item value="Students">
-                <StudentListForCourse :students="course.students" :available-students="availableStudents"
-                    :course-id="course.id" :is-published="isPublished" />
+                <StudentListForCourse
+                    :students="course.students"
+                    :available-students="availableStudents"
+                    :course-id="course.id"
+                    :is-published="isPublished"
+                />
             </v-tabs-window-item>
             <v-tabs-window-item value="Settings">
-                <v-card max-width="900" class="mx-auto" rounded="lg" elevation="2">
+                <v-card
+                    max-width="900"
+                    class="mx-auto"
+                    rounded="lg"
+                    elevation="2"
+                >
                     <v-card-item>
-                        <v-card-title class="text-h4 font-weight-bold">Course Settings</v-card-title>
+                        <v-card-title class="text-h4 font-weight-bold"
+                            >Course Settings</v-card-title
+                        >
 
-                        <v-card-subtitle class="mt-2">Update the course settings below.</v-card-subtitle>
+                        <v-card-subtitle class="mt-2"
+                            >Update the course settings below.</v-card-subtitle
+                        >
                     </v-card-item>
 
                     <v-divider />
 
                     <v-card-text class="pa-6">
-                        <CourseForm :form="form" :categories="categories" :statuses="statuses"
-                            submit-label="Update Course" :submit="submit" />
-                        <v-snackbar color="success" location="top center" prepend-icon="mdi-check-circle"
-                            title="Updated" text="Course updated successfully!" timeout="2000"
-                            v-model="form.recentlySuccessful" />
+                        <CourseForm
+                            :form="form"
+                            :categories="categories"
+                            :statuses="statuses"
+                            submit-label="Update Course"
+                            :submit="submit"
+                        />
+                        <v-snackbar
+                            color="success"
+                            location="top center"
+                            prepend-icon="mdi-check-circle"
+                            title="Updated"
+                            text="Course updated successfully!"
+                            timeout="2000"
+                            v-model="form.recentlySuccessful"
+                        />
                     </v-card-text>
                 </v-card>
             </v-tabs-window-item>
@@ -95,7 +131,9 @@ const { course } = defineProps<{
 const isPublished = computed(() => course.status.value === 1);
 
 const lessons = computed(() => course.lessons.length);
-const students = computed(() => course.students.filter(s => s.isActive).length);
+const students = computed(
+    () => course.students.filter((s) => s.isActive).length,
+);
 const tab = ref("Lessons");
 const { form, submit } = useCourseForm(
     {
@@ -104,6 +142,6 @@ const { form, submit } = useCourseForm(
         category: course.category.value,
         status: course.status.value,
     },
-    course.id
+    course.id,
 );
 </script>

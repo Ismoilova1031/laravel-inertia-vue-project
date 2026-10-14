@@ -22,7 +22,6 @@ createInertiaApp({
     title: (title) => `${title} - ${appName}`,
 
     resolve: async (name) => {
-
         const page = await resolvePageComponent(`./pages/${name}.vue`, pages);
 
         page.default.layout = page.default.layout || AppLayout;

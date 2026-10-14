@@ -12,7 +12,7 @@ final class CourseInterest
         private CourseId $courseId,
         private StudentId $studentId,
         private array $flags,
-    ){}
+    ) {}
 
     public static function create(CourseId $courseId, StudentId $studentId): self
     {
@@ -28,7 +28,7 @@ final class CourseInterest
         StudentId $studentId,
         bool $liked,
         bool $planned,
-    ){
+    ) {
         return new self($id, $courseId, $studentId, [
             InterestType::LIKE->value => $liked,
             InterestType::PLANNED->value => $planned,
@@ -52,11 +52,21 @@ final class CourseInterest
 
     public function isEmpty(): bool
     {
-        return !in_array(true, $this->flags, true);
+        return ! in_array(true, $this->flags, true);
     }
 
-    public function id(): ?int { return $this->id; }
-    public function courseId(): CourseId { return $this->courseId; }
-    public function studentId(): StudentId { return $this->studentId; }
+    public function id(): ?int
+    {
+        return $this->id;
+    }
 
+    public function courseId(): CourseId
+    {
+        return $this->courseId;
+    }
+
+    public function studentId(): StudentId
+    {
+        return $this->studentId;
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 // tests/Feature/Application/EnrollStudentUseCaseTest.php
 declare(strict_types=1);
 
@@ -8,11 +9,11 @@ use App\Application\UseCase\Enrollment\DeactivateEnrollmentCommand;
 use App\Application\UseCase\Enrollment\DeactivateEnrollmentUseCase;
 use App\Application\UseCase\Enrollment\EnrollStudentCommand;
 use App\Application\UseCase\Enrollment\EnrollStudentUseCase;
+use App\Domain\Course\CourseStatus;
 use App\Domain\Course\Exception\CourseNotPublishedException;
 use App\Domain\Enrollment\Exception\AlreadyEnrolledException;
-use App\Enums\CourseStatus;
+use App\Infrastructure\Eloquent\CourseModel;
 use App\Infrastructure\Eloquent\StudentModel;
-use App\Models\Course;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -32,9 +33,9 @@ final class EnrollStudentUseCaseTest extends TestCase
         ])->id;
     }
 
-    private function course(CourseStatus $status): Course
+    private function course(CourseStatus $status): CourseModel
     {
-        return Course::factory()->create(['status' => $status]);
+        return CourseModel::factory()->create(['status' => $status]);
     }
 
     private function enroll(int $courseId): void

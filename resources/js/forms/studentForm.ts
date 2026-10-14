@@ -1,7 +1,10 @@
-
 import z from "zod";
 import { useForm } from "@inertiajs/vue3";
-import { store, update, storeForCourse } from '../actions/App/Http/Controllers/StudentController';
+import {
+    store,
+    update,
+    storeForCourse,
+} from "../actions/App/Http/Controllers/StudentController";
 
 export const studentFormSchema = z
     .object({
@@ -46,10 +49,9 @@ export const studentFormSchema = z
 
         password: z
             .string()
-            .refine(
-                (value) => value === "" || value.length >= 8,
-                { message: "Parol kamida 8 ta belgidan iborat bo‘lishi kerak." },
-            )
+            .refine((value) => value === "" || value.length >= 8, {
+                message: "Parol kamida 8 ta belgidan iborat bo‘lishi kerak.",
+            })
             .max(255, {
                 message: "Parol 255 ta belgidan oshmasligi kerak.",
             }),

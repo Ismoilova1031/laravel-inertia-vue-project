@@ -1,7 +1,9 @@
 <template>
     <v-app-bar>
         <template v-if="$vuetify.display.mobile" v-slot:prepend>
-            <v-app-bar-nav-icon @click="$emit('toggleDrawer')"></v-app-bar-nav-icon>
+            <v-app-bar-nav-icon
+                @click="$emit('toggleDrawer')"
+            ></v-app-bar-nav-icon>
         </template>
 
         <v-app-bar-title>Study Planner</v-app-bar-title>
@@ -14,6 +16,6 @@
 </template>
 <script setup lang="ts">
 defineEmits<{
-    toggleDrawer: []
-}>()
+    toggleDrawer: [];
+}>();
 </script>

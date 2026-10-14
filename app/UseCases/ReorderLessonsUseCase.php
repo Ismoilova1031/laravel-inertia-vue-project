@@ -3,8 +3,8 @@
 namespace App\UseCases;
 
 use App\Contracts\Repositories\LessonRepositoryInterface;
-use Illuminate\Support\Facades\DB;
 use App\Contracts\UseCases\ReorderLessonsUseCaseInterface;
+use Illuminate\Support\Facades\DB;
 
 class ReorderLessonsUseCase implements ReorderLessonsUseCaseInterface
 {

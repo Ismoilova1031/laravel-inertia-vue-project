@@ -10,7 +10,7 @@ final class Student
         private EmailAddress $email,
         private Username $username,
         private HashedPassword $password,
-    ){}
+    ) {}
 
     public static function register(
         PersonName $name,
@@ -20,7 +20,7 @@ final class Student
     ): self {
         return new self(null, $name, $email, $username, $password);
     }
-    
+
     public static function reconstitute(
         StudentId $id,
         PersonName $name,
@@ -51,9 +51,28 @@ final class Student
         $this->password = $password;
     }
 
-    public function id(): ?StudentId { return $this->id; }
-    public function name(): PersonName { return $this->name; }
-    public function email(): EmailAddress { return $this->email; }
-    public function username(): Username { return $this->username; }
-    public function password(): HashedPassword { return $this->password; }
+    public function id(): ?StudentId
+    {
+        return $this->id;
+    }
+
+    public function name(): PersonName
+    {
+        return $this->name;
+    }
+
+    public function email(): EmailAddress
+    {
+        return $this->email;
+    }
+
+    public function username(): Username
+    {
+        return $this->username;
+    }
+
+    public function password(): HashedPassword
+    {
+        return $this->password;
+    }
 }

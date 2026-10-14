@@ -5,7 +5,6 @@ namespace App\Infrastructure\Query;
 use App\Application\UseCase\Student\StudentListItem;
 use App\Application\UseCase\Student\StudentQueryInterface;
 use App\Infrastructure\Eloquent\StudentModel;
-use App\Domain\Enrollment\EnrollmentStatus;
 
 final class EloquentStudentQuery implements StudentQueryInterface
 {

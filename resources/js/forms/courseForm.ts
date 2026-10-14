@@ -46,10 +46,7 @@ export const courseFormSchema = z.object({
 export type CourseForm = z.infer<typeof courseFormSchema>;
 type CourseFormData = z.input<typeof courseFormSchema>;
 
-export function useCourseForm(
-    initialData?: CourseFormData,
-    courseId?: number,
-) {
+export function useCourseForm(initialData?: CourseFormData, courseId?: number) {
     const form = useForm<CourseFormData>({
         title: initialData?.title ?? "",
         description: initialData?.description ?? "",

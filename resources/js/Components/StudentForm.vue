@@ -1,10 +1,7 @@
-
 <template>
     <form @submit.prevent="submit">
         <v-card rounded="lg" border flat>
-            <v-card-title class="pa-5">
-                Student ma'lumotlari
-            </v-card-title>
+            <v-card-title class="pa-5"> Student ma'lumotlari </v-card-title>
 
             <v-divider />
 
@@ -94,11 +91,7 @@
             <v-divider />
 
             <v-card-actions class="pa-5 justify-end">
-                <v-btn
-                    type="button"
-                    variant="text"
-                    @click="emit('cancel')"
-                >
+                <v-btn type="button" variant="text" @click="emit('cancel')">
                     Bekor qilish
                 </v-btn>
 
@@ -116,7 +109,7 @@
 </template>
 
 <script setup lang="ts">
-import type { StudentFormInstance } from '../forms/studentForm';
+import type { StudentFormInstance } from "../forms/studentForm";
 
 defineProps<{
     form: StudentFormInstance;

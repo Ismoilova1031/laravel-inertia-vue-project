@@ -1,14 +1,23 @@
 <template>
     <v-container>
-
         <Head title="Student tahrirlash" />
 
-        <v-card variant="text" class="mb-4 pa-2 d-flex flex-row gap-2 align-center justify-space-between">
+        <v-card
+            variant="text"
+            class="mb-4 pa-2 d-flex flex-row gap-2 align-center justify-space-between"
+        >
             <div>
                 <v-card-title>Studentni tahrirlash</v-card-title>
-                <v-card-subtitle>Student ma'lumotlarini yangilash</v-card-subtitle>
+                <v-card-subtitle
+                    >Student ma'lumotlarini yangilash</v-card-subtitle
+                >
             </div>
-            <v-btn variant="tonal" color="primary" class="mb-4" :href="index().url">
+            <v-btn
+                variant="tonal"
+                color="primary"
+                class="mb-4"
+                :href="index().url"
+            >
                 <v-icon start>mdi-arrow-left</v-icon>
                 Ro'yxatga qaytish
             </v-btn>
@@ -18,25 +27,25 @@
 </template>
 
 <script setup lang="ts">
-import { Head } from '@inertiajs/vue3';
-import StudentForm from '../../components/StudentForm.vue';
-import { index } from '../../actions/App/Http/Controllers/StudentController.js';
-import { useStudentForm } from '../../forms/studentForm';
-import type { Student } from '../../types/student';
+import { Head } from "@inertiajs/vue3";
+import StudentForm from "../../components/StudentForm.vue";
+import { index } from "../../actions/App/Http/Controllers/StudentController.js";
+import { useStudentForm } from "../../forms/studentForm";
+import type { Student } from "../../types/student";
 
 const props = defineProps<{
     student: Student;
 }>();
 
 const { form, submit } = useStudentForm(
-    undefined, 
+    undefined,
     {
         name: props.student.name,
         surname: props.student.surname,
         email: props.student.email,
         username: props.student.username,
-        password: '',
-        password_confirmation: '',
+        password: "",
+        password_confirmation: "",
     },
     props.student.id,
 );

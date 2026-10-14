@@ -2,15 +2,14 @@
 
 namespace App\Services;
 
-use App\Contracts\Services\SaveVideoServiceInterface;
 use App\Contracts\Repositories\CourseRepositoryInterface;
 use App\Contracts\Repositories\StorageRepositoryInterface;
+use App\Contracts\Services\SaveVideoServiceInterface;
 use App\Dtos\LessonDto;
 use Illuminate\Support\Str;
 
 class SaveVideoService implements SaveVideoServiceInterface
 {
-
     public function __construct(
         private CourseRepositoryInterface $courseRepository,
         private StorageRepositoryInterface $storageRepository,
@@ -20,10 +19,10 @@ class SaveVideoService implements SaveVideoServiceInterface
     {
         $course = $this->courseRepository->findById($dto->course_id);
 
-        $videoPath = 'courses/' .
-            $course->category->value . '/' .
-            $course->id . '/' .
-            Str::uuid() . '.' .
+        $videoPath = 'courses/'.
+            $course->category->value.'/'.
+            $course->id.'/'.
+            Str::uuid().'.'.
             $dto->video->getClientOriginalExtension();
 
         $this->storageRepository->storeFile(

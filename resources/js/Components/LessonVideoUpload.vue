@@ -18,16 +18,8 @@
             @update:model-value="handleVideo"
         />
 
-        <v-card
-            v-else
-            variant="outlined"
-            rounded="lg"
-        >
-            <video
-                :src="videoUrl"
-                controls
-                class="video-preview"
-            />
+        <v-card v-else variant="outlined" rounded="lg">
+            <video :src="videoUrl" controls class="video-preview" />
 
             <v-card-actions class="px-4 py-3">
                 <div class="text-body-2 text-truncate">
@@ -58,7 +50,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, ref } from 'vue';
+import { computed, onBeforeUnmount, ref } from "vue";
 
 const props = defineProps<{
     modelValue: File | undefined;
@@ -66,8 +58,8 @@ const props = defineProps<{
     videoUrl?: string | null;
 }>();
 const emit = defineEmits<{
-    'update:modelValue': [file: File | undefined];
-    'update:videoUrl': [url: string | null];
+    "update:modelValue": [file: File | undefined];
+    "update:videoUrl": [url: string | null];
 }>();
 
 const video = ref<File | undefined>(props.modelValue ?? undefined);
@@ -89,10 +81,10 @@ function handleVideo(file: File | File[] | undefined) {
         video.value = file;
     }
 
-    emit('update:modelValue', video.value);
+    emit("update:modelValue", video.value);
 
     if (video.value) {
-        emit('update:videoUrl', null);
+        emit("update:videoUrl", null);
     }
 }
 
@@ -111,16 +103,16 @@ function handleFileChange(event: Event) {
 
     video.value = file;
 
-    emit('update:modelValue', file);
+    emit("update:modelValue", file);
 
-    target.value = '';
+    target.value = "";
 }
 
 function deleteVideo() {
     video.value = undefined;
 
-    emit('update:modelValue', undefined);
-    emit('update:videoUrl', null);
+    emit("update:modelValue", undefined);
+    emit("update:videoUrl", null);
 }
 
 onBeforeUnmount(() => {

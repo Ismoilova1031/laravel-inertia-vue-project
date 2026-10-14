@@ -4,9 +4,9 @@ namespace Tests\Feature\Application;
 
 use App\Application\UseCase\Student\RegisterAndEnrollStudentUseCase;
 use App\Application\UseCase\Student\RegisterStudentCommand;
+use App\Domain\Course\CourseStatus;
 use App\Domain\Course\Exception\CourseNotPublishedException;
-use App\Enums\CourseStatus;
-use App\Models\Course;
+use App\Infrastructure\Eloquent\CourseModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -27,7 +27,7 @@ final class RegisterAndEnrollStudentUseCaseTest extends TestCase
 
     public function test_creates_student_and_enrollment_for_published_course(): void
     {
-        $course = Course::factory()->create(['status' => CourseStatus::PUBLISHED]);
+        $course = CourseModel::factory()->create(['status' => CourseStatus::PUBLISHED]);
 
         $id = $this->app->make(RegisterAndEnrollStudentUseCase::class)
             ->execute($this->command(), $course->id);
@@ -40,7 +40,7 @@ final class RegisterAndEnrollStudentUseCaseTest extends TestCase
 
     public function test_student_is_not_created_when_course_is_draft(): void
     {
-        $course = Course::factory()->create(['status' => CourseStatus::DRAFT]);
+        $course = CourseModel::factory()->create(['status' => CourseStatus::DRAFT]);
 
         try {
             $this->app->make(RegisterAndEnrollStudentUseCase::class)

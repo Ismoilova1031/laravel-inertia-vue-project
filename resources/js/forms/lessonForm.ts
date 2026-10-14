@@ -139,14 +139,11 @@ export function useLessonForm(
     }
 
     function submit() {
-
         const isValid = validate();
-
 
         if (!isValid) {
             return;
         }
-
 
         if (lessonId) {
             form.put(

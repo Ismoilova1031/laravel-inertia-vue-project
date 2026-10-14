@@ -1,12 +1,11 @@
 <template>
     <v-app>
         <v-container class="py-8">
-            <h2 class="text-title-large font-weight-bold">
-                Create New Lesson
-            </h2>
+            <h2 class="text-title-large font-weight-bold">Create New Lesson</h2>
 
             <p class="text-medium-emphasis">
-                Structure individual modules and attach dynamic tasks or reading assets
+                Structure individual modules and attach dynamic tasks or reading
+                assets
             </p>
 
             <LessonForm

@@ -1,4 +1,5 @@
 <?php
+
 // tests/Unit/Domain/Enrollment/EnrollmentTest.php
 declare(strict_types=1);
 

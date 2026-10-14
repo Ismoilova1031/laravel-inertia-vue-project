@@ -2,10 +2,9 @@
 
 namespace App\Http\Resources;
 
+use App\Enums\LessonType;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Enums\LessonType;
-use App\Http\Resources\TaskResource;
 use Illuminate\Support\Facades\Storage;
 
 class LessonEditResource extends JsonResource
@@ -32,9 +31,10 @@ class LessonEditResource extends JsonResource
             'sort_order' => $this->sort_order,
             'task' => $this->when(
                 $this->lesson_type === LessonType::TASK,
-                fn() => new TaskResource($this->task)->resolve(),
+                fn () => new TaskResource($this->task)->resolve(),
             ),
         ];
+
         return $lesson;
     }
 }

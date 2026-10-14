@@ -5,25 +5,60 @@
         <div v-if="errors?.options" class="text-error text-caption mb-2">
             {{ errors.options }}
         </div>
-        <v-radio-group v-if="question_type === 1" v-model="correctOptionId" hide-details>
-            <div v-for="(option, index) in options" :key="option.id" class="d-flex align-center ga-2 mb-3">
-                <v-radio :value="option.id" class="flex-grow-0"/>
-                <v-text-field v-model="option.option" label="Option" placeholder="Enter option..." variant="outlined"
-                    hide-details="auto" :error-messages="errors?.[`${index}.text`]" />
+        <v-radio-group
+            v-if="question_type === 1"
+            v-model="correctOptionId"
+            hide-details
+        >
+            <div
+                v-for="(option, index) in options"
+                :key="option.id"
+                class="d-flex align-center ga-2 mb-3"
+            >
+                <v-radio :value="option.id" class="flex-grow-0" />
+                <v-text-field
+                    v-model="option.option"
+                    label="Option"
+                    placeholder="Enter option..."
+                    variant="outlined"
+                    hide-details="auto"
+                    :error-messages="errors?.[`${index}.text`]"
+                />
 
-                <v-btn icon="mdi-delete" variant="text" color="error" size="small" @click="removeOption(option.id)" />
+                <v-btn
+                    icon="mdi-delete"
+                    variant="text"
+                    color="error"
+                    size="small"
+                    @click="removeOption(option.id)"
+                />
             </div>
         </v-radio-group>
 
-
         <div v-else-if="question_type === 2">
-            <div v-for="(option, index) in options" :key="option.id" class="d-flex align-center ga-2 mb-3">
+            <div
+                v-for="(option, index) in options"
+                :key="option.id"
+                class="d-flex align-center ga-2 mb-3"
+            >
                 <v-checkbox v-model="option.is_correct" hide-details />
 
-                <v-text-field v-model="option.option" label="Option" placeholder="Enter option..." variant="outlined" hide-details="auto" :error-messages="errors?.[`${index}.text`]" />
+                <v-text-field
+                    v-model="option.option"
+                    label="Option"
+                    placeholder="Enter option..."
+                    variant="outlined"
+                    hide-details="auto"
+                    :error-messages="errors?.[`${index}.text`]"
+                />
 
-                <v-btn icon="mdi-delete" variant="text" color="error" size="small" @click="removeOption(option.id)" />
-
+                <v-btn
+                    icon="mdi-delete"
+                    variant="text"
+                    color="error"
+                    size="small"
+                    @click="removeOption(option.id)"
+                />
             </div>
         </div>
 
@@ -47,11 +82,11 @@ const options = defineModel<OptionFormData[]>({
 
 const correctOptionId = computed({
     get() {
-        return options.value.find(option => option.is_correct)?.id ?? null;
+        return options.value.find((option) => option.is_correct)?.id ?? null;
     },
 
     set(id: number | string | null) {
-        options.value.forEach(option => {
+        options.value.forEach((option) => {
             option.is_correct = option.id === id;
         });
     },
@@ -69,8 +104,6 @@ function addOption() {
 }
 
 function removeOption(id: number | string) {
-    options.value = options.value.filter(
-        option => option.id !== id
-    );
+    options.value = options.value.filter((option) => option.id !== id);
 }
 </script>

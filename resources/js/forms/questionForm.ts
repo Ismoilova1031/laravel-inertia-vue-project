@@ -19,8 +19,7 @@ export const questionFormSchema = z
     })
     .superRefine((data, ctx) => {
         if (
-            (data.question_type === 1 ||
-                data.question_type === 2) &&
+            (data.question_type === 1 || data.question_type === 2) &&
             (!data.options || data.options.length < 2)
         ) {
             ctx.addIssue({
@@ -32,8 +31,7 @@ export const questionFormSchema = z
         }
 
         if (
-            (data.question_type === 1 ||
-                data.question_type === 2) &&
+            (data.question_type === 1 || data.question_type === 2) &&
             data.options?.every((o) => !o.is_correct)
         ) {
             ctx.addIssue({

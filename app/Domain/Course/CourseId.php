@@ -8,7 +8,7 @@ final class CourseId
 {
     public function __construct(private readonly int $value)
     {
-        if($value <= 0){
+        if ($value <= 0) {
             throw new InvalidArgumentException('CourseId musbat son bo\'lishi kerak');
         }
     }

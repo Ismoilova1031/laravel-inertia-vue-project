@@ -2,24 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Application\UseCase\Student\RegisterStudentUseCase;
+use App\Application\UseCase\Student\DeleteStudentUseCase;
 use App\Application\UseCase\Student\GetStudentsUseCase;
+use App\Application\UseCase\Student\GetStudentUseCase;
+use App\Application\UseCase\Student\RegisterAndEnrollStudentUseCase;
+use App\Application\UseCase\Student\RegisterStudentUseCase;
+use App\Application\UseCase\Student\UpdateStudentUseCase;
+use App\Domain\Course\Exception\CourseNotFoundException;
+use App\Domain\Course\Exception\CourseNotPublishedException;
 use App\Domain\Student\Exception\EmailAlreadyTakenException;
+use App\Domain\Student\Exception\StudentNotFoundException;
 use App\Domain\Student\Exception\UsernameAlreadyTakenException;
 use App\Http\Requests\RegisterStudentRequest;
+use App\Http\Requests\UpdateStudentRequest;
+use App\Http\Resources\StudentListResource;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
-use App\Http\Resources\StudentListResource;
-use App\Application\UseCase\Student\GetStudentUseCase;
-use App\Application\UseCase\Student\UpdateStudentUseCase;
-use App\Application\UseCase\Student\DeleteStudentUseCase;
-use App\Application\UseCase\Student\RegisterAndEnrollStudentUseCase;
-use App\Domain\Student\Exception\StudentNotFoundException;
-use App\Http\Requests\UpdateStudentRequest;
-use App\Domain\Course\Exception\CourseNotFoundException;
-use App\Domain\Course\Exception\CourseNotPublishedException;
 
 enum StudentPages: string
 {

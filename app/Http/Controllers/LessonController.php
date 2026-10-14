@@ -2,24 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\LessonType;
-use App\Http\Requests\LessonRequest;
-use Inertia\Inertia;
 use App\Contracts\UseCases\CreateLessonUseCaseInterface;
 use App\Contracts\UseCases\DeleteLessonUseCaseInterface;
 use App\Contracts\UseCases\ReorderLessonsUseCaseInterface;
 use App\Contracts\UseCases\UpdateLessonUseCaseInterface;
 use App\Dtos\LessonDto;
-use App\Models\Course;
-use App\Models\Lesson;
 use App\Dtos\TaskDto;
+use App\Enums\LessonType;
 use App\Enums\TaskType;
+use App\Http\Requests\LessonRequest;
 use App\Http\Requests\ReorderLessonsRequest;
 use App\Http\Resources\LessonEditResource;
+use App\Infrastructure\Eloquent\CourseModel;
+use App\Models\Lesson;
+use Inertia\Inertia;
 
 class LessonController extends Controller
 {
-
     public function __construct(
         private CreateLessonUseCaseInterface $createLessonUseCase,
         private ReorderLessonsUseCaseInterface $reorderLessonsUseCase,
@@ -27,22 +26,22 @@ class LessonController extends Controller
         private UpdateLessonUseCaseInterface $updateLessonUseCase
     ) {}
 
-    public function create(Course $course)
+    public function create(CourseModel $course)
     {
         return Inertia::render('Lessons/Create', [
             'course' => $course,
             'types' => collect(LessonType::cases())
-                ->map(fn(LessonType $type) => [
+                ->map(fn (LessonType $type) => [
                     'label' => $type->label(),
                     'value' => $type->value,
                 ]),
         ]);
     }
 
-    public function store(Course $course, LessonRequest $request)
+    public function store(CourseModel $course, LessonRequest $request)
     {
         $validated = $request->validated();
-        if (!$validated) {
+        if (! $validated) {
             return back()->withErrors($request->errors());
         }
         $dto = new LessonDto(
@@ -61,6 +60,7 @@ class LessonController extends Controller
             ) : null
         );
         $lesson = $this->createLessonUseCase->execute($dto);
+
         return to_route('courses.show', ['course' => $lesson->course_id]);
     }
 
@@ -74,48 +74,50 @@ class LessonController extends Controller
         return back();
     }
 
-    public function destroy(Course $course, Lesson $lesson)
+    public function destroy(CourseModel $course, Lesson $lesson)
     {
         $this->deleteLessonUseCase->execute($lesson);
 
         return to_route('courses.show', ['course' => $course]);
     }
-    public function edit(Course $course, Lesson $lesson)
+
+    public function edit(CourseModel $course, Lesson $lesson)
     {
         return Inertia::render('Lessons/Edit', [
             'course' => $course,
             'lesson' => LessonEditResource::make($lesson)->resolve(),
             'types' => collect(LessonType::cases())
-                ->map(fn(LessonType $type) => [
+                ->map(fn (LessonType $type) => [
                     'label' => $type->label(),
                     'value' => $type->value,
                 ]),
         ]);
     }
 
-    public function update(LessonRequest $request, Course $course, Lesson $lesson)
+    public function update(LessonRequest $request, CourseModel $course, Lesson $lesson)
     {
         $validated = $request->validated();
-        if (!$validated) {
+        if (! $validated) {
             return back()->withErrors($request->errors());
         }
         $validated['course_id'] = $course->id;
         $dto = new LessonDto(
-                title: $request->title,
-                description: $request->description,
-                lesson_content: $request->lesson_content,
-                lesson_type: $request->lesson_type,
-                sort_order: $request->sort_order,
-                course_id: $course->id,
-                video: $request->file('video'),
-                tasks: $request->task && $request->task['task_type'] ? new TaskDto(
-                    type: TaskType::fromValue($request->task['task_type']),
-                    deadline: $request->task['deadline'],
-                    file_extensions: $request->task['file_extensions'] ?? null,
-                    questions: $request->task['questions'] ?? null
-                ) : null
-            );
+            title: $request->title,
+            description: $request->description,
+            lesson_content: $request->lesson_content,
+            lesson_type: $request->lesson_type,
+            sort_order: $request->sort_order,
+            course_id: $course->id,
+            video: $request->file('video'),
+            tasks: $request->task && $request->task['task_type'] ? new TaskDto(
+                type: TaskType::fromValue($request->task['task_type']),
+                deadline: $request->task['deadline'],
+                file_extensions: $request->task['file_extensions'] ?? null,
+                questions: $request->task['questions'] ?? null
+            ) : null
+        );
         $this->updateLessonUseCase->execute($lesson, $dto);
+
         return to_route('courses.show', [
             'course' => $course,
         ]);

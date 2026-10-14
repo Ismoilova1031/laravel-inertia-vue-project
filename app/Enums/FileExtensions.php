@@ -33,6 +33,6 @@ enum FileExtensions: string
 
     public static function labels(): array
     {
-        return collect(self::cases())->map(fn($case) => ['label' => $case->label(), 'value' => $case->value])->toArray();
+        return collect(self::cases())->map(fn ($case) => ['label' => $case->label(), 'value' => $case->value])->toArray();
     }
 }

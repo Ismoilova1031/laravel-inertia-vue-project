@@ -1,11 +1,12 @@
 <?php
+
 // app/Application/Enrollment/EnrollStudent/EnrollStudentUseCase.php
 declare(strict_types=1);
 
 namespace App\Application\UseCase\Enrollment;
 
-use App\Application\Contracts\CourseLookupInterface;
 use App\Domain\Course\CourseId;
+use App\Domain\Course\CourseRepositoryInterface;
 use App\Domain\Course\Exception\CourseNotFoundException;
 use App\Domain\Course\Exception\CourseNotPublishedException;
 use App\Domain\Enrollment\Enrollment;
@@ -20,7 +21,7 @@ final class EnrollStudentUseCase
     public function __construct(
         private readonly EnrollmentRepositoryInterface $enrollments,
         private readonly StudentRepositoryInterface $students,
-        private readonly CourseLookupInterface $courses,
+        private readonly CourseRepositoryInterface $courses,
     ) {}
 
     public function execute(EnrollStudentCommand $command): void
@@ -28,11 +29,10 @@ final class EnrollStudentUseCase
         $courseId = new CourseId($command->courseId);
         $studentId = new StudentId($command->studentId);
 
-        if (!$this->courses->exists($courseId)) {
-            throw CourseNotFoundException::withId($courseId);
-        }
+        $course = $this->courses->findById($courseId)
+            ?? throw CourseNotFoundException::withId($courseId);
 
-        if (!$this->courses->isPublished($courseId)) {
+        if (! $course->isPublished()) {
             throw CourseNotPublishedException::withId($courseId);
         }
 
@@ -40,7 +40,7 @@ final class EnrollStudentUseCase
             throw StudentNotFoundException::withId($studentId);
         }
 
-        $now = new DateTimeImmutable();
+        $now = new DateTimeImmutable;
         $enrollment = $this->enrollments->findByCourseAndStudent($courseId, $studentId);
 
         if ($enrollment === null) {

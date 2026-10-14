@@ -1,4 +1,5 @@
 <?php
+
 // tests/Unit/Domain/CourseInterest/CourseInterestTest.php
 declare(strict_types=1);
 

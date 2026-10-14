@@ -31,7 +31,7 @@ return new class extends Migration
             $table->text('description');
             $table->boolean('is_read')->default(false);
             $table->datetime('read_at')->nullable();
-            $table->datetime('email_sent_at')->nullable(); 
+            $table->datetime('email_sent_at')->nullable();
             $table->datetime('notified_at');
             $table->timestamps();
         });

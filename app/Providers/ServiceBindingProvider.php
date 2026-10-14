@@ -2,15 +2,13 @@
 
 namespace App\Providers;
 
-use App\Contracts\Services\SaveVideoServiceInterface;
 use App\Contracts\Services\CreateLessonServiceInterface;
+use App\Contracts\Services\SaveVideoServiceInterface;
 use App\Contracts\Services\UpdateLessonServiceInterface;
-
-use App\Services\SaveVideoService;
 use App\Services\CreateLessonService;
+use App\Services\SaveVideoService;
 use App\Services\UpdateLessonService;
-
-use Illuminate\Support\ServiceProvider; 
+use Illuminate\Support\ServiceProvider;
 
 class ServiceBindingProvider extends ServiceProvider
 {

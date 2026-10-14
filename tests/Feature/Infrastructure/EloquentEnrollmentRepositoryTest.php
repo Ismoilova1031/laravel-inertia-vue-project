@@ -1,4 +1,5 @@
 <?php
+
 // tests/Feature/Infrastructure/EloquentEnrollmentRepositoryTest.php
 declare(strict_types=1);
 
@@ -9,8 +10,8 @@ use App\Domain\Enrollment\Enrollment;
 use App\Domain\Enrollment\EnrollmentRepositoryInterface;
 use App\Domain\Enrollment\EnrollmentStatus;
 use App\Domain\Student\StudentId;
+use App\Infrastructure\Eloquent\CourseModel;
 use App\Infrastructure\Eloquent\StudentModel;
-use App\Models\Course;
 use DateTimeImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -20,7 +21,9 @@ final class EloquentEnrollmentRepositoryTest extends TestCase
     use RefreshDatabase;
 
     private EnrollmentRepositoryInterface $repository;
+
     private CourseId $courseId;
+
     private StudentId $studentId;
 
     protected function setUp(): void
@@ -29,7 +32,7 @@ final class EloquentEnrollmentRepositoryTest extends TestCase
 
         $this->repository = $this->app->make(EnrollmentRepositoryInterface::class);
 
-        $course = Course::factory()->create();
+        $course = CourseModel::factory()->create();
         $student = StudentModel::create([
             'name' => 'Ali', 'surname' => 'Valiyev',
             'email' => 'ali@example.com', 'username' => 'ali_v', 'password' => 'x',

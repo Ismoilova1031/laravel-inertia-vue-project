@@ -2,17 +2,17 @@
 
 namespace App\Services;
 
-use App\Contracts\Services\CreateLessonServiceInterface;
 use App\Contracts\Repositories\LessonRepositoryInterface;
-use App\Contracts\Repositories\TaskRepositoryInterface;
-use App\Contracts\Repositories\QuestionRepositoryInterface;
 use App\Contracts\Repositories\QuestionOptionRepositoryInterface;
+use App\Contracts\Repositories\QuestionRepositoryInterface;
+use App\Contracts\Repositories\TaskRepositoryInterface;
+use App\Contracts\Services\CreateLessonServiceInterface;
 use App\Dtos\LessonDto;
 use App\Dtos\TaskDto;
-use App\Models\Lesson;
 use App\Enums\LessonType;
-use App\Enums\TaskType;
 use App\Enums\QuestionType;
+use App\Enums\TaskType;
+use App\Models\Lesson;
 
 class CreateLessonService implements CreateLessonServiceInterface
 {
@@ -25,7 +25,7 @@ class CreateLessonService implements CreateLessonServiceInterface
 
     public function create(LessonDto $dto, ?string $videoPath): Lesson
     {
-        $lesson =  $this->lessonRepository->create($dto->toArray($videoPath));
+        $lesson = $this->lessonRepository->create($dto->toArray($videoPath));
 
         if ($dto->lesson_type === LessonType::TASK->value) {
 
@@ -38,11 +38,11 @@ class CreateLessonService implements CreateLessonServiceInterface
     private function createTask(TaskDto $task, int $lessonId): void
     {
         $createdTask = $this->taskRepository->create([
-                'lesson_id' => $lessonId,
-                'task_type' => $task->type->value,
-                'deadline' => $task->deadline,
-                'allowed_file_extensions' => $task->file_extensions,
-            ]);
+            'lesson_id' => $lessonId,
+            'task_type' => $task->type->value,
+            'deadline' => $task->deadline,
+            'allowed_file_extensions' => $task->file_extensions,
+        ]);
 
         if ($task->type === TaskType::QUIZ) {
             $this->createQuestion($task->questions, $createdTask->id);

@@ -3,7 +3,7 @@
 namespace App\Dtos;
 
 use Illuminate\Http\UploadedFile;
-use App\Dtos\TaskDto;
+
 class LessonDto
 {
     public function __construct(
@@ -16,8 +16,7 @@ class LessonDto
         public int $course_id,
 
         public ?TaskDto $tasks = null
-    ) {
-    }
+    ) {}
 
     public static function fromArray(array $data): self
     {

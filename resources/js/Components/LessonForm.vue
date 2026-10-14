@@ -1,15 +1,32 @@
 <template>
     <form @submit.prevent="submit">
+        <v-text-field
+            name="title"
+            placeholder="e.g. Master Vue 3 Router Guards"
+            v-model="form.title"
+            variant="outlined"
+            label="Lesson Title"
+            :error-messages="form.errors.title"
+        />
 
-        <v-text-field name="title" placeholder="e.g. Master Vue 3 Router Guards" v-model="form.title" variant="outlined"
-            label="Lesson Title" :error-messages="form.errors.title" />
+        <v-textarea
+            name="description"
+            placeholder="Lesson Description"
+            v-model="form.description"
+            variant="outlined"
+            label="Lesson Description"
+            rows="4"
+            class="mt-4"
+            :error-messages="form.errors.description"
+        />
 
-        <v-textarea name="description" placeholder="Lesson Description" v-model="form.description" variant="outlined"
-            label="Lesson Description" rows="4" class="mt-4" :error-messages="form.errors.description" />
-
-        <v-number-input control-variant="split" v-model="form.sort_order" label="Sort Order"
-            :error-messages="form.errors.sort_order" width="300" />
-
+        <v-number-input
+            control-variant="split"
+            v-model="form.sort_order"
+            label="Sort Order"
+            :error-messages="form.errors.sort_order"
+            width="300"
+        />
 
         <v-tabs v-model="form.lesson_type" class="mt-6">
             <v-tab v-for="type in types" :key="type.value" :value="type.value">
@@ -18,24 +35,45 @@
         </v-tabs>
 
         <v-tabs-window v-model="form.lesson_type" class="mt-4">
-            <v-tabs-window-item v-for="type in types" :key="type.value" :value="type.value">
-                <RichTextEditor v-if="type.value === LessonType.TEXT" v-model="form.lesson_content"
-                    :error-messages="form.errors.lesson_content" />
+            <v-tabs-window-item
+                v-for="type in types"
+                :key="type.value"
+                :value="type.value"
+            >
+                <RichTextEditor
+                    v-if="type.value === LessonType.TEXT"
+                    v-model="form.lesson_content"
+                    :error-messages="form.errors.lesson_content"
+                />
 
-                <LessonVideoUpload v-else-if="type.value === LessonType.VIDEO" v-model="form.video" @update:video-url="videoUrl = $event"
-                    :error-messages="form.errors.video" :video-url="videoUrl" />
+                <LessonVideoUpload
+                    v-else-if="type.value === LessonType.VIDEO"
+                    v-model="form.video"
+                    @update:video-url="videoUrl = $event"
+                    :error-messages="form.errors.video"
+                    :video-url="videoUrl"
+                />
 
-                <TaskForm v-else-if="type.value === LessonType.TASK" v-model="form.task" :errors="taskErrors" />
+                <TaskForm
+                    v-else-if="type.value === LessonType.TASK"
+                    v-model="form.task"
+                    :errors="taskErrors"
+                />
             </v-tabs-window-item>
         </v-tabs-window>
 
         <div class="d-flex justify-end mt-6">
-            <v-btn type="submit" color="primary" border variant="flat" :loading="form.processing"
-                :disabled="form.processing">
+            <v-btn
+                type="submit"
+                color="primary"
+                border
+                variant="flat"
+                :loading="form.processing"
+                :disabled="form.processing"
+            >
                 {{ submitLabel }}
             </v-btn>
         </div>
-
     </form>
 </template>
 
@@ -67,11 +105,13 @@ const taskErrors = computed(() => {
     const result: Record<string, string> = {};
     for (const key in props.form.errors) {
         if (key.startsWith("task.")) {
-            result[key.replace("task.", "")] = (props.form.errors as Record<string, string>)[key];
+            result[key.replace("task.", "")] = (
+                props.form.errors as Record<string, string>
+            )[key];
         }
     }
     return result;
-})
+});
 
 const emit = defineEmits<{
     cancel: [];

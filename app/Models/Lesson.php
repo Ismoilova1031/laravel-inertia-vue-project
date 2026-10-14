@@ -2,15 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Enums\LessonType;
+use App\Infrastructure\Eloquent\CourseModel;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use App\Models\Course;
-use App\Models\Task;
-use App\Models\LessonStudent;
-use App\Models\Notification;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Storage;
 
@@ -34,7 +31,7 @@ class Lesson extends Model
 
     public function getVideoSrcAttribute(): ?string
     {
-        if (!$this->video_url) {
+        if (! $this->video_url) {
             return null;
         }
 
@@ -47,7 +44,7 @@ class Lesson extends Model
 
     public function course(): BelongsTo
     {
-        return $this->belongsTo(Course::class);
+        return $this->belongsTo(CourseModel::class);
     }
 
     public function task(): HasOne

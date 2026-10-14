@@ -2,8 +2,8 @@
 
 namespace App\Infrastructure\Eloquent;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Domain\Enrollment\EnrollmentStatus;
+use Illuminate\Database\Eloquent\Model;
 
 class EnrollmentModel extends Model
 {
@@ -18,7 +18,7 @@ class EnrollmentModel extends Model
     ];
 
     protected $casts = [
-        'enrolled_at'    => 'immutable_datetime',
+        'enrolled_at' => 'immutable_datetime',
         'deactivated_at' => 'immutable_datetime',
         'status' => EnrollmentStatus::class,
     ];

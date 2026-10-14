@@ -16,6 +16,7 @@ class LessonRepository implements LessonRepositoryInterface
     public function update(Lesson $lesson, array $data): Lesson
     {
         $lesson->update($data);
+
         return $lesson->fresh();
     }
 
@@ -23,6 +24,7 @@ class LessonRepository implements LessonRepositoryInterface
     {
         $lesson = Lesson::find($id);
         $lesson->update($data);
+
         return $lesson->fresh();
     }
 

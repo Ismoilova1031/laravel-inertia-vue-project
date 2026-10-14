@@ -12,7 +12,7 @@ final class EmailAddress
     {
         $value = mb_strtolower(trim($value));
 
-        if(mb_strlen($value) > 255 || !filter_var($value, FILTER_VALIDATE_EMAIL)){
+        if (mb_strlen($value) > 255 || ! filter_var($value, FILTER_VALIDATE_EMAIL)) {
             throw new InvalidArgumentException('Email manzili noto\'g\'ri');
         }
 

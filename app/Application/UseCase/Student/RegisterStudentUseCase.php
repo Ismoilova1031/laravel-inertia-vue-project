@@ -11,25 +11,24 @@ use App\Domain\Student\Student;
 use App\Domain\Student\StudentId;
 use App\Domain\Student\StudentRepositoryInterface;
 use App\Domain\Student\Username;
-use App\Application\UseCase\Enrollment\EnrollStudentUseCase;
 
 final class RegisterStudentUseCase
 {
     public function __construct(
         private readonly StudentRepositoryInterface $students,
         private readonly PasswordHasherInterface $hasher,
-    ){}
+    ) {}
 
     public function execute(RegisterStudentCommand $command, ?int $courseId = null): StudentId
     {
         $email = new EmailAddress($command->email);
         $username = new Username($command->username);
 
-        if($this->students->existsByEmail($email)){
+        if ($this->students->existsByEmail($email)) {
             throw EmailAlreadyTakenException::withEmail($email);
         }
 
-        if($this->students->existsByUsername($username)){
+        if ($this->students->existsByUsername($username)) {
             throw UsernameAlreadyTakenException::withUsername($username);
         }
 

@@ -8,8 +8,8 @@ use App\Domain\Student\Student;
 use App\Domain\Student\StudentId;
 use App\Domain\Student\StudentRepositoryInterface;
 use App\Domain\Student\Username;
-use App\Infrastructure\Mapper\StudentMapper;
 use App\Infrastructure\Eloquent\StudentModel;
+use App\Infrastructure\Mapper\StudentMapper;
 
 final class EloquentStudentRepository implements StudentRepositoryInterface
 {
@@ -26,9 +26,9 @@ final class EloquentStudentRepository implements StudentRepositoryInterface
     {
         $attributes = $this->mapper->toAttributes($student);
 
-        if($student->id() === null){
+        if ($student->id() === null) {
             $model = StudentModel::create($attributes);
-        }else{
+        } else {
             $model = StudentModel::find($student->id()->value()) ?? throw StudentNotFoundException::withId($student->id());
 
             $model->update($attributes);
@@ -42,14 +42,14 @@ final class EloquentStudentRepository implements StudentRepositoryInterface
         StudentModel::whereKey($id->value())->delete();
     }
 
-    public function existsByUsername(Username $username, StudentId $exceptId = null): bool
+    public function existsByUsername(Username $username, ?StudentId $exceptId = null): bool
     {
         return StudentModel::where('username', $username->value())
             ->when($exceptId, fn ($q) => $q->whereKeyNot($exceptId->value()))
             ->exists();
     }
 
-    public function existsByEmail(EmailAddress $email, StudentId $exceptId = null): bool
+    public function existsByEmail(EmailAddress $email, ?StudentId $exceptId = null): bool
     {
         return StudentModel::where('email', $email->value())
             ->when($exceptId, fn ($q) => $q->whereKeyNot($exceptId->value()))

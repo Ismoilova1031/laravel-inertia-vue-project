@@ -8,7 +8,7 @@ use App\Domain\Student\StudentRepositoryInterface;
 
 final class DeleteStudentUseCase
 {
-    public function __construct(Private readonly StudentRepositoryInterface $students) {}
+    public function __construct(private readonly StudentRepositoryInterface $students) {}
 
     public function execute(int $id): void
     {
@@ -19,5 +19,4 @@ final class DeleteStudentUseCase
 
         $this->students->delete($studentId);
     }
-
 }

@@ -7,6 +7,7 @@ use InvalidArgumentException;
 final class PersonName
 {
     private readonly string $name;
+
     private readonly string $surname;
 
     public function __construct(string $name, string $surname)
@@ -14,8 +15,8 @@ final class PersonName
         $name = trim($name);
         $surname = trim($surname);
 
-        foreach([$name, $surname] as $part){
-            if($part === '' || mb_strlen($part) > 255){
+        foreach ([$name, $surname] as $part) {
+            if ($part === '' || mb_strlen($part) > 255) {
                 throw new InvalidArgumentException('Ism va familiya bo\'sh bo\'lmasligi va 255 belgidan oshmasligi kerak');
             }
         }
@@ -36,7 +37,7 @@ final class PersonName
 
     public function fullName(): string
     {
-        return $this->name . ' ' . $this->surname;
+        return $this->name.' '.$this->surname;
     }
 
     public function equals(self $other): bool

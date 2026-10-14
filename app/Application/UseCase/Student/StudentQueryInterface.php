@@ -2,8 +2,6 @@
 
 namespace App\Application\UseCase\Student;
 
-use App\Application\UseCase\Student\StudentListItem;
-
 interface StudentQueryInterface
 {
     /**

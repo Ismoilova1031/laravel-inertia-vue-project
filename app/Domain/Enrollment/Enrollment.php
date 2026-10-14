@@ -31,7 +31,7 @@ final class Enrollment
 
     public function reenroll(DateTimeImmutable $now): void
     {
-        if($this->isActive()){
+        if ($this->isActive()) {
             throw AlreadyEnrolledException::create();
         }
 
@@ -42,7 +42,7 @@ final class Enrollment
 
     public function deactivate(DateTimeImmutable $now): void
     {
-        if(!$this->isActive()){
+        if (! $this->isActive()) {
             throw EnrollmentNotActiveException::create();
         }
 
@@ -55,10 +55,33 @@ final class Enrollment
         return $this->status === EnrollmentStatus::ACTIVE;
     }
 
-    public function id(): ?EnrollmentId { return $this->id; }
-    public function courseId(): CourseId { return $this->courseId; }
-    public function studentId(): StudentId { return $this->studentId; }
-    public function status(): EnrollmentStatus { return $this->status; }
-    public function enrolledAt(): DateTimeImmutable { return $this->enrolledAt; }
-    public function deactivatedAt(): ?DateTimeImmutable { return $this->deactivatedAt; }
+    public function id(): ?EnrollmentId
+    {
+        return $this->id;
+    }
+
+    public function courseId(): CourseId
+    {
+        return $this->courseId;
+    }
+
+    public function studentId(): StudentId
+    {
+        return $this->studentId;
+    }
+
+    public function status(): EnrollmentStatus
+    {
+        return $this->status;
+    }
+
+    public function enrolledAt(): DateTimeImmutable
+    {
+        return $this->enrolledAt;
+    }
+
+    public function deactivatedAt(): ?DateTimeImmutable
+    {
+        return $this->deactivatedAt;
+    }
 }

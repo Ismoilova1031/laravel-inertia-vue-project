@@ -10,5 +10,5 @@ final class StudentListItem
         public readonly string $surname,
         public readonly string $email,
         public readonly string $username
-    ){}
+    ) {}
 }

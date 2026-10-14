@@ -16,6 +16,7 @@ class TaskRepository implements TaskRepositoryInterface
     public function update(Task $task, array $data): Task
     {
         $task->update($data);
+
         return $task->fresh();
     }
 

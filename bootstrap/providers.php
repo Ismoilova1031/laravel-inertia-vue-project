@@ -1,10 +1,10 @@
 <?php
 
+use App\Infrastructure\Provider\RepositoryServiceProvider as InfrastructureRepositoryServiceProvider;
 use App\Providers\AppServiceProvider;
 use App\Providers\RepositoryServiceProvider;
-use App\Providers\UseCaseServiceProvider;
 use App\Providers\ServiceBindingProvider;
-use App\Infrastructure\Provider\RepositoryServiceProvider as InfrastructureRepositoryServiceProvider;
+use App\Providers\UseCaseServiceProvider;
 
 return [
     AppServiceProvider::class,

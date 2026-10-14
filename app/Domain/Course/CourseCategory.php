@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Enums;
+namespace App\Domain\Course;
 
 enum CourseCategory: int
 {
@@ -30,8 +30,9 @@ enum CourseCategory: int
             self::FinanceAndAccounting => 'Finance and Accounting',
         };
     }
+
     public static function labels(): array
     {
-       return collect(self::cases())->map(fn($case) => ['label' => $case->label(), 'value' => $case->value])->toArray();
+        return collect(self::cases())->map(fn ($case) => ['label' => $case->label(), 'value' => $case->value])->toArray();
     }
 }

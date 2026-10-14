@@ -2,9 +2,9 @@
 
 namespace App\UseCases;
 
+use App\Contracts\Repositories\LessonRepositoryInterface;
 use App\Contracts\UseCases\DeleteLessonUseCaseInterface;
 use App\Models\Lesson;
-use App\Contracts\Repositories\LessonRepositoryInterface;
 use Illuminate\Support\Facades\DB;
 
 class DeleteLessonUseCase implements DeleteLessonUseCaseInterface

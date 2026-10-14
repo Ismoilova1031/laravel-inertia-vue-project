@@ -2,17 +2,17 @@
 
 namespace App\Services;
 
-use App\Contracts\Services\UpdateLessonServiceInterface;
 use App\Contracts\Repositories\LessonRepositoryInterface;
-use App\Contracts\Repositories\TaskRepositoryInterface;
-use App\Contracts\Repositories\QuestionRepositoryInterface;
 use App\Contracts\Repositories\QuestionOptionRepositoryInterface;
+use App\Contracts\Repositories\QuestionRepositoryInterface;
+use App\Contracts\Repositories\TaskRepositoryInterface;
+use App\Contracts\Services\UpdateLessonServiceInterface;
 use App\Dtos\LessonDto;
 use App\Dtos\TaskDto;
-use App\Models\Lesson;
 use App\Enums\LessonType;
-use App\Enums\TaskType;
 use App\Enums\QuestionType;
+use App\Enums\TaskType;
+use App\Models\Lesson;
 use App\Models\Task;
 
 class UpdateLessonService implements UpdateLessonServiceInterface
@@ -32,6 +32,7 @@ class UpdateLessonService implements UpdateLessonServiceInterface
         }
 
         $lesson = $this->lessonRepository->update($lesson, $dto->toArray($videoPath));
+
         return $lesson;
     }
 

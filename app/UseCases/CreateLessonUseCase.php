@@ -2,15 +2,14 @@
 
 namespace App\UseCases;
 
-use App\Contracts\UseCases\CreateLessonUseCaseInterface;
-use App\Contracts\Services\SaveVideoServiceInterface;
 use App\Contracts\Services\CreateLessonServiceInterface;
+use App\Contracts\Services\SaveVideoServiceInterface;
+use App\Contracts\UseCases\CreateLessonUseCaseInterface;
 use App\Dtos\LessonDto;
 use App\Models\Lesson;
 
 class CreateLessonUseCase implements CreateLessonUseCaseInterface
 {
-
     public function __construct(
         private CreateLessonServiceInterface $service,
         private SaveVideoServiceInterface $saveVideoService,

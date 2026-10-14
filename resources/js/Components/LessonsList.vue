@@ -1,12 +1,21 @@
 <template>
     <v-card rounded="lg" class="border" elevation="0">
         <v-list class="py-0">
-            <draggable v-model="lessons" item-key="id" handle=".drag-handle" @end="reorderLessons">
+            <draggable
+                v-model="lessons"
+                item-key="id"
+                handle=".drag-handle"
+                @end="reorderLessons"
+            >
                 <template #item="{ element: lesson, index }">
                     <v-list-item :key="lesson.id" class="px-5 py-3 border-b">
                         <template #prepend>
                             <div class="d-flex align-center ga-3">
-                                <v-icon class="drag-handle" color="medium-emphasis" size="20">
+                                <v-icon
+                                    class="drag-handle"
+                                    color="medium-emphasis"
+                                    size="20"
+                                >
                                     mdi-menu
                                 </v-icon>
 
@@ -15,7 +24,9 @@
                                 </span>
                             </div>
                         </template>
-                        <div class="items d-flex align-center justify-space-between">
+                        <div
+                            class="items d-flex align-center justify-space-between"
+                        >
                             <div>
                                 <v-list-item-title class="font-weight-medium">
                                     {{ lesson.title }}
@@ -26,34 +37,50 @@
                                 </v-list-item-subtitle>
                             </div>
 
-                            <v-chip size="small" variant="tonal" :color="lessonTypeColor(lesson.lessonType.value)">
+                            <v-chip
+                                size="small"
+                                variant="tonal"
+                                :color="
+                                    lessonTypeColor(lesson.lessonType.value)
+                                "
+                            >
                                 {{ lesson.lessonType.label }}
                             </v-chip>
                         </div>
 
                         <template #append>
                             <div class="d-flex align-center ga-3">
-                                <Link :href="LessonController.edit({
-                                    course: course.id,
-                                    lesson: lesson.id,
-                                    
-                                }).url" class="update-lesson-link">
-                                    <v-btn icon="mdi-pencil-outline" variant="text" size="medium" />
+                                <Link
+                                    :href="
+                                        LessonController.edit({
+                                            course: course.id,
+                                            lesson: lesson.id,
+                                        }).url
+                                    "
+                                    class="update-lesson-link"
+                                >
+                                    <v-btn
+                                        icon="mdi-pencil-outline"
+                                        variant="text"
+                                        size="medium"
+                                    />
                                 </Link>
-                                <v-btn icon="mdi-delete-outline" variant="text" size="medium"
-                                    @click="openDeleteDialog(lesson)" />
+                                <v-btn
+                                    icon="mdi-delete-outline"
+                                    variant="text"
+                                    size="medium"
+                                    @click="openDeleteDialog(lesson)"
+                                />
                             </div>
                         </template>
                     </v-list-item>
                 </template>
             </draggable>
-            <v-list-item v-if="lessons.length === 0" class=" text-center py-10">
+            <v-list-item v-if="lessons.length === 0" class="text-center py-10">
                 <v-icon size="40" color="medium-emphasis">
                     mdi-book-open-page-variant
                 </v-icon>
-                <v-list-item-title>
-                    No lessons yet.
-                </v-list-item-title>
+                <v-list-item-title> No lessons yet. </v-list-item-title>
 
                 <v-list-item-subtitle class="text-body-2 text-medium-emphasis">
                     Add the first lesson to this course.
@@ -61,14 +88,25 @@
             </v-list-item>
         </v-list>
     </v-card>
-    <Link :href="LessonController.create({ course: course.id }).url" class="add-lesson-link">
-        <v-card link rounded="lg" class="border border-dashed bg-transparent mt-4" elevation="0">
+    <Link
+        :href="LessonController.create({ course: course.id }).url"
+        class="add-lesson-link"
+    >
+        <v-card
+            link
+            rounded="lg"
+            class="border border-dashed bg-transparent mt-4"
+            elevation="0"
+        >
             <div class="d-flex align-center justify-center px-5 py-3">
-                <v-btn icon="mdi-plus" variant="text" size="medium" class="mr-4" />
+                <v-btn
+                    icon="mdi-plus"
+                    variant="text"
+                    size="medium"
+                    class="mr-4"
+                />
 
-                <span class="font-weight-medium">
-                    Add Lesson
-                </span>
+                <span class="font-weight-medium"> Add Lesson </span>
             </div>
         </v-card>
     </Link>
@@ -83,14 +121,18 @@
                 <span class="font-weight-bold">
                     {{ selectedLesson?.title }}
                 </span>
-                ? <br>
+                ? <br />
                 This action cannot be undone.
             </v-card-text>
 
             <v-card-actions>
                 <v-spacer />
 
-                <v-btn color="primary" variant="text" @click="closeDeleteDialog">
+                <v-btn
+                    color="primary"
+                    variant="text"
+                    @click="closeDeleteDialog"
+                >
                     Cancel
                 </v-btn>
 
@@ -115,7 +157,6 @@ const props = defineProps<{
     course: CourseDetail;
 }>();
 
-
 const lessons = ref([...props.lessons]);
 
 const reorderLessons = () => {
@@ -129,7 +170,7 @@ const reorderLessons = () => {
         },
         {
             preserveScroll: true,
-        }
+        },
     );
 };
 
@@ -176,7 +217,7 @@ function confirmDelete() {
 
             onSuccess: () => {
                 lessons.value = lessons.value
-                    .filter(lesson => lesson.id !== lessonId)
+                    .filter((lesson) => lesson.id !== lessonId)
                     .map((lesson, index) => ({
                         ...lesson,
                         sortOrder: index + 1,
@@ -184,10 +225,9 @@ function confirmDelete() {
             },
 
             onFinish: closeDeleteDialog,
-        }
+        },
     );
 }
-
 </script>
 
 <style lang="css" scoped>

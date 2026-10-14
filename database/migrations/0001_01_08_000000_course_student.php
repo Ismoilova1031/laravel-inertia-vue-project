@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('course_id')->constrained()->cascadeOnDelete();
             $table->foreignId('student_id')->constrained()->cascadeOnDelete();
-            $table->unsignedTinyInteger('status')->default(1); 
+            $table->unsignedTinyInteger('status')->default(1);
             $table->timestamp('enrolled_at');
             $table->timestamp('deactivated_at')->nullable();
             $table->timestamps();

@@ -1,4 +1,5 @@
 <?php
+
 // tests/Feature/Application/RegisterStudentUseCaseTest.php
 declare(strict_types=1);
 
@@ -9,9 +10,9 @@ use App\Application\UseCase\Student\RegisterStudentUseCase;
 use App\Domain\Student\Exception\EmailAlreadyTakenException;
 use App\Domain\Student\Exception\UsernameAlreadyTakenException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
-use Illuminate\Support\Facades\DB;
 
 final class RegisterStudentUseCaseTest extends TestCase
 {

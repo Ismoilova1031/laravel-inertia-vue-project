@@ -4,10 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use App\Models\Task;
-use App\Models\Student;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use App\Models\StudentAnswer;
 
 class TaskSubmission extends Model
 {

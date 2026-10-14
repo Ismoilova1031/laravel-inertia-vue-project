@@ -6,8 +6,8 @@ use App\Domain\Course\CourseId;
 use App\Domain\CourseInterest\CourseInterest;
 use App\Domain\CourseInterest\CourseInterestRepositoryInterface;
 use App\Domain\Student\StudentId;
-use App\Infrastructure\Mapper\CourseInterestMapper;
 use App\Infrastructure\Eloquent\CourseInterestModel;
+use App\Infrastructure\Mapper\CourseInterestMapper;
 use RuntimeException;
 
 final class EloquentCourseInterestRepository implements CourseInterestRepositoryInterface

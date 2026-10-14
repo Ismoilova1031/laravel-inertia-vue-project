@@ -11,7 +11,7 @@ use DateTimeImmutable;
 final class DeactivateEnrollmentUseCase
 {
     public function __construct(private readonly EnrollmentRepositoryInterface $enrollments) {}
-    
+
     public function execute(DeactivateEnrollmentCommand $command): void
     {
         $enrollment = $this->enrollments->findByCourseAndStudent(
@@ -19,7 +19,7 @@ final class DeactivateEnrollmentUseCase
             new StudentId($command->studentId),
         ) ?? throw EnrollmentNotFoundException::create();
 
-        $enrollment->deactivate(new DateTimeImmutable());
+        $enrollment->deactivate(new DateTimeImmutable);
 
         $this->enrollments->save($enrollment);
     }

@@ -10,23 +10,17 @@ export const taskFormSchema = z
             z.literal(null),
         ]),
 
-        deadline: z
-            .string()
-            .nullable(),
+        deadline: z.string().nullable(),
 
-        allowed_file_extensions: z
-            .array(z.string())
-            .nullable(),
+        allowed_file_extensions: z.array(z.string()).nullable(),
 
-        questions: z
-            .array(questionFormSchema)
-            .nullable(),
+        questions: z.array(questionFormSchema).nullable(),
     })
     .superRefine((data, ctx) => {
-
         if (
             data.task_type === TaskTypes.FILE_UPLOAD &&
-            (!data.allowed_file_extensions || data.allowed_file_extensions.length === 0)
+            (!data.allowed_file_extensions ||
+                data.allowed_file_extensions.length === 0)
         ) {
             ctx.addIssue({
                 code: "custom",

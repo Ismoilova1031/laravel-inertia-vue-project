@@ -1,4 +1,3 @@
-
 <template>
     <v-card rounded="lg" elevation="1">
         <v-list lines="two" class="py-0">
@@ -23,11 +22,7 @@
 
                 <template #append>
                     <div class="d-flex align-center ga-3">
-                        <v-chip
-                            size="small"
-                            color="primary"
-                            variant="tonal"
-                        >
+                        <v-chip size="small" color="primary" variant="tonal">
                             @{{ student.username }}
                         </v-chip>
 
@@ -61,10 +56,7 @@
                 </template>
             </v-list-item>
 
-            <v-list-item
-                v-if="students.length === 0"
-                class="text-center py-10"
-            >
+            <v-list-item v-if="students.length === 0" class="text-center py-10">
                 <template #prepend>
                     <v-icon size="40" color="medium-emphasis">
                         mdi-account-group-outline
@@ -84,16 +76,15 @@
 
     <v-dialog v-model="deleteDialog" max-width="420">
         <v-card rounded="lg">
-            <v-card-title class="pa-5">
-                Studentni o‘chirish
-            </v-card-title>
+            <v-card-title class="pa-5"> Studentni o‘chirish </v-card-title>
 
             <v-card-text>
                 <strong>
                     {{ selectedStudent?.name }}
                     {{ selectedStudent?.surname }}
                 </strong>
-                studentini o‘chirishni xohlaysizmi? Bu amalni ortga qaytarib bo‘lmasligi mumkin.
+                studentini o‘chirishni xohlaysizmi? Bu amalni ortga qaytarib
+                bo‘lmasligi mumkin.
             </v-card-text>
 
             <v-card-actions class="pa-5 justify-end">
@@ -119,13 +110,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { router } from '@inertiajs/vue3';
+import { ref } from "vue";
+import { router } from "@inertiajs/vue3";
 import {
     edit,
     destroy,
-} from '../actions/App/Http/Controllers/StudentController';
-import type { Student } from '../types/student';
+} from "../actions/App/Http/Controllers/StudentController";
+import type { Student } from "../types/student";
 
 defineProps<{
     students: Student[];

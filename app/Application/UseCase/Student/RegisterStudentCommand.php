@@ -10,5 +10,5 @@ final class RegisterStudentCommand
         public readonly string $email,
         public readonly string $username,
         public readonly string $password
-    ){}
+    ) {}
 }

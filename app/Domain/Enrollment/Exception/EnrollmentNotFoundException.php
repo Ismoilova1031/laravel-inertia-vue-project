@@ -8,6 +8,6 @@ final class EnrollmentNotFoundException extends DomainException
 {
     public static function create(): self
     {
-        return new self("Student bu kursga yozilmagan");
+        return new self('Student bu kursga yozilmagan');
     }
 }

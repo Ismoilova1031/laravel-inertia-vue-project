@@ -2,8 +2,8 @@
 
 namespace App\Contracts\UseCases;
 
-use App\Models\Lesson;
 use App\Dtos\LessonDto;
+use App\Models\Lesson;
 
 interface UpdateLessonUseCaseInterface
 {

@@ -16,5 +16,4 @@ interface LessonRepositoryInterface
     public function delete(Lesson $lesson): bool;
 
     public function getByCourseId(int $courseId): Collection;
-
 }

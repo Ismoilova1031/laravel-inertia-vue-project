@@ -2,10 +2,9 @@
 
 namespace App\Http\Resources;
 
+use App\Enums\TaskType;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Enums\TaskType;
-use App\Http\Resources\QuestionResource;
 
 class TaskResource extends JsonResource
 {
@@ -26,7 +25,7 @@ class TaskResource extends JsonResource
             'allowed_file_extensions' => $this->allowed_file_extensions,
             'questions' => $this->when(
                 $this->task_type === TaskType::QUIZ,
-                fn() => QuestionResource::collection($this->questions)->resolve(),
+                fn () => QuestionResource::collection($this->questions)->resolve(),
             ),
         ];
     }

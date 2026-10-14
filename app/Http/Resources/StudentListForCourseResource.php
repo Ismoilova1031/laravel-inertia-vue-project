@@ -2,9 +2,9 @@
 
 namespace App\Http\Resources;
 
+use App\Domain\Enrollment\EnrollmentStatus;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Domain\Enrollment\EnrollmentStatus;
 
 class StudentListForCourseResource extends JsonResource
 {
@@ -22,7 +22,7 @@ class StudentListForCourseResource extends JsonResource
             'fullName' => "{$this->name} {$this->surname}",
             'email' => $this->email,
             'username' => $this->username,
-               'isActive' => (int) $this->pivot->status === EnrollmentStatus::ACTIVE->value,
+            'isActive' => (int) $this->pivot->status === EnrollmentStatus::ACTIVE->value,
         ];
     }
 }
