@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\LessonListResource;
-use App\Http\Resources\StudentListResource;
+use App\Http\Resources\StudentListForCourseResource;
 
 class CourseShowResource extends JsonResource
 {
@@ -29,7 +29,7 @@ class CourseShowResource extends JsonResource
                 'label' => $this->status->label(),
             ],
             'lessons' => LessonListResource::collection($this->lessons)->resolve(),
-            'students' => StudentListResource::collection($this->students)->resolve(),
+            'students' => StudentListForCourseResource::collection($this->students)->resolve(),
         ];
     }
 }

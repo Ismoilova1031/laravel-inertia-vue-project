@@ -36,8 +36,7 @@ final class EloquentStudentQuery implements StudentQueryInterface
             ->whereNotIn('id', fn ($q) => $q
                 ->select('student_id')
                 ->from('course_student')
-                ->where('course_id', $courseId)
-                ->where('status', EnrollmentStatus::ACTIVE->value))
+                ->where('course_id', $courseId))
             ->orderBy('surname')
             ->orderBy('name')
             ->get(['id', 'name', 'surname', 'email', 'username'])

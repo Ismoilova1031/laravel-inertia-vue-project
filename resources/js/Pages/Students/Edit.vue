@@ -22,10 +22,10 @@ import { Head } from '@inertiajs/vue3';
 import StudentForm from '../../components/StudentForm.vue';
 import { index } from '../../actions/App/Http/Controllers/StudentController.js';
 import { useStudentForm } from '../../forms/studentForm';
-import type { StudentRow } from '../../types/student';
+import type { Student } from '../../types/student';
 
 const props = defineProps<{
-    student: StudentRow;
+    student: Student;
 }>();
 
 const { form, submit } = useStudentForm(

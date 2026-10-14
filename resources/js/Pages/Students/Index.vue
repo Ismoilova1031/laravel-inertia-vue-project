@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { Head } from '@inertiajs/vue3'
 import StudentList from '../../components/StudentList.vue'
-import type { StudentRow } from '../../types/student'
+import type { Student } from '../../types/student'
 import { create } from '../../actions/App/Http/Controllers/StudentController.js'
 
-defineProps<{ students: StudentRow[] }>()
+defineProps<{ students: Student[] }>()
 </script>
 
 <template>

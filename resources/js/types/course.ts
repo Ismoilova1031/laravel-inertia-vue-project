@@ -1,6 +1,6 @@
-import { Lesson } from "./lesson";
-import { Student } from "./student";
-import { SelectOption } from "./common";
+import type { Lesson } from "./lesson";
+import type { StudentForCourse } from "./student";
+import type { SelectOption } from "./common";
 
 export interface CourseBase {
     id: number;
@@ -17,6 +17,6 @@ export interface CourseDetail extends CourseBase {
     category: SelectOption;
     status: SelectOption;
     lessons: Lesson[];
-    students: Student[];
+    students: StudentForCourse[];
 }
 
