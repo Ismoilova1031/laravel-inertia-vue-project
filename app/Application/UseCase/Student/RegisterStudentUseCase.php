@@ -12,14 +12,12 @@ use App\Domain\Student\StudentId;
 use App\Domain\Student\StudentRepositoryInterface;
 use App\Domain\Student\Username;
 use App\Application\UseCase\Enrollment\EnrollStudentUseCase;
-use App\Application\UseCase\Enrollment\EnrollStudentCommand;
 
 final class RegisterStudentUseCase
 {
     public function __construct(
         private readonly StudentRepositoryInterface $students,
         private readonly PasswordHasherInterface $hasher,
-        private readonly EnrollStudentUseCase $enrollStudent,
     ){}
 
     public function execute(RegisterStudentCommand $command, ?int $courseId = null): StudentId
@@ -42,10 +40,6 @@ final class RegisterStudentUseCase
             $this->hasher->hash($command->password)
         );
 
-        $model = $this->students->save($student);
-        if($courseId !== null){
-            $this->enrollStudent->execute(new EnrollStudentCommand($courseId, $model->id()->value()));
-        }
-        return $model->id();
+        return $this->students->save($student)->id();
     }
 }

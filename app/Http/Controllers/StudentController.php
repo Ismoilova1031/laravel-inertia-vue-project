@@ -15,6 +15,7 @@ use App\Http\Resources\StudentListResource;
 use App\Application\UseCase\Student\GetStudentUseCase;
 use App\Application\UseCase\Student\UpdateStudentUseCase;
 use App\Application\UseCase\Student\DeleteStudentUseCase;
+use App\Application\UseCase\Student\RegisterAndEnrollStudentUseCase;
 use App\Domain\Student\Exception\StudentNotFoundException;
 use App\Http\Requests\UpdateStudentRequest;
 use App\Domain\Course\Exception\CourseNotFoundException;
@@ -34,6 +35,7 @@ final class StudentController extends Controller
         private readonly GetStudentUseCase $getStudent,
         private readonly UpdateStudentUseCase $updateStudent,
         private readonly DeleteStudentUseCase $deleteStudent,
+        private readonly RegisterAndEnrollStudentUseCase $registerAndEnrollStudent,
     ) {}
 
     public function index(): Response
@@ -71,7 +73,7 @@ final class StudentController extends Controller
     public function storeForCourse(RegisterStudentRequest $request, int $course): RedirectResponse
     {
         try {
-            $this->registerStudent->execute($request->toCommand(), $course);
+            $this->registerAndEnrollStudent->execute($request->toCommand(), $course);
         } catch (CourseNotFoundException) {
             abort(404);
         } catch (CourseNotPublishedException) {
