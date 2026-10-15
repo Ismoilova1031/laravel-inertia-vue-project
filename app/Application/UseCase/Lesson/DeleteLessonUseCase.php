@@ -6,7 +6,7 @@ use App\Application\Contracts\FileStorageInterface;
 use App\Domain\Lesson\Exception\LessonNotFoundException;
 use App\Domain\Lesson\LessonId;
 use App\Domain\Lesson\LessonRepositoryInterface;
-use App\Domain\Lesson\SortOrder;
+use App\Domain\Lesson\LessonSequence;
 use Illuminate\Support\Facades\DB;
 
 final class DeleteLessonUseCase
@@ -22,20 +22,17 @@ final class DeleteLessonUseCase
         $lesson = $this->lessons->findById($lessonId)
             ?? throw LessonNotFoundException::withId($lessonId);
 
-        DB::transaction(function () use ($lessonId, $lesson){
+        DB::transaction(function () use ($lessonId, $lesson) {
             $this->lessons->delete($lessonId);
 
-            foreach($this->lessons->findByCourse($lesson->courseId()) as $index => $other) {
-                $position = new SortOrder($index + 1);
+            $remaining = $this->lessons->findByCourse($lesson->courseId());
 
-                if(!$other->sortOrder()->equals($position)) {
-                    $other->moveTo($position);
-                    $this->lessons->save($other);
-                }
+            foreach (LessonSequence::renumber($remaining) as $changed) {
+                $this->lessons->save($changed);
             }
         });
 
-        if($lesson->videoPath() !== null){
+        if ($lesson->videoPath() !== null) {
             $this->storage->delete($lesson->videoPath());
         }
     }

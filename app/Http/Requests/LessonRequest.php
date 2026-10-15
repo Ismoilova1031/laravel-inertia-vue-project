@@ -18,14 +18,19 @@ class LessonRequest extends FormRequest
 
     public function rules(): array
     {
-        return [
+        $rules = [
             'title' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
             'lesson_type' => ['required', 'integer', 'between:1,3'],
             'lesson_content' => ['nullable', 'string'],
             'video' => ['nullable', 'file', 'mimetypes:video/mp4,video/quicktime,video/x-msvideo', 'max:102400'],
-            'sort_order' => ['required', 'integer', 'min:1', 'max:100'],
         ];
+
+        if ($this->isMethod('PUT') || $this->isMethod('PATCH')) {
+            $rules['sort_order'] = ['required', 'integer', 'min:1'];
+        }
+
+        return $rules;
     }
 
     public function toCreateCommand(): CreateLessonCommand
@@ -37,7 +42,6 @@ class LessonRequest extends FormRequest
             title: $d['title'],
             description: $d['description'],
             type: (int) $d['lesson_type'],
-            sortOrder: (int) $d['sort_order'],
             content: $d['lesson_content'] ?? null,
             video: $this->videoFile(),
             task: $this->taskDto(),

@@ -3,10 +3,8 @@
 namespace App\Application\UseCase\Lesson;
 
 use App\Domain\Course\CourseId;
-use App\Domain\Lesson\Exception\LessonNotFoundException;
-use App\Domain\Lesson\LessonId;
 use App\Domain\Lesson\LessonRepositoryInterface;
-use App\Domain\Lesson\SortOrder;
+use App\Domain\Lesson\LessonSequence;
 use Illuminate\Support\Facades\DB;
 
 final class ReorderLessonsUseCase
@@ -15,16 +13,12 @@ final class ReorderLessonsUseCase
 
     public function execute(ReorderLessonsCommand $command): void
     {
-        $byId = [];
-        foreach($this->lessons->findByCourse(new CourseId($command->courseId)) as $lesson) {
-            $byId[$lesson->id()->value()] = $lesson;
-        }
+        $lessons = $this->lessons->findByCourse(new CourseId($command->courseId));
 
-        DB::transaction(function () use ($command, $byId){
-            foreach($command->positions as $lessonId => $sortOrder){
-                $lesson = $byId[$lessonId] ?? throw LessonNotFoundException::withId(new LessonId($lessonId));
+        $changed = LessonSequence::arrange($lessons, $command->orderedIds);
 
-                $lesson->moveTo(new SortOrder($sortOrder));
+        DB::transaction(function () use ($changed) {
+            foreach ($changed as $lesson) {
                 $this->lessons->save($lesson);
             }
         });

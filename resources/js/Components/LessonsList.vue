@@ -20,10 +20,11 @@
                                 </v-icon>
 
                                 <span class="font-weight mr-4">
-                                    {{ lesson.sortOrder }}
+                                    {{ index + 1 }}
                                 </span>
                             </div>
                         </template>
+
                         <div
                             class="items d-flex align-center justify-space-between"
                         >
@@ -50,21 +51,19 @@
 
                         <template #append>
                             <div class="d-flex align-center ga-3">
-                                <Link
-                                    :href="
-                                        LessonController.edit({
-                                            course: course.id,
-                                            lesson: lesson.id,
-                                        }).url
+                                <v-btn
+                                    icon="mdi-pencil-outline"
+                                    variant="text"
+                                    size="medium"
+                                    @click="
+                                        router.visit(
+                                            LessonController.edit({
+                                                course: course.id,
+                                                lesson: lesson.id,
+                                            }).url,
+                                        )
                                     "
-                                    class="update-lesson-link"
-                                >
-                                    <v-btn
-                                        icon="mdi-pencil-outline"
-                                        variant="text"
-                                        size="medium"
-                                    />
-                                </Link>
+                                />
                                 <v-btn
                                     icon="mdi-delete-outline"
                                     variant="text"
@@ -76,6 +75,7 @@
                     </v-list-item>
                 </template>
             </draggable>
+
             <v-list-item v-if="lessons.length === 0" class="text-center py-10">
                 <v-icon size="40" color="medium-emphasis">
                     mdi-book-open-page-variant
@@ -88,28 +88,22 @@
             </v-list-item>
         </v-list>
     </v-card>
-    <Link
-        :href="LessonController.create({ course: course.id }).url"
-        class="add-lesson-link"
-    >
-        <v-card
-            link
-            rounded="lg"
-            class="border border-dashed bg-transparent mt-4"
-            elevation="0"
-        >
-            <div class="d-flex align-center justify-center px-5 py-3">
-                <v-btn
-                    icon="mdi-plus"
-                    variant="text"
-                    size="medium"
-                    class="mr-4"
-                />
 
-                <span class="font-weight-medium"> Add Lesson </span>
-            </div>
-        </v-card>
-    </Link>
+    <v-card
+        link
+        rounded="lg"
+        class="border border-dashed bg-transparent mt-4"
+        elevation="0"
+        @click="
+            router.visit(LessonController.create({ course: course.id }).url)
+        "
+    >
+        <div class="d-flex align-center justify-center ga-3 px-5 py-4">
+            <v-icon icon="mdi-plus" />
+            <span class="font-weight-medium">Add Lesson</span>
+        </div>
+    </v-card>
+
     <v-dialog v-model="deleteDialog" max-width="500">
         <v-card>
             <v-card-title class="text-h6 font-weight-bold">
@@ -143,14 +137,14 @@
         </v-card>
     </v-dialog>
 </template>
+
 <script setup lang="ts">
-import { Link } from "@inertiajs/vue3";
-import type { Lesson } from "../types/lesson";
-import LessonController from "../actions/App/Http/Controllers/LessonController";
-import type { CourseDetail } from "../types/course";
-import draggable from "vuedraggable";
-import { ref } from "vue";
 import { router } from "@inertiajs/vue3";
+import draggable from "vuedraggable";
+import { ref, watch } from "vue";
+import type { Lesson } from "../types/lesson";
+import type { CourseDetail } from "../types/course";
+import LessonController from "../actions/App/Http/Controllers/LessonController";
 
 const props = defineProps<{
     lessons: Lesson[];
@@ -159,9 +153,16 @@ const props = defineProps<{
 
 const lessons = ref([...props.lessons]);
 
+watch(
+    () => props.lessons,
+    (value) => {
+        lessons.value = [...value];
+    },
+);
+
 const reorderLessons = () => {
     router.put(
-        `/courses/${props.course.id}/lessons/reorder`,
+        LessonController.reorder({ course: props.course.id }).url,
         {
             lessons: lessons.value.map((lesson, index) => ({
                 id: lesson.id,
@@ -170,6 +171,10 @@ const reorderLessons = () => {
         },
         {
             preserveScroll: true,
+            // Xatoda server holatiga qaytamiz
+            onError: () => {
+                lessons.value = [...props.lessons];
+            },
         },
     );
 };
@@ -205,8 +210,6 @@ function confirmDelete() {
         return;
     }
 
-    const lessonId = selectedLesson.value.id;
-
     router.delete(
         LessonController.destroy({
             course: props.course.id,
@@ -214,16 +217,6 @@ function confirmDelete() {
         }).url,
         {
             preserveScroll: true,
-
-            onSuccess: () => {
-                lessons.value = lessons.value
-                    .filter((lesson) => lesson.id !== lessonId)
-                    .map((lesson, index) => ({
-                        ...lesson,
-                        sortOrder: index + 1,
-                    }));
-            },
-
             onFinish: closeDeleteDialog,
         },
     );
@@ -233,10 +226,5 @@ function confirmDelete() {
 <style lang="css" scoped>
 .items {
     width: 80%;
-}
-
-.add-lesson-link {
-    text-decoration: none;
-    color: inherit;
 }
 </style>

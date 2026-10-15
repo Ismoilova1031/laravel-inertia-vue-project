@@ -6,6 +6,6 @@ final class ReorderLessonsCommand
 {
     public function __construct(
         public readonly int $courseId,
-        public readonly array $positions,
-    ){}
+        public readonly array $orderedIds,
+    ) {}
 }

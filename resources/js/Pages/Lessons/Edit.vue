@@ -13,22 +13,27 @@
                 :types="types"
                 submit-label="Update Lesson"
                 :submit="submit"
-                :videoUrl="lesson.video_url"
+                :video-url="lesson.video_url"
+                show-position
+                :max-position="course.lessonsCount"
             />
         </v-container>
     </v-app>
 </template>
+
 <script setup lang="ts">
 import LessonForm from "../../components/LessonForm.vue";
 import { useLessonForm } from "../../forms/lessonForm";
 import type { Course } from "../../types/course";
 import type { Lesson } from "../../types/lesson";
 import type { SelectOption } from "../../types/common";
+
 const props = defineProps<{
-    course: Course;
+    course: Course & { lessonsCount: number };
     lesson: Lesson;
     types: SelectOption[];
 }>();
+
 const { form, submit } = useLessonForm(
     props.course.id,
     {
@@ -59,6 +64,6 @@ const { form, submit } = useLessonForm(
               },
     },
     props.lesson.id,
-    props.lesson.video_src,
+    props.lesson.video_url,
 );
 </script>

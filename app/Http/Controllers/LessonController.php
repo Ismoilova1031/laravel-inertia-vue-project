@@ -71,7 +71,7 @@ class LessonController extends Controller
     {
         try {
             $this->updateLesson->execute($request->toUpdateCommand());
-        } catch (LessonNotFoundException|CourseNotFoundException) {
+        } catch (LessonNotFoundException | CourseNotFoundException) {
             abort(404);
         } catch (LessonTaskRequiredException $e) {
             throw ValidationException::withMessages(['task' => $e->getMessage()]);
@@ -110,14 +110,18 @@ class LessonController extends Controller
             abort(404);
         }
 
-        // Create/Edit sahifalari course'ning boshqa maydonini ishlatsa, shu yerga qo'shing
-        return ['id' => $course->id, 'title' => $course->title, 'description' => $course->description];
+        return [
+            'id' => $course->id,
+            'title' => $course->title,
+            'description' => $course->description,
+            'lessonsCount' => count($course->lessons),
+        ];
     }
 
     private function types(): array
     {
         return collect(LessonType::cases())
-            ->map(fn (LessonType $t) => ['label' => $t->label(), 'value' => $t->value])
+            ->map(fn(LessonType $t) => ['label' => $t->label(), 'value' => $t->value])
             ->all();
     }
 }

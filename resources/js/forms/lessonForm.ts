@@ -3,34 +3,24 @@ import { useForm } from "@inertiajs/vue3";
 import { LessonType } from "../types/lesson-types";
 import { taskFormSchema } from "./taskForm";
 import LessonController from "../actions/App/Http/Controllers/LessonController";
+
 export const lessonFormSchema = z
     .object({
         title: z
             .string()
-            .min(1, {
-                message: "Title is required",
-            })
-            .max(255, {
-                message: "Title must be less than 255 characters",
-            }),
+            .min(1, { message: "Title is required" })
+            .max(255, { message: "Title must be less than 255 characters" }),
 
         description: z
             .string()
-            .min(1, {
-                message: "Description is required",
-            })
+            .min(1, { message: "Description is required" })
             .max(255, {
                 message: "Description must be less than 255 characters",
             }),
 
         sort_order: z
             .number()
-            .min(1, {
-                message: "Sort Order is required",
-            })
-            .max(100, {
-                message: "Sort Order must be less than 100",
-            }),
+            .min(1, { message: "Position must be at least 1" }),
 
         lesson_type: z.union([
             z.literal(LessonType.VIDEO),
@@ -91,7 +81,7 @@ export function useLessonForm(
     const form = useForm<LessonFormData>({
         title: initialData?.title ?? "",
         description: initialData?.description ?? "",
-        sort_order: initialData?.sort_order ?? 0,
+        sort_order: initialData?.sort_order ?? 1,
         lesson_type: initialData?.lesson_type ?? LessonType.VIDEO,
         video: initialData?.video ?? undefined,
         lesson_content: initialData?.lesson_content ?? "",
@@ -139,9 +129,7 @@ export function useLessonForm(
     }
 
     function submit() {
-        const isValid = validate();
-
-        if (!isValid) {
+        if (!validate()) {
             return;
         }
 
@@ -151,21 +139,16 @@ export function useLessonForm(
                     course: courseId,
                     lesson: lessonId,
                 }).url,
-                {
-                    preserveScroll: true,
-                },
+                { preserveScroll: true },
             );
         } else {
             form.post(
-                LessonController.store({
-                    course: courseId,
-                }).url,
-                {
-                    preserveScroll: true,
-                },
+                LessonController.store({ course: courseId }).url,
+                { preserveScroll: true },
             );
         }
     }
+
     return {
         form,
         validate,

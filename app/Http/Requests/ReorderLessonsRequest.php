@@ -23,11 +23,12 @@ class ReorderLessonsRequest extends FormRequest
 
     public function toCommand(): ReorderLessonsCommand
     {
-        $positions = [];
-        foreach ($this->validated('lessons') as $lesson) {
-            $positions[(int) $lesson['id']] = (int) $lesson['sort_order'];
-        }
+        $lessons = $this->validated('lessons');
+        usort($lessons, fn($a, $b) => $a['sort_order'] <=> $b['sort_order']);
 
-        return new ReorderLessonsCommand((int) $this->route('course'), $positions);
+        return new ReorderLessonsCommand(
+            (int) $this->route('course'),
+            array_map(fn($l) => (int) $l['id'], $lessons),
+        );
     }
 }

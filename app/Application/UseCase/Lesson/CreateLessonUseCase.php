@@ -47,7 +47,7 @@ final class CreateLessonUseCase
             new LessonTitle($command->title),
             new LessonDescription($command->description),
             $type,
-            new SortOrder($command->sortOrder),
+            new SortOrder(count($this->lessons->findByCourse($courseId)) + 1),
             $command->content,
             $videoPath,
         );

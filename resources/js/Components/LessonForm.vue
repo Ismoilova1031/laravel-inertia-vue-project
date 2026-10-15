@@ -21,9 +21,12 @@
         />
 
         <v-number-input
+            v-if="showPosition"
             control-variant="split"
             v-model="form.sort_order"
-            label="Sort Order"
+            label="Position"
+            :min="1"
+            :max="maxPosition"
             :error-messages="form.errors.sort_order"
             width="300"
         />
@@ -83,8 +86,7 @@ import { LessonType } from "../types/lesson-types";
 import RichTextEditor from "./RichTextEditor.vue";
 import LessonVideoUpload from "./LessonVideoUpload.vue";
 import TaskForm from "./TaskForm.vue";
-import { computed } from "vue";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 
 const props = defineProps<{
     form: LessonFormInstance;
@@ -99,8 +101,13 @@ const props = defineProps<{
     videoUrl?: string | null;
 
     submit: () => void;
+
+    showPosition?: boolean;
+    maxPosition?: number;
 }>();
+
 const videoUrl = ref<string | null>(props.videoUrl ?? null);
+
 const taskErrors = computed(() => {
     const result: Record<string, string> = {};
     for (const key in props.form.errors) {
@@ -112,8 +119,4 @@ const taskErrors = computed(() => {
     }
     return result;
 });
-
-const emit = defineEmits<{
-    cancel: [];
-}>();
 </script>

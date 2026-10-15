@@ -12,7 +12,6 @@ final class CreateLessonCommand
         public readonly string $title,
         public readonly string $description,
         public readonly int $type,
-        public readonly int $sortOrder,
         public readonly ?string $content = null,
         public readonly ?VideoFile $video = null,
         public readonly ?TaskDto $task = null,
