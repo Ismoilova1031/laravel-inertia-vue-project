@@ -3,9 +3,9 @@
 namespace App\Contracts\Services;
 
 use App\Dtos\LessonDto;
-use App\Models\Lesson;
+use App\Infrastructure\Eloquent\LessonModel;
 
 interface CreateLessonServiceInterface
 {
-    public function create(LessonDto $dto, ?string $videoPath): Lesson;
+    public function create(LessonDto $dto, ?string $videoPath): LessonModel;
 }

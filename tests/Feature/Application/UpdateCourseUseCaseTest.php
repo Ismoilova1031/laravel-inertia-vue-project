@@ -11,7 +11,7 @@ use App\Application\UseCase\Course\UpdateCourseCommand;
 use App\Application\UseCase\Course\UpdateCourseUseCase;
 use App\Domain\Course\CourseStatus;
 use App\Domain\Course\Exception\CannotPublishWithoutLessonsException;
-use App\Models\Lesson;
+use App\Infrastructure\Eloquent\LessonModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -52,7 +52,7 @@ final class UpdateCourseUseCaseTest extends TestCase
     public function test_publishes_course_with_a_lesson(): void
     {
         $id = $this->createCourse();
-        Lesson::factory()->create(['course_id' => $id]);
+        LessonModel::factory()->create(['course_id' => $id]);
 
         $this->update($id, CourseStatus::PUBLISHED->value);
 

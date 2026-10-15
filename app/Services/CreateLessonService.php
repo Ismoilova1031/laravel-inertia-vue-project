@@ -9,10 +9,10 @@ use App\Contracts\Repositories\TaskRepositoryInterface;
 use App\Contracts\Services\CreateLessonServiceInterface;
 use App\Dtos\LessonDto;
 use App\Dtos\TaskDto;
-use App\Enums\LessonType;
+use App\Domain\Lesson\LessonType;
 use App\Enums\QuestionType;
 use App\Enums\TaskType;
-use App\Models\Lesson;
+use App\Infrastructure\Eloquent\LessonModel;
 
 class CreateLessonService implements CreateLessonServiceInterface
 {
@@ -23,7 +23,7 @@ class CreateLessonService implements CreateLessonServiceInterface
         private QuestionOptionRepositoryInterface $questionOptionRepository
     ) {}
 
-    public function create(LessonDto $dto, ?string $videoPath): Lesson
+    public function create(LessonDto $dto, ?string $videoPath): LessonModel
     {
         $lesson = $this->lessonRepository->create($dto->toArray($videoPath));
 

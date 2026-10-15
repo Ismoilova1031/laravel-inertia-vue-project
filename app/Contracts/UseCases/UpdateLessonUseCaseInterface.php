@@ -3,9 +3,9 @@
 namespace App\Contracts\UseCases;
 
 use App\Dtos\LessonDto;
-use App\Models\Lesson;
+use App\Infrastructure\Eloquent\LessonModel;
 
 interface UpdateLessonUseCaseInterface
 {
-    public function execute(Lesson $lesson, LessonDto $dto): Lesson;
+    public function execute(LessonModel $lesson, LessonDto $dto): LessonModel;
 }

@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Infrastructure\Eloquent\CourseModel;
-use App\Models\Lesson;
+use App\Infrastructure\Eloquent\LessonModel;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         CourseModel::factory(10)->create()->each(function ($course) {
-            $course->lessons()->saveMany(Lesson::factory(5)->make());
+            $course->lessons()->saveMany(LessonModel::factory(5)->make());
         });
 
     }

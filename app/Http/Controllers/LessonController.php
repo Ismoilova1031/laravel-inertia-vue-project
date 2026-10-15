@@ -1,125 +1,123 @@
 <?php
-
+// app/Http/Controllers/LessonController.php
 namespace App\Http\Controllers;
 
-use App\Contracts\UseCases\CreateLessonUseCaseInterface;
-use App\Contracts\UseCases\DeleteLessonUseCaseInterface;
-use App\Contracts\UseCases\ReorderLessonsUseCaseInterface;
-use App\Contracts\UseCases\UpdateLessonUseCaseInterface;
-use App\Dtos\LessonDto;
-use App\Dtos\TaskDto;
-use App\Enums\LessonType;
-use App\Enums\TaskType;
+use App\Application\UseCase\Course\GetCourseUseCase;
+use App\Application\UseCase\Lesson\CreateLessonUseCase;
+use App\Application\UseCase\Lesson\DeleteLessonUseCase;
+use App\Application\UseCase\Lesson\GetLessonUseCase;
+use App\Application\UseCase\Lesson\ReorderLessonsUseCase;
+use App\Application\UseCase\Lesson\UpdateLessonUseCase;
+use App\Domain\Course\Exception\CourseNotFoundException;
+use App\Domain\Lesson\Exception\LessonNotFoundException;
+use App\Domain\Lesson\Exception\LessonTaskRequiredException;
+use App\Domain\Lesson\LessonType;
 use App\Http\Requests\LessonRequest;
 use App\Http\Requests\ReorderLessonsRequest;
 use App\Http\Resources\LessonEditResource;
-use App\Infrastructure\Eloquent\CourseModel;
-use App\Models\Lesson;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class LessonController extends Controller
 {
     public function __construct(
-        private CreateLessonUseCaseInterface $createLessonUseCase,
-        private ReorderLessonsUseCaseInterface $reorderLessonsUseCase,
-        private DeleteLessonUseCaseInterface $deleteLessonUseCase,
-        private UpdateLessonUseCaseInterface $updateLessonUseCase
+        private readonly CreateLessonUseCase $createLesson,
+        private readonly UpdateLessonUseCase $updateLesson,
+        private readonly DeleteLessonUseCase $deleteLesson,
+        private readonly ReorderLessonsUseCase $reorderLessons,
+        private readonly GetLessonUseCase $getLesson,
+        private readonly GetCourseUseCase $getCourse,
     ) {}
 
-    public function create(CourseModel $course)
+    public function create(int $course): Response
     {
         return Inertia::render('Lessons/Create', [
-            'course' => $course,
-            'types' => collect(LessonType::cases())
-                ->map(fn (LessonType $type) => [
-                    'label' => $type->label(),
-                    'value' => $type->value,
-                ]),
+            'course' => $this->courseProps($course),
+            'types' => $this->types(),
         ]);
     }
 
-    public function store(CourseModel $course, LessonRequest $request)
+    public function store(LessonRequest $request, int $course): RedirectResponse
     {
-        $validated = $request->validated();
-        if (! $validated) {
-            return back()->withErrors($request->errors());
+        try {
+            $this->createLesson->execute($request->toCreateCommand());
+        } catch (CourseNotFoundException) {
+            abort(404);
+        } catch (LessonTaskRequiredException $e) {
+            throw ValidationException::withMessages(['task' => $e->getMessage()]);
         }
-        $dto = new LessonDto(
-            title: $request->title,
-            description: $request->description,
-            lesson_content: $request->lesson_content,
-            lesson_type: $request->lesson_type,
-            sort_order: $request->sort_order,
-            course_id: $course->id,
-            video: $request->file('video'),
-            tasks: $request->task && $request->task['task_type'] ? new TaskDto(
-                type: TaskType::fromValue($request->task['task_type']),
-                deadline: $request->task['deadline'],
-                file_extensions: $request->task['file_extensions'] ?? null,
-                questions: $request->task['questions'] ?? null
-            ) : null
-        );
-        $lesson = $this->createLessonUseCase->execute($dto);
-
-        return to_route('courses.show', ['course' => $lesson->course_id]);
-    }
-
-    public function reorder(
-        ReorderLessonsRequest $request,
-    ) {
-        $this->reorderLessonsUseCase->execute(
-            $request->validated('lessons')
-        );
-
-        return back();
-    }
-
-    public function destroy(CourseModel $course, Lesson $lesson)
-    {
-        $this->deleteLessonUseCase->execute($lesson);
 
         return to_route('courses.show', ['course' => $course]);
     }
 
-    public function edit(CourseModel $course, Lesson $lesson)
+    public function edit(int $course, int $lesson): Response
     {
+        try {
+            $view = $this->getLesson->execute($lesson);
+        } catch (LessonNotFoundException) {
+            abort(404);
+        }
+
         return Inertia::render('Lessons/Edit', [
-            'course' => $course,
-            'lesson' => LessonEditResource::make($lesson)->resolve(),
-            'types' => collect(LessonType::cases())
-                ->map(fn (LessonType $type) => [
-                    'label' => $type->label(),
-                    'value' => $type->value,
-                ]),
+            'course' => $this->courseProps($course),
+            'lesson' => LessonEditResource::make($view)->resolve(),
+            'types' => $this->types(),
         ]);
     }
 
-    public function update(LessonRequest $request, CourseModel $course, Lesson $lesson)
+    public function update(LessonRequest $request, int $course, int $lesson): RedirectResponse
     {
-        $validated = $request->validated();
-        if (! $validated) {
-            return back()->withErrors($request->errors());
+        try {
+            $this->updateLesson->execute($request->toUpdateCommand());
+        } catch (LessonNotFoundException|CourseNotFoundException) {
+            abort(404);
+        } catch (LessonTaskRequiredException $e) {
+            throw ValidationException::withMessages(['task' => $e->getMessage()]);
         }
-        $validated['course_id'] = $course->id;
-        $dto = new LessonDto(
-            title: $request->title,
-            description: $request->description,
-            lesson_content: $request->lesson_content,
-            lesson_type: $request->lesson_type,
-            sort_order: $request->sort_order,
-            course_id: $course->id,
-            video: $request->file('video'),
-            tasks: $request->task && $request->task['task_type'] ? new TaskDto(
-                type: TaskType::fromValue($request->task['task_type']),
-                deadline: $request->task['deadline'],
-                file_extensions: $request->task['file_extensions'] ?? null,
-                questions: $request->task['questions'] ?? null
-            ) : null
-        );
-        $this->updateLessonUseCase->execute($lesson, $dto);
 
-        return to_route('courses.show', [
-            'course' => $course,
-        ]);
+        return to_route('courses.show', ['course' => $course]);
+    }
+
+    public function destroy(int $course, int $lesson): RedirectResponse
+    {
+        try {
+            $this->deleteLesson->execute($lesson);
+        } catch (LessonNotFoundException) {
+            abort(404);
+        }
+
+        return to_route('courses.show', ['course' => $course]);
+    }
+
+    public function reorder(ReorderLessonsRequest $request, int $course): RedirectResponse
+    {
+        try {
+            $this->reorderLessons->execute($request->toCommand());
+        } catch (LessonNotFoundException) {
+            abort(404);
+        }
+
+        return back();
+    }
+
+    private function courseProps(int $id): array
+    {
+        try {
+            $course = $this->getCourse->execute($id);
+        } catch (CourseNotFoundException) {
+            abort(404);
+        }
+
+        // Create/Edit sahifalari course'ning boshqa maydonini ishlatsa, shu yerga qo'shing
+        return ['id' => $course->id, 'title' => $course->title, 'description' => $course->description];
+    }
+
+    private function types(): array
+    {
+        return collect(LessonType::cases())
+            ->map(fn (LessonType $t) => ['label' => $t->label(), 'value' => $t->value])
+            ->all();
     }
 }

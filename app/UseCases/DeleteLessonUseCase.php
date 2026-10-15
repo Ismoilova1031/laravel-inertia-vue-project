@@ -4,7 +4,7 @@ namespace App\UseCases;
 
 use App\Contracts\Repositories\LessonRepositoryInterface;
 use App\Contracts\UseCases\DeleteLessonUseCaseInterface;
-use App\Models\Lesson;
+use App\Infrastructure\Eloquent\LessonModel;
 use Illuminate\Support\Facades\DB;
 
 class DeleteLessonUseCase implements DeleteLessonUseCaseInterface
@@ -13,7 +13,7 @@ class DeleteLessonUseCase implements DeleteLessonUseCaseInterface
         private LessonRepositoryInterface $lessonRepository
     ) {}
 
-    public function execute(Lesson $lesson): void
+    public function execute(LessonModel $lesson): void
     {
         DB::transaction(function () use ($lesson) {
             $this->lessonRepository->delete($lesson);

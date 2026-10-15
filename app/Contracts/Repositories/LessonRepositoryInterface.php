@@ -2,18 +2,18 @@
 
 namespace App\Contracts\Repositories;
 
-use App\Models\Lesson;
+use App\Infrastructure\Eloquent\LessonModel;
 use Illuminate\Support\Collection;
 
 interface LessonRepositoryInterface
 {
-    public function create(array $data): Lesson;
+    public function create(array $data): LessonModel;
 
-    public function update(Lesson $lesson, array $data): Lesson;
+    public function update(LessonModel $lesson, array $data): LessonModel;
 
-    public function updateById(int $id, array $data): Lesson;
+    public function updateById(int $id, array $data): LessonModel;
 
-    public function delete(Lesson $lesson): bool;
+    public function delete(LessonModel $lesson): bool;
 
     public function getByCourseId(int $courseId): Collection;
 }

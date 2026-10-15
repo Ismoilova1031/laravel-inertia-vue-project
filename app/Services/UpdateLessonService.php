@@ -9,10 +9,10 @@ use App\Contracts\Repositories\TaskRepositoryInterface;
 use App\Contracts\Services\UpdateLessonServiceInterface;
 use App\Dtos\LessonDto;
 use App\Dtos\TaskDto;
-use App\Enums\LessonType;
+use App\Domain\Lesson\LessonType;
 use App\Enums\QuestionType;
 use App\Enums\TaskType;
-use App\Models\Lesson;
+use App\Infrastructure\Eloquent\LessonModel;
 use App\Models\Task;
 
 class UpdateLessonService implements UpdateLessonServiceInterface
@@ -24,7 +24,7 @@ class UpdateLessonService implements UpdateLessonServiceInterface
         private QuestionOptionRepositoryInterface $questionOptionRepository
     ) {}
 
-    public function update(Lesson $lesson, LessonDto $dto, ?string $videoPath = null): Lesson
+    public function update(LessonModel $lesson, LessonDto $dto, ?string $videoPath = null): LessonModel
     {
         if ($dto->lesson_type === LessonType::TASK->value) {
 

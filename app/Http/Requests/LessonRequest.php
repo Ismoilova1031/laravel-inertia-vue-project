@@ -2,24 +2,20 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\Rule;
+use App\Application\Contracts\VideoFile;
+use App\Application\UseCase\Lesson\CreateLessonCommand;
+use App\Application\UseCase\Lesson\UpdateLessonCommand;
+use App\Dtos\TaskDto;
+use App\Enums\TaskType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class LessonRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, Rule|array|string>
-     */
     public function rules(): array
     {
         return [
@@ -27,13 +23,63 @@ class LessonRequest extends FormRequest
             'description' => ['required', 'string'],
             'lesson_type' => ['required', 'integer', 'between:1,3'],
             'lesson_content' => ['nullable', 'string'],
-            'video' => [
-                'nullable',
-                'file',
-                'mimetypes:video/mp4,video/quicktime,video/x-msvideo',
-                'max:102400',
-            ],
+            'video' => ['nullable', 'file', 'mimetypes:video/mp4,video/quicktime,video/x-msvideo', 'max:102400'],
             'sort_order' => ['required', 'integer', 'min:1', 'max:100'],
         ];
+    }
+
+    public function toCreateCommand(): CreateLessonCommand
+    {
+        $d = $this->validated();
+
+        return new CreateLessonCommand(
+            courseId: (int) $this->route('course'),
+            title: $d['title'],
+            description: $d['description'],
+            type: (int) $d['lesson_type'],
+            sortOrder: (int) $d['sort_order'],
+            content: $d['lesson_content'] ?? null,
+            video: $this->videoFile(),
+            task: $this->taskDto(),
+        );
+    }
+
+    public function toUpdateCommand(): UpdateLessonCommand
+    {
+        $d = $this->validated();
+
+        return new UpdateLessonCommand(
+            id: (int) $this->route('lesson'),
+            title: $d['title'],
+            description: $d['description'],
+            type: (int) $d['lesson_type'],
+            sortOrder: (int) $d['sort_order'],
+            content: $d['lesson_content'] ?? null,
+            video: $this->videoFile(),
+            task: $this->taskDto(),
+        );
+    }
+
+    private function videoFile(): ?VideoFile
+    {
+        $file = $this->file('video');
+
+        return $file ? new VideoFile($file->getRealPath(), $file->getClientOriginalExtension()) : null;
+    }
+
+    private function taskDto(): ?TaskDto
+    {
+        $task = $this->input('task');
+
+        if (!is_array($task) || empty($task['task_type'])) {
+            return null;
+        }
+
+        return new TaskDto(
+            type: TaskType::fromValue($task['task_type']),
+            deadline: $task['deadline'] ?? null,
+            file_extensions: $task['file_extensions'] ?? null,
+            questions: $task['questions'] ?? null,
+        );
     }
 }

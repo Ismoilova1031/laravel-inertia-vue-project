@@ -6,7 +6,7 @@ use App\Contracts\Services\CreateLessonServiceInterface;
 use App\Contracts\Services\SaveVideoServiceInterface;
 use App\Contracts\UseCases\CreateLessonUseCaseInterface;
 use App\Dtos\LessonDto;
-use App\Models\Lesson;
+use App\Infrastructure\Eloquent\LessonModel;
 
 class CreateLessonUseCase implements CreateLessonUseCaseInterface
 {
@@ -15,7 +15,7 @@ class CreateLessonUseCase implements CreateLessonUseCaseInterface
         private SaveVideoServiceInterface $saveVideoService,
     ) {}
 
-    public function execute(LessonDto $lessonDto): Lesson
+    public function execute(LessonDto $lessonDto): LessonModel
     {
         $videoPath = null;
         if ($lessonDto->video) {

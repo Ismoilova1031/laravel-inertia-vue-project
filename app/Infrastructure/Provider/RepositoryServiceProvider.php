@@ -18,6 +18,15 @@ use App\Infrastructure\Repository\EloquentCourseRepository;
 use App\Infrastructure\Repository\EloquentEnrollmentRepository;
 use App\Infrastructure\Repository\EloquentStudentRepository;
 use App\Infrastructure\Security\LaravelPasswordHasher;
+use App\Domain\Lesson\LessonRepositoryInterface;
+use App\Application\UseCase\Lesson\LessonQueryInterface;
+use App\Infrastructure\Repository\EloquentLessonRepository;
+use App\Infrastructure\Query\EloquentLessonQuery;
+use App\Application\Contracts\FileStorageInterface;
+use App\Infrastructure\Storage\LaravelFileStorage;
+use App\Application\UseCase\Lesson\LessonTaskGatewayInterface;
+use App\Infrastructure\Legacy\LegacyLessonTaskGateway;
+
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -38,5 +47,9 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(PasswordHasherInterface::class, LaravelPasswordHasher::class);
         $this->app->bind(CourseLessonCounterInterface::class, EloquentCourseLessonCounter::class);
 
+        $this->app->bind(LessonRepositoryInterface::class, EloquentLessonRepository::class);
+        $this->app->bind(LessonQueryInterface::class, EloquentLessonQuery::class);
+        $this->app->bind(FileStorageInterface::class, LaravelFileStorage::class);
+        $this->app->bind(LessonTaskGatewayInterface::class, LegacyLessonTaskGateway::class);
     }
 }

@@ -2,9 +2,9 @@
 
 namespace App\Contracts\UseCases;
 
-use App\Models\Lesson;
+use App\Infrastructure\Eloquent\LessonModel;
 
 interface DeleteLessonUseCaseInterface
 {
-    public function execute(Lesson $lesson): void;
+    public function execute(LessonModel $lesson): void;
 }

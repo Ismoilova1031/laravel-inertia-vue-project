@@ -4,7 +4,7 @@ namespace App\Infrastructure\Eloquent;
 
 use App\Domain\Course\CourseCategory;
 use App\Domain\Course\CourseStatus;
-use App\Models\Lesson;
+use App\Infrastructure\Eloquent\LessonModel;
 use Database\Factories\CourseFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -31,7 +31,7 @@ class CourseModel extends Model
 
     public function lessons(): HasMany
     {
-        return $this->hasMany(Lesson::class, 'course_id')->orderBy('sort_order');
+        return $this->hasMany(LessonModel::class, 'course_id')->orderBy('sort_order');
     }
 
     public function students(): BelongsToMany

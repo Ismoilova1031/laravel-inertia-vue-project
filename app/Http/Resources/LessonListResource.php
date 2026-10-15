@@ -18,13 +18,10 @@ class LessonListResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'description' => $this->description,
-            'lessonType' => [
-                'value' => $this->lesson_type->value,
-                'label' => $this->lesson_type->label(),
-            ],
-            'lessonContent' => $this->lesson_content,
-            'videoUrl' => $this->video_url,
-            'sortOrder' => $this->sort_order,
+            'lessonType' => ['value' => $this->type->value, 'label' => $this->type->label()],
+            'lessonContent' => $this->content,
+            'videoUrl' => $this->videoPath,
+            'sortOrder' => $this->sortOrder,
         ];
     }
 }

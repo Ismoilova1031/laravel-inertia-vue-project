@@ -2,15 +2,15 @@
 
 namespace App\UseCases;
 
-use App\Contracts\Repositories\CourseRepositoryInterface;
+use App\Domain\Course\CourseRepositoryInterface;
 use App\Contracts\Repositories\LessonRepositoryInterface;
 use App\Contracts\Repositories\StorageRepositoryInterface;
 use App\Contracts\Repositories\TaskRepositoryInterface;
 use App\Contracts\Services\UpdateLessonServiceInterface;
 use App\Contracts\UseCases\UpdateLessonUseCaseInterface;
 use App\Dtos\LessonDto;
-use App\Enums\LessonType;
-use App\Models\Lesson;
+use App\Domain\Lesson\LessonType;
+use App\Infrastructure\Eloquent\LessonModel;
 use Illuminate\Support\Str;
 
 class UpdateLessonUseCase implements UpdateLessonUseCaseInterface
@@ -23,7 +23,7 @@ class UpdateLessonUseCase implements UpdateLessonUseCaseInterface
         private UpdateLessonServiceInterface $service
     ) {}
 
-    public function execute(Lesson $lesson, LessonDto $dto): Lesson
+    public function execute(LessonModel $lesson, LessonDto $dto): LessonModel
     {
         if ($lesson->lesson_type->value != $dto->lesson_type) {
             $this->deleteOthers($lesson, $dto);
@@ -56,7 +56,7 @@ class UpdateLessonUseCase implements UpdateLessonUseCaseInterface
         }
     }
 
-    private function deleteOthers(Lesson $lesson, LessonDto $dto): void
+    private function deleteOthers(LessonModel $lesson, LessonDto $dto): void
     {
         if ($lesson->lesson_type === LessonType::VIDEO) {
 

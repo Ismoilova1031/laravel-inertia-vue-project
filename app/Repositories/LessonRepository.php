@@ -3,38 +3,38 @@
 namespace App\Repositories;
 
 use App\Contracts\Repositories\LessonRepositoryInterface;
-use App\Models\Lesson;
+use App\Infrastructure\Eloquent\LessonModel;
 use Illuminate\Support\Collection;
 
 class LessonRepository implements LessonRepositoryInterface
 {
-    public function create(array $data): Lesson
+    public function create(array $data): LessonModel
     {
-        return Lesson::create($data);
+        return LessonModel::create($data);
     }
 
-    public function update(Lesson $lesson, array $data): Lesson
+    public function update(LessonModel $lesson, array $data): LessonModel
     {
         $lesson->update($data);
 
         return $lesson->fresh();
     }
 
-    public function updateById(int $id, array $data): Lesson
+    public function updateById(int $id, array $data): LessonModel
     {
-        $lesson = Lesson::find($id);
+        $lesson = LessonModel::find($id);
         $lesson->update($data);
 
         return $lesson->fresh();
     }
 
-    public function delete(Lesson $lesson): bool
+    public function delete(LessonModel $lesson): bool
     {
         return $lesson->delete();
     }
 
     public function getByCourseId(int $courseId): Collection
     {
-        return Lesson::where('course_id', $courseId)->orderBy('sort_order')->get();
+        return LessonModel::where('course_id', $courseId)->orderBy('sort_order')->get();
     }
 }

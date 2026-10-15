@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\NotificationType;
 use App\Infrastructure\Eloquent\CourseModel;
+use App\Infrastructure\Eloquent\LessonModel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -41,6 +42,6 @@ class Notification extends Model
 
     public function Lesson(): BelongsTo
     {
-        return $this->belongsTo(Lesson::class);
+        return $this->belongsTo(LessonModel::class);
     }
 }

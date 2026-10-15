@@ -2,16 +2,18 @@
 
 namespace Database\Factories;
 
-use App\Enums\LessonType;
-use App\Models\Lesson;
+use App\Domain\Lesson\LessonType;
+use App\Infrastructure\Eloquent\LessonModel;
 use App\Models\Task;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<Lesson>
+ * @extends Factory<LessonModel>
  */
 class LessonFactory extends Factory
 {
+    protected $model = LessonModel::class;
+
     public function definition(): array
     {
         return [

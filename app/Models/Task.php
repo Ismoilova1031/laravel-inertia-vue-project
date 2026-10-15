@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\TaskType;
+use App\Infrastructure\Eloquent\LessonModel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -24,7 +25,7 @@ class Task extends Model
 
     public function lesson(): BelongsTo
     {
-        return $this->belongsTo(Lesson::class);
+        return $this->belongsTo(LessonModel::class);
     }
 
     public function questions(): HasMany

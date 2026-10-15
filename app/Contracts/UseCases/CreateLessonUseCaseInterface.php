@@ -3,9 +3,9 @@
 namespace App\Contracts\UseCases;
 
 use App\Dtos\LessonDto;
-use App\Models\Lesson;
+use App\Infrastructure\Eloquent\LessonModel;
 
 interface CreateLessonUseCaseInterface
 {
-    public function execute(LessonDto $lessonDto): Lesson;
+    public function execute(LessonDto $lessonDto): LessonModel;
 }

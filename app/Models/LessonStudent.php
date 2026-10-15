@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Infrastructure\Eloquent\LessonModel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -17,7 +18,7 @@ class LessonStudent extends Model
 
     public function lesson(): BelongsTo
     {
-        return $this->belongsTo(Lesson::class);
+        return $this->belongsTo(LessonModel::class);
     }
 
     public function student(): BelongsTo
