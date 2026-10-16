@@ -30,7 +30,6 @@ final class LessonUseCasesTest extends TestCase
             title: 'Dars',
             description: 'Tavsif',
             type: $type->value,
-            sortOrder: $sort,
             content: $type === LessonType::TEXT ? 'Matn' : null,
             video: $video,
         ))->value();
