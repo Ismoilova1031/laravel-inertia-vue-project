@@ -3,7 +3,7 @@
 namespace App\Application\UseCase\Lesson;
 
 use App\Application\Contracts\VideoFile;
-use App\Dtos\TaskDto;
+use App\Application\UseCase\Assessment\TaskData;
 
 final class UpdateLessonCommand
 {
@@ -15,6 +15,6 @@ final class UpdateLessonCommand
         public readonly int $sortOrder,
         public readonly ?string $content = null,
         public readonly ?VideoFile $video = null,
-        public readonly ?TaskDto $task = null,
+        public readonly ?TaskData $task = null,
     ) {}
 }

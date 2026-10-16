@@ -18,17 +18,6 @@
                     />
                 </v-col>
 
-                <v-col cols="12" md="4">
-                    <v-text-field
-                        label="Deadline"
-                        :min="minDateTime"
-                        type="datetime-local"
-                        variant="outlined"
-                        v-model="task.deadline"
-                        icon-left
-                        :error-messages="errors?.deadline"
-                    />
-                </v-col>
             </v-row>
             <v-select
                 v-if="task.task_type === TaskTypes.FILE_UPLOAD"

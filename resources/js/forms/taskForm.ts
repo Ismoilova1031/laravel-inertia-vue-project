@@ -10,8 +10,6 @@ export const taskFormSchema = z
             z.literal(null),
         ]),
 
-        deadline: z.string().nullable(),
-
         allowed_file_extensions: z.array(z.string()).nullable(),
 
         questions: z.array(questionFormSchema).nullable(),

@@ -5,8 +5,7 @@ namespace App\Http\Requests;
 use App\Application\Contracts\VideoFile;
 use App\Application\UseCase\Lesson\CreateLessonCommand;
 use App\Application\UseCase\Lesson\UpdateLessonCommand;
-use App\Dtos\TaskDto;
-use App\Enums\TaskType;
+use App\Application\UseCase\Assessment\TaskData;
 use Illuminate\Foundation\Http\FormRequest;
 
 class LessonRequest extends FormRequest
@@ -71,7 +70,7 @@ class LessonRequest extends FormRequest
         return $file ? new VideoFile($file->getRealPath(), $file->getClientOriginalExtension()) : null;
     }
 
-    private function taskDto(): ?TaskDto
+    private function taskDto(): ?TaskData
     {
         $task = $this->input('task');
 
@@ -79,10 +78,9 @@ class LessonRequest extends FormRequest
             return null;
         }
 
-        return new TaskDto(
-            type: TaskType::fromValue($task['task_type']),
-            deadline: $task['deadline'] ?? null,
-            file_extensions: $task['file_extensions'] ?? null,
+        return new TaskData(
+            type: (int) $task['task_type'],
+            fileExtensions: $task['file_extensions'] ?? null,
             questions: $task['questions'] ?? null,
         );
     }

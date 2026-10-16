@@ -19,6 +19,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Domain\Assessment\Exception\AssessmentRuleViolation;
 
 class LessonController extends Controller
 {
@@ -45,7 +46,7 @@ class LessonController extends Controller
             $this->createLesson->execute($request->toCreateCommand());
         } catch (CourseNotFoundException) {
             abort(404);
-        } catch (LessonTaskRequiredException $e) {
+        } catch (LessonTaskRequiredException | AssessmentRuleViolation $e) {
             throw ValidationException::withMessages(['task' => $e->getMessage()]);
         }
 
@@ -73,10 +74,9 @@ class LessonController extends Controller
             $this->updateLesson->execute($request->toUpdateCommand());
         } catch (LessonNotFoundException | CourseNotFoundException) {
             abort(404);
-        } catch (LessonTaskRequiredException $e) {
+        } catch (LessonTaskRequiredException | AssessmentRuleViolation $e) {
             throw ValidationException::withMessages(['task' => $e->getMessage()]);
         }
-
         return to_route('courses.show', ['course' => $course]);
     }
 

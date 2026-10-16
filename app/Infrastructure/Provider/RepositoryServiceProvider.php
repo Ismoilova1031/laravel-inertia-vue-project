@@ -24,8 +24,11 @@ use App\Infrastructure\Repository\EloquentLessonRepository;
 use App\Infrastructure\Query\EloquentLessonQuery;
 use App\Application\Contracts\FileStorageInterface;
 use App\Infrastructure\Storage\LaravelFileStorage;
-use App\Application\UseCase\Lesson\LessonTaskGatewayInterface;
 use App\Infrastructure\Legacy\LegacyLessonTaskGateway;
+use App\Domain\Assessment\TaskRepositoryInterface;
+use App\Application\UseCase\Assessment\TaskSubmissionLookupInterface;
+use App\Infrastructure\Repository\EloquentTaskRepository;
+use App\Infrastructure\Query\EloquentTaskSubmissionLookup;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -33,23 +36,22 @@ class RepositoryServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        // Repository
         $this->app->bind(StudentRepositoryInterface::class, EloquentStudentRepository::class);
         $this->app->bind(EnrollmentRepositoryInterface::class, EloquentEnrollmentRepository::class);
         $this->app->bind(CourseInterestRepositoryInterface::class, EloquentCourseInterestRepository::class);
         $this->app->bind(CourseRepositoryInterface::class, EloquentCourseRepository::class);
 
-        // Query
         $this->app->bind(StudentQueryInterface::class, EloquentStudentQuery::class);
         $this->app->bind(CourseQueryInterface::class, EloquentCourseQuery::class);
 
-        // Port
         $this->app->bind(PasswordHasherInterface::class, LaravelPasswordHasher::class);
         $this->app->bind(CourseLessonCounterInterface::class, EloquentCourseLessonCounter::class);
 
         $this->app->bind(LessonRepositoryInterface::class, EloquentLessonRepository::class);
         $this->app->bind(LessonQueryInterface::class, EloquentLessonQuery::class);
         $this->app->bind(FileStorageInterface::class, LaravelFileStorage::class);
-        $this->app->bind(LessonTaskGatewayInterface::class, LegacyLessonTaskGateway::class);
+
+        $this->app->bind(TaskRepositoryInterface::class, EloquentTaskRepository::class);
+        $this->app->bind(TaskSubmissionLookupInterface::class, EloquentTaskSubmissionLookup::class);
     }
 }

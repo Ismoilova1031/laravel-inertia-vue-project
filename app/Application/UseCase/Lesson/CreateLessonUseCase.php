@@ -15,6 +15,7 @@ use App\Domain\Lesson\LessonTitle;
 use App\Domain\Lesson\LessonType;
 use App\Domain\Lesson\SortOrder;
 use Illuminate\Support\Facades\DB;
+use App\Application\UseCase\Assessment\SaveTaskUseCase;
 use Throwable;
 
 final class CreateLessonUseCase
@@ -23,7 +24,7 @@ final class CreateLessonUseCase
         private readonly LessonRepositoryInterface $lessons,
         private readonly CourseRepositoryInterface $courses,
         private readonly FileStorageInterface $storage,
-        private readonly LessonTaskGatewayInterface $tasks,
+        private readonly SaveTaskUseCase $saveTask,
     ) {}
 
     public function execute(CreateLessonCommand $command): LessonId
@@ -34,7 +35,7 @@ final class CreateLessonUseCase
 
         $type = LessonType::from($command->type);
 
-        if($type === LessonType::TASK && $command->task === null) {
+        if ($type === LessonType::TASK && $command->task === null) {
             throw LessonTaskRequiredException::create();
         }
 
@@ -53,16 +54,16 @@ final class CreateLessonUseCase
         );
 
         try {
-            return DB::transaction(function () use ($lesson, $type, $command){
+            return DB::transaction(function () use ($lesson, $type, $command) {
                 $saved = $this->lessons->save($lesson);
 
-                if($type === LessonType::TASK ){
-                    $this->tasks->replaceFor($saved->id()->value(), $command->task);
+                if ($type === LessonType::TASK) {
+                    $this->saveTask->execute($saved->id()->value(), $command->task);;
                 }
 
                 return $saved->id();
             });
-        } catch (Throwable $e){
+        } catch (Throwable $e) {
             if ($videoPath !== null) {
                 $this->storage->delete($videoPath);
             }

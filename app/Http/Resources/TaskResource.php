@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources;
 
-use App\Enums\TaskType;
+use App\Domain\Assessment\TaskType;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -21,7 +21,6 @@ class TaskResource extends JsonResource
                 'value' => $this->task_type->value,
                 'label' => $this->task_type->label(),
             ],
-            'deadline' => $this->deadline?->format('Y-m-d\TH:i'),
             'allowed_file_extensions' => $this->allowed_file_extensions,
             'questions' => $this->when(
                 $this->task_type === TaskType::QUIZ,

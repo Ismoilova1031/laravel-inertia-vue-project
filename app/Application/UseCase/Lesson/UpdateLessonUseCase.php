@@ -14,6 +14,8 @@ use App\Domain\Lesson\LessonTitle;
 use App\Domain\Lesson\LessonType;
 use Illuminate\Support\Facades\DB;
 use App\Domain\Lesson\LessonSequence;
+use App\Application\UseCase\Assessment\SaveTaskUseCase;
+use App\Application\UseCase\Assessment\DeleteTaskUseCase;
 use Throwable;
 
 final class UpdateLessonUseCase
@@ -22,7 +24,8 @@ final class UpdateLessonUseCase
         private readonly LessonRepositoryInterface $lessons,
         private readonly CourseRepositoryInterface $courses,
         private readonly FileStorageInterface $storage,
-        private readonly LessonTaskGatewayInterface $tasks,
+        private readonly SaveTaskUseCase $saveTask,
+        private readonly DeleteTaskUseCase $deleteTask,
     ) {}
 
     public function execute(UpdateLessonCommand $command): void
@@ -79,9 +82,9 @@ final class UpdateLessonUseCase
                 }
 
                 if ($type === LessonType::TASK) {
-                    $this->tasks->replaceFor($id->value(), $command->task);
+                    $this->saveTask->execute($id->value(), $command->task);
                 } elseif ($previousType === LessonType::TASK) {
-                    $this->tasks->deleteFor($id->value());
+                    $this->deleteTask->execute($id->value());
                 }
             });
         } catch (Throwable $e) {

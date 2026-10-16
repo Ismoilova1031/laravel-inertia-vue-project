@@ -59,13 +59,6 @@ export const lessonFormSchema = z
                     message: "Task type is required",
                 });
             }
-            if (!data.task?.deadline) {
-                ctx.addIssue({
-                    code: "custom",
-                    path: ["task", "deadline"],
-                    message: "Deadline is required",
-                });
-            }
         }
     });
 
@@ -88,7 +81,6 @@ export function useLessonForm(
 
         task: initialData?.task ?? {
             task_type: null,
-            deadline: null,
             allowed_file_extensions: null,
             questions: null,
         },

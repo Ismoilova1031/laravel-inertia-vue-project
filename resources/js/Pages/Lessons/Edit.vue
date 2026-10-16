@@ -58,7 +58,6 @@ const { form, submit } = useLessonForm(
               }
             : {
                   task_type: null,
-                  deadline: null,
                   allowed_file_extensions: null,
                   questions: null,
               },

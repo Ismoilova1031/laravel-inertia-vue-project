@@ -11,7 +11,6 @@ export interface Lesson {
 
     task: {
         task_type: SelectOption | null;
-        deadline: null;
         allowed_file_extensions: null;
         questions: {};
     };
