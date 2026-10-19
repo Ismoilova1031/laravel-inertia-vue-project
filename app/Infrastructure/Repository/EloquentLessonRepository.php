@@ -5,6 +5,7 @@ namespace App\Infrastructure\Repository;
 use App\Domain\Course\CourseId;
 use App\Domain\Lesson\Exception\LessonNotFoundException;
 use App\Domain\Lesson\Lesson;
+use App\Domain\Lesson\NewLesson;
 use App\Domain\Lesson\LessonId;
 use App\Domain\Lesson\LessonRepositoryInterface;
 use App\Infrastructure\Eloquent\LessonModel;
@@ -28,24 +29,23 @@ final class EloquentLessonRepository implements LessonRepositoryInterface
             ->orderBy('sort_order')
             ->orderBy('id')
             ->get()
-            ->map(fn (LessonModel $m) => $this->mapper->toEntity($m))
+            ->map(fn(LessonModel $m) => $this->mapper->toEntity($m))
             ->all();
     }
 
-    public function save(Lesson $lesson): Lesson
+    public function create(NewLesson $new): Lesson
     {
-        $attributes = $this->mapper->toAttributes($lesson);
-
-        if ($lesson->id() === null) {
-            $model = LessonModel::create($attributes);
-        } else {
-            $model = LessonModel::find($lesson->id()->value())
-                ?? throw LessonNotFoundException::withId($lesson->id());
-
-            $model->update($attributes);
-        }
+        $model = LessonModel::create($this->mapper->toNewAttributes($new));
 
         return $this->mapper->toEntity($model);
+    }
+
+    public function save(Lesson $lesson): void
+    {
+        $model = LessonModel::find($lesson->id()->value())
+            ?? throw LessonNotFoundException::withId($lesson->id());
+
+        $model->update($this->mapper->toAttributes($lesson));
     }
 
     public function delete(LessonId $id): void

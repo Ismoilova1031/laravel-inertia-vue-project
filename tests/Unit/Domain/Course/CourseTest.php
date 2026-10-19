@@ -5,6 +5,7 @@ namespace Tests\Unit\Domain\Course;
 use App\Domain\Course\Course;
 use App\Domain\Course\CourseCategory;
 use App\Domain\Course\CourseDescription;
+use App\Domain\Course\CourseId;
 use App\Domain\Course\CourseStatus;
 use App\Domain\Course\CourseTitle;
 use App\Domain\Course\Exception\CannotPublishWithoutLessonsException;
@@ -15,7 +16,13 @@ final class CourseTest extends TestCase
 {
     private function course(): Course
     {
-        return Course::register(new CourseTitle('PHP'), new CourseDescription('Asoslar'), CourseCategory::Programming);
+        return Course::reconstitute(
+            new CourseId(1),
+            new CourseTitle('PHP'),
+            new CourseDescription('Asoslar'),
+            CourseCategory::Programming,
+            CourseStatus::DRAFT
+        );;
     }
 
     public function test_new_course_is_draft(): void

@@ -10,7 +10,9 @@ interface LessonRepositoryInterface
 
     public function findByCourse(CourseId $courseId): array;
 
-    public function save(Lesson $lesson): Lesson;
+    public function create(NewLesson $new): Lesson;
+
+    public function save(Lesson $lesson): void;
 
     public function delete(LessonId $id): void;
 }

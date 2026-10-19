@@ -8,17 +8,13 @@ use App\Domain\Course\Exception\CannotDeleteNonDraftCourseException;
 final class Course
 {
     private function __construct(
-        private ?CourseId $id,
+        private CourseId $id,
         private CourseTitle $title,
         private CourseDescription $description,
         private CourseCategory $category,
         private CourseStatus $status,
     ) {}
 
-    public static function register(CourseTitle $title, CourseDescription $description, CourseCategory $category): self
-    {
-        return new self(null, $title, $description, $category, CourseStatus::DRAFT);
-    }
 
     public static function reconstitute(
         CourseId $id,
@@ -55,7 +51,7 @@ final class Course
         return $this->status === CourseStatus::PUBLISHED;
     }
 
-    public function id(): ?CourseId
+    public function id(): CourseId
     {
         return $this->id;
     }

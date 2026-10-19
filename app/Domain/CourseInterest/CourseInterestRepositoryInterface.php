@@ -9,7 +9,9 @@ interface CourseInterestRepositoryInterface
 {
     public function findByCourseAndStudent(CourseId $courseId, StudentId $studentId): ?CourseInterest;
 
-    public function save(CourseInterest $courseInterest): CourseInterest;
+    public function create(NewCourseInterest $new): CourseInterest;
+
+    public function save(CourseInterest $courseInterest): void;
 
     public function delete(CourseInterest $courseInterest): void;
 }

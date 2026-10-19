@@ -4,6 +4,7 @@ namespace App\Infrastructure\Repository;
 
 use App\Domain\Course\CourseId;
 use App\Domain\CourseInterest\CourseInterest;
+use App\Domain\CourseInterest\NewCourseInterest;
 use App\Domain\CourseInterest\CourseInterestRepositoryInterface;
 use App\Domain\Student\StudentId;
 use App\Infrastructure\Eloquent\CourseInterestModel;
@@ -24,26 +25,21 @@ final class EloquentCourseInterestRepository implements CourseInterestRepository
         return $model ? $this->mapper->toEntity($model) : null;
     }
 
-    public function save(CourseInterest $interest): CourseInterest
+    public function create(NewCourseInterest $new): CourseInterest
     {
-        $attributes = $this->mapper->toAttributes($interest);
+        return $this->mapper->toEntity(CourseInterestModel::create($this->mapper->toNewAttributes($new)));
+    }
 
-        if ($interest->id() === null) {
-            $model = CourseInterestModel::create($attributes);
-        } else {
-            $model = CourseInterestModel::find($interest->id())
-                ?? throw new RuntimeException('CourseInterest topilmadi.');
+    public function save(CourseInterest $interest): void
+    {
+        $model = CourseInterestModel::find($interest->id())
+            ?? throw new RuntimeException('CourseInterest topilmadi.');
 
-            $model->update($attributes);
-        }
-
-        return $this->mapper->toEntity($model);
+        $model->update($this->mapper->toAttributes($interest));
     }
 
     public function delete(CourseInterest $interest): void
     {
-        if ($interest->id() !== null) {
-            CourseInterestModel::whereKey($interest->id())->delete();
-        }
+        CourseInterestModel::whereKey($interest->id())->delete();
     }
 }

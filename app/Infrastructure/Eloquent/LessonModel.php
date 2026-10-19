@@ -31,6 +31,6 @@ final class LessonModel extends Model
 
     public function task(): HasOne
     {
-        return $this->hasOne(Task::class, 'lesson_id');
+        return $this->hasOne(TaskModel::class, 'lesson_id');
     }
 }

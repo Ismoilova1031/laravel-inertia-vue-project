@@ -8,19 +8,11 @@ use App\Domain\Student\StudentId;
 final class CourseInterest
 {
     public function __construct(
-        private ?int $id,
+        private int $id,
         private CourseId $courseId,
         private StudentId $studentId,
         private array $flags,
     ) {}
-
-    public static function create(CourseId $courseId, StudentId $studentId): self
-    {
-        return new self(null, $courseId, $studentId, [
-            InterestType::LIKE->value => false,
-            InterestType::PLANNED->value => false,
-        ]);
-    }
 
     public static function reconstitute(
         int $id,
@@ -55,7 +47,7 @@ final class CourseInterest
         return ! in_array(true, $this->flags, true);
     }
 
-    public function id(): ?int
+    public function id(): int
     {
         return $this->id;
     }

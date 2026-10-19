@@ -6,6 +6,7 @@ use App\Domain\Student\EmailAddress;
 use App\Domain\Student\HashedPassword;
 use App\Domain\Student\PersonName;
 use App\Domain\Student\Student;
+use App\Domain\Student\NewStudent;
 use App\Domain\Student\StudentId;
 use App\Domain\Student\Username;
 use App\Infrastructure\Eloquent\StudentModel;
@@ -32,6 +33,17 @@ final class StudentMapper
             'email' => $student->email()->value(),
             'username' => $student->username()->value(),
             'password' => $student->password()->value(),
+        ];
+    }
+
+    public function toNewAttributes(NewStudent $new): array
+    {
+        return [
+            'name' => $new->name->name(),
+            'surname' => $new->name->surname(),
+            'email' => $new->email->value(),
+            'username' => $new->username->value(),
+            'password' => $new->password->value(),
         ];
     }
 }

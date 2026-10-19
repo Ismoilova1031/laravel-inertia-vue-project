@@ -9,7 +9,7 @@ use App\Domain\Course\CourseId;
 use App\Domain\Course\CourseRepositoryInterface;
 use App\Domain\Course\Exception\CourseNotFoundException;
 use App\Domain\Course\Exception\CourseNotPublishedException;
-use App\Domain\Enrollment\Enrollment;
+use App\Domain\Enrollment\NewEnrollment;
 use App\Domain\Enrollment\EnrollmentRepositoryInterface;
 use App\Domain\Student\Exception\StudentNotFoundException;
 use App\Domain\Student\StudentId;
@@ -44,11 +44,11 @@ final class EnrollStudentUseCase
         $enrollment = $this->enrollments->findByCourseAndStudent($courseId, $studentId);
 
         if ($enrollment === null) {
-            $enrollment = Enrollment::enroll($courseId, $studentId, $now);
-        } else {
-            $enrollment->reenroll($now);
+            $this->enrollments->create(NewEnrollment::enroll($courseId, $studentId, $now));
+            return;
         }
 
+        $enrollment->reenroll($now);
         $this->enrollments->save($enrollment);
     }
 }

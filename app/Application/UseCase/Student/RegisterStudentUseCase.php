@@ -7,7 +7,7 @@ use App\Domain\Student\Exception\EmailAlreadyTakenException;
 use App\Domain\Student\Exception\UsernameAlreadyTakenException;
 use App\Domain\Student\PasswordHasherInterface;
 use App\Domain\Student\PersonName;
-use App\Domain\Student\Student;
+use App\Domain\Student\NewStudent;
 use App\Domain\Student\StudentId;
 use App\Domain\Student\StudentRepositoryInterface;
 use App\Domain\Student\Username;
@@ -32,13 +32,13 @@ final class RegisterStudentUseCase
             throw UsernameAlreadyTakenException::withUsername($username);
         }
 
-        $student = Student::register(
+        $new = NewStudent::register(
             new PersonName($command->name, $command->surname),
             $email,
             $username,
             $this->hasher->hash($command->password)
         );
 
-        return $this->students->save($student)->id();
+        return $this->students->create($new)->id();
     }
 }

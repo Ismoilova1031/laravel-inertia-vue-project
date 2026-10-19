@@ -11,18 +11,13 @@ use DateTimeImmutable;
 final class Enrollment
 {
     private function __construct(
-        private ?EnrollmentId $id,
+        private EnrollmentId $id,
         private readonly CourseId $courseId,
         private readonly StudentId $studentId,
         private EnrollmentStatus $status,
         private DateTimeImmutable $enrolledAt,
         private ?DateTimeImmutable $deactivatedAt,
     ) {}
-
-    public static function enroll(CourseId $courseId, StudentId $studentId, DateTimeImmutable $now): self
-    {
-        return new self(null, $courseId, $studentId, EnrollmentStatus::ACTIVE, $now, null);
-    }
 
     public static function reconstitute(EnrollmentId $id, CourseId $courseId, StudentId $studentId, EnrollmentStatus $status, DateTimeImmutable $enrolledAt, ?DateTimeImmutable $deactivatedAt): self
     {
@@ -55,7 +50,7 @@ final class Enrollment
         return $this->status === EnrollmentStatus::ACTIVE;
     }
 
-    public function id(): ?EnrollmentId
+    public function id(): EnrollmentId
     {
         return $this->id;
     }

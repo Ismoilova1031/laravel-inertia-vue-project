@@ -5,21 +5,12 @@ namespace App\Domain\Student;
 final class Student
 {
     private function __construct(
-        private ?StudentId $id,
+        private StudentId $id,
         private PersonName $name,
         private EmailAddress $email,
         private Username $username,
         private HashedPassword $password,
     ) {}
-
-    public static function register(
-        PersonName $name,
-        EmailAddress $email,
-        Username $username,
-        HashedPassword $password,
-    ): self {
-        return new self(null, $name, $email, $username, $password);
-    }
 
     public static function reconstitute(
         StudentId $id,
@@ -51,7 +42,7 @@ final class Student
         $this->password = $password;
     }
 
-    public function id(): ?StudentId
+    public function id(): StudentId
     {
         return $this->id;
     }

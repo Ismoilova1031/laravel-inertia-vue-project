@@ -7,7 +7,8 @@ use App\Domain\Course\CourseId;
 use App\Domain\Course\CourseRepositoryInterface;
 use App\Domain\Course\Exception\CourseNotFoundException;
 use App\Domain\Lesson\Exception\LessonTaskRequiredException;
-use App\Domain\Lesson\Lesson;
+use App\Domain\Lesson\NewLesson;
+use App\Domain\Lesson\LessonContent;
 use App\Domain\Lesson\LessonDescription;
 use App\Domain\Lesson\LessonId;
 use App\Domain\Lesson\LessonRepositoryInterface;
@@ -43,25 +44,23 @@ final class CreateLessonUseCase
             ? $this->storage->store("courses/{$course->category()->value}/{$courseId->value()}", $command->video)
             : null;
 
-        $lesson = Lesson::create(
+        $new = NewLesson::create(
             $courseId,
             new LessonTitle($command->title),
             new LessonDescription($command->description),
-            $type,
-            new SortOrder(count($this->lessons->findByCourse($courseId)) + 1),
-            $command->content,
-            $videoPath,
+            LessonContent::of($type, $command->content, $videoPath),
+            new SortOrder(count($this->lessons->findByCourse($courseId)) + 1)
         );
 
         try {
-            return DB::transaction(function () use ($lesson, $type, $command) {
-                $saved = $this->lessons->save($lesson);
+            return DB::transaction(function () use ($new, $type, $command) {
+                $lesson = $this->lessons->create($new);
 
                 if ($type === LessonType::TASK) {
-                    $this->saveTask->execute($saved->id()->value(), $command->task);;
+                    $this->saveTask->execute($lesson->id()->value(), $command->task);;
                 }
 
-                return $saved->id();
+                return $lesson->id();
             });
         } catch (Throwable $e) {
             if ($videoPath !== null) {

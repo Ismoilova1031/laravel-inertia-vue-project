@@ -3,6 +3,7 @@
 namespace App\Infrastructure\Repository;
 
 use App\Domain\Course\Course;
+use App\Domain\Course\NewCourse;
 use App\Domain\Course\CourseId;
 use App\Domain\Course\CourseRepositoryInterface;
 use App\Domain\Course\Exception\CourseNotFoundException;
@@ -20,20 +21,26 @@ final class EloquentCourseRepository implements CourseRepositoryInterface
         return $model ? $this->mapper->toEntity($model) : null;
     }
 
-    public function save(Course $course): Course
+    public function create(NewCourse $new): Course
     {
-        $attributes = $this->mapper->toAttributes($course);
-
-        if ($course->id() === null) {
-            $model = CourseModel::create($attributes);
-        } else {
-            $model = CourseModel::find($course->id()->value())
-                ?? throw CourseNotFoundException::withId($course->id());
-
-            $model->update($attributes);
-        }
+        $model = CourseModel::create([
+            'title'       => $new->title->value(),
+            'description' => $new->description->value(),
+            'category'    => $new->category,
+            'status'      => $new->status(),
+        ]);
 
         return $this->mapper->toEntity($model);
+    }
+
+
+    public function save(Course $course): void
+    {
+
+        $model = CourseModel::find($course->id()->value())
+            ?? throw CourseNotFoundException::withId($course->id());
+
+        $model->update($this->mapper->toAttributes($course));
     }
 
     public function delete(CourseId $id): void

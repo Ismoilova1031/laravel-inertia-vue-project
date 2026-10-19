@@ -4,6 +4,7 @@ namespace App\Infrastructure\Repository;
 
 use App\Domain\Course\CourseId;
 use App\Domain\Enrollment\Enrollment;
+use App\Domain\Enrollment\NewEnrollment;
 use App\Domain\Enrollment\EnrollmentRepositoryInterface;
 use App\Domain\Student\StudentId;
 use App\Infrastructure\Eloquent\EnrollmentModel;
@@ -24,19 +25,16 @@ class EloquentEnrollmentRepository implements EnrollmentRepositoryInterface
         return $model ? $this->mapper->toEntity($model) : null;
     }
 
-    public function save(Enrollment $enrollment): Enrollment
+    public function create(NewEnrollment $new): Enrollment
     {
-        $attributes = $this->mapper->toAttributes($enrollment);
+        return $this->mapper->toEntity(EnrollmentModel::create($this->mapper->toNewAttributes($new)));
+    }
 
-        if ($enrollment->id() === null) {
-            $model = EnrollmentModel::create($attributes);
-        } else {
-            $model = EnrollmentModel::find($enrollment->id()->value())
-                ?? throw new RuntimeException('Enrollment topilmadi.');
+    public function save(Enrollment $enrollment): void
+    {
+        $model = EnrollmentModel::find($enrollment->id()->value())
+            ?? throw new RuntimeException('Enrollment topilmadi.');
 
-            $model->update($attributes);
-        }
-
-        return $this->mapper->toEntity($model);
+        $model->update($this->mapper->toAttributes($enrollment));
     }
 }

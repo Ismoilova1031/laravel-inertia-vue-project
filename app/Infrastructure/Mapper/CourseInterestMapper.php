@@ -4,6 +4,7 @@ namespace App\Infrastructure\Mapper;
 
 use App\Domain\Course\CourseId;
 use App\Domain\CourseInterest\CourseInterest;
+use App\Domain\CourseInterest\NewCourseInterest;
 use App\Domain\CourseInterest\InterestType;
 use App\Domain\Student\StudentId;
 use App\Infrastructure\Eloquent\CourseInterestModel;
@@ -28,6 +29,16 @@ final class CourseInterestMapper
             'student_id' => $courseInterest->studentId()->value(),
             'is_liked' => $courseInterest->has(InterestType::LIKE),
             'is_planned' => $courseInterest->has(InterestType::PLANNED),
+        ];
+    }
+
+    public function toNewAttributes(NewCourseInterest $new): array
+    {
+        return [
+            'course_id' => $new->courseId->value(),
+            'student_id' => $new->studentId->value(),
+            'is_liked' => $new->has(InterestType::LIKE),
+            'is_planned' => $new->has(InterestType::PLANNED),
         ];
     }
 }
