@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use App\Application\UseCase\Lesson\ReorderLessonsCommand;
+use Illuminate\Foundation\Http\FormRequest;
 
 class ReorderLessonsRequest extends FormRequest
 {
@@ -24,11 +24,11 @@ class ReorderLessonsRequest extends FormRequest
     public function toCommand(): ReorderLessonsCommand
     {
         $lessons = $this->validated('lessons');
-        usort($lessons, fn($a, $b) => $a['sort_order'] <=> $b['sort_order']);
+        usort($lessons, fn ($a, $b) => $a['sort_order'] <=> $b['sort_order']);
 
         return new ReorderLessonsCommand(
             (int) $this->route('course'),
-            array_map(fn($l) => (int) $l['id'], $lessons),
+            array_map(fn ($l) => (int) $l['id'], $lessons),
         );
     }
 }

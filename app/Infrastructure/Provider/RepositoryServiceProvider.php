@@ -2,34 +2,32 @@
 
 namespace App\Infrastructure\Provider;
 
+use App\Application\Contracts\FileStorageInterface;
+use App\Application\UseCase\Assessment\TaskSubmissionLookupInterface;
 use App\Application\UseCase\Course\CourseLessonCounterInterface;
 use App\Application\UseCase\Course\CourseQueryInterface;
+use App\Application\UseCase\Lesson\LessonQueryInterface;
 use App\Application\UseCase\Student\StudentQueryInterface;
+use App\Domain\Assessment\TaskRepositoryInterface;
 use App\Domain\Course\CourseRepositoryInterface;
 use App\Domain\CourseInterest\CourseInterestRepositoryInterface;
 use App\Domain\Enrollment\EnrollmentRepositoryInterface;
+use App\Domain\Lesson\LessonRepositoryInterface;
 use App\Domain\Student\PasswordHasherInterface;
 use App\Domain\Student\StudentRepositoryInterface;
 use App\Infrastructure\Query\EloquentCourseLessonCounter;
 use App\Infrastructure\Query\EloquentCourseQuery;
+use App\Infrastructure\Query\EloquentLessonQuery;
 use App\Infrastructure\Query\EloquentStudentQuery;
+use App\Infrastructure\Query\EloquentTaskSubmissionLookup;
 use App\Infrastructure\Repository\EloquentCourseInterestRepository;
 use App\Infrastructure\Repository\EloquentCourseRepository;
 use App\Infrastructure\Repository\EloquentEnrollmentRepository;
-use App\Infrastructure\Repository\EloquentStudentRepository;
-use App\Infrastructure\Security\LaravelPasswordHasher;
-use App\Domain\Lesson\LessonRepositoryInterface;
-use App\Application\UseCase\Lesson\LessonQueryInterface;
 use App\Infrastructure\Repository\EloquentLessonRepository;
-use App\Infrastructure\Query\EloquentLessonQuery;
-use App\Application\Contracts\FileStorageInterface;
-use App\Infrastructure\Storage\LaravelFileStorage;
-use App\Infrastructure\Legacy\LegacyLessonTaskGateway;
-use App\Domain\Assessment\TaskRepositoryInterface;
-use App\Application\UseCase\Assessment\TaskSubmissionLookupInterface;
+use App\Infrastructure\Repository\EloquentStudentRepository;
 use App\Infrastructure\Repository\EloquentTaskRepository;
-use App\Infrastructure\Query\EloquentTaskSubmissionLookup;
-
+use App\Infrastructure\Security\LaravelPasswordHasher;
+use App\Infrastructure\Storage\LaravelFileStorage;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider

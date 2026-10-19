@@ -4,8 +4,8 @@ namespace App\Infrastructure\Mapper;
 
 use App\Domain\Course\CourseId;
 use App\Domain\CourseInterest\CourseInterest;
-use App\Domain\CourseInterest\NewCourseInterest;
 use App\Domain\CourseInterest\InterestType;
+use App\Domain\CourseInterest\NewCourseInterest;
 use App\Domain\Student\StudentId;
 use App\Infrastructure\Eloquent\CourseInterestModel;
 

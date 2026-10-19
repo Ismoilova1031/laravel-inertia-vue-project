@@ -12,13 +12,15 @@ final class LessonTitle
     {
         $value = trim($value);
 
-        if($value === ''){
+        if ($value === '') {
             throw new InvalidArgumentException('Dars nomi bo\'sh bo\'lishi mumkin emas');
         }
 
         $this->value = $value;
     }
 
-    public function value(): string { return $this->value; }
-    
+    public function value(): string
+    {
+        return $this->value;
+    }
 }

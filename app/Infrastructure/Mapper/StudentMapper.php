@@ -4,9 +4,9 @@ namespace App\Infrastructure\Mapper;
 
 use App\Domain\Student\EmailAddress;
 use App\Domain\Student\HashedPassword;
+use App\Domain\Student\NewStudent;
 use App\Domain\Student\PersonName;
 use App\Domain\Student\Student;
-use App\Domain\Student\NewStudent;
 use App\Domain\Student\StudentId;
 use App\Domain\Student\Username;
 use App\Infrastructure\Eloquent\StudentModel;

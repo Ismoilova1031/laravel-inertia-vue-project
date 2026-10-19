@@ -5,9 +5,9 @@ namespace App\Infrastructure\Repository;
 use App\Domain\Course\CourseId;
 use App\Domain\Lesson\Exception\LessonNotFoundException;
 use App\Domain\Lesson\Lesson;
-use App\Domain\Lesson\NewLesson;
 use App\Domain\Lesson\LessonId;
 use App\Domain\Lesson\LessonRepositoryInterface;
+use App\Domain\Lesson\NewLesson;
 use App\Infrastructure\Eloquent\LessonModel;
 use App\Infrastructure\Mapper\LessonMapper;
 
@@ -29,7 +29,7 @@ final class EloquentLessonRepository implements LessonRepositoryInterface
             ->orderBy('sort_order')
             ->orderBy('id')
             ->get()
-            ->map(fn(LessonModel $m) => $this->mapper->toEntity($m))
+            ->map(fn (LessonModel $m) => $this->mapper->toEntity($m))
             ->all();
     }
 

@@ -3,10 +3,10 @@
 namespace App\Infrastructure\Repository;
 
 use App\Domain\Course\Course;
-use App\Domain\Course\NewCourse;
 use App\Domain\Course\CourseId;
 use App\Domain\Course\CourseRepositoryInterface;
 use App\Domain\Course\Exception\CourseNotFoundException;
+use App\Domain\Course\NewCourse;
 use App\Infrastructure\Eloquent\CourseModel;
 use App\Infrastructure\Mapper\CourseMapper;
 
@@ -24,15 +24,14 @@ final class EloquentCourseRepository implements CourseRepositoryInterface
     public function create(NewCourse $new): Course
     {
         $model = CourseModel::create([
-            'title'       => $new->title->value(),
+            'title' => $new->title->value(),
             'description' => $new->description->value(),
-            'category'    => $new->category,
-            'status'      => $new->status(),
+            'category' => $new->category,
+            'status' => $new->status(),
         ]);
 
         return $this->mapper->toEntity($model);
     }
-
 
     public function save(Course $course): void
     {

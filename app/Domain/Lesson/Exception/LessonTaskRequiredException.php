@@ -2,7 +2,6 @@
 
 namespace App\Domain\Lesson\Exception;
 
-use App\Domain\Lesson\LessonId;
 use DomainException;
 
 final class LessonTaskRequiredException extends DomainException

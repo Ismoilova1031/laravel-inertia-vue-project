@@ -11,7 +11,7 @@ final class LaravelFileStorage implements FileStorageInterface
 {
     public function store(string $directory, VideoFile $file): string
     {
-        $path = trim($directory, '/') . '/' . Str::uuid() . '.' . $file->extension;
+        $path = trim($directory, '/').'/'.Str::uuid().'.'.$file->extension;
 
         $stream = fopen($file->path, 'rb');
 

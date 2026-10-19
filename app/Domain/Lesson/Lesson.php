@@ -43,12 +43,43 @@ final class Lesson
         $this->sortOrder = $sortOrder;
     }
 
-    public function id(): LessonId { return $this->id; }
-    public function courseId(): CourseId { return $this->courseId; }
-    public function title(): LessonTitle { return $this->title; }
-    public function description(): LessonDescription { return $this->description; }
-    public function type(): LessonType { return $this->content->type(); }
-    public function content(): ?string { return $this->content->text(); }
-    public function videoPath(): ?string { return $this->content->videoPath(); }
-    public function sortOrder(): SortOrder { return $this->sortOrder; }
+    public function id(): LessonId
+    {
+        return $this->id;
+    }
+
+    public function courseId(): CourseId
+    {
+        return $this->courseId;
+    }
+
+    public function title(): LessonTitle
+    {
+        return $this->title;
+    }
+
+    public function description(): LessonDescription
+    {
+        return $this->description;
+    }
+
+    public function type(): LessonType
+    {
+        return $this->content->type();
+    }
+
+    public function content(): ?string
+    {
+        return $this->content->text();
+    }
+
+    public function videoPath(): ?string
+    {
+        return $this->content->videoPath();
+    }
+
+    public function sortOrder(): SortOrder
+    {
+        return $this->sortOrder;
+    }
 }

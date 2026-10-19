@@ -7,7 +7,7 @@ interface StudentRepositoryInterface
     public function findById(StudentId $id): ?Student;
 
     public function create(NewStudent $newStudent): Student;
-    
+
     public function save(Student $student): void;
 
     public function delete(StudentId $id): void;

@@ -5,8 +5,8 @@ namespace App\Application\UseCase\Assessment;
 final class TaskData
 {
     /**
-     * @param list<string>|null $fileExtensions
-     * @param list<array<string, mixed>>|null $questions
+     * @param  list<string>|null  $fileExtensions
+     * @param  list<array<string, mixed>>|null  $questions
      */
     public function __construct(
         public readonly int $type,

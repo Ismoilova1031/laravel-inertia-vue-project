@@ -9,8 +9,8 @@ use App\Domain\Course\CourseId;
 use App\Domain\Course\CourseRepositoryInterface;
 use App\Domain\Course\Exception\CourseNotFoundException;
 use App\Domain\Course\Exception\CourseNotPublishedException;
-use App\Domain\Enrollment\NewEnrollment;
 use App\Domain\Enrollment\EnrollmentRepositoryInterface;
+use App\Domain\Enrollment\NewEnrollment;
 use App\Domain\Student\Exception\StudentNotFoundException;
 use App\Domain\Student\StudentId;
 use App\Domain\Student\StudentRepositoryInterface;
@@ -45,6 +45,7 @@ final class EnrollStudentUseCase
 
         if ($enrollment === null) {
             $this->enrollments->create(NewEnrollment::enroll($courseId, $studentId, $now));
+
             return;
         }
 

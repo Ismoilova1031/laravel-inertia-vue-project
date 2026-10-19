@@ -2,7 +2,6 @@
 
 namespace App\Domain\Lesson;
 
-
 final class LessonContent
 {
     private function __construct(
@@ -20,7 +19,18 @@ final class LessonContent
         );
     }
 
-    public function type(): LessonType { return $this->type; }
-    public function text(): ?string { return $this->text; }
-    public function videoPath(): ?string { return $this->videoPath; }
+    public function type(): LessonType
+    {
+        return $this->type;
+    }
+
+    public function text(): ?string
+    {
+        return $this->text;
+    }
+
+    public function videoPath(): ?string
+    {
+        return $this->videoPath;
+    }
 }

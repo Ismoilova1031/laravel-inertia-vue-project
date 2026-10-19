@@ -3,7 +3,6 @@
 namespace App\Infrastructure\Eloquent;
 
 use App\Domain\Lesson\LessonType;
-use App\Models\Task;
 use Database\Factories\LessonFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

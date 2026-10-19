@@ -4,8 +4,8 @@ namespace App\Infrastructure\Mapper;
 
 use App\Domain\Course\CourseId;
 use App\Domain\Enrollment\Enrollment;
-use App\Domain\Enrollment\NewEnrollment;
 use App\Domain\Enrollment\EnrollmentId;
+use App\Domain\Enrollment\NewEnrollment;
 use App\Domain\Student\StudentId;
 use App\Infrastructure\Eloquent\EnrollmentModel;
 

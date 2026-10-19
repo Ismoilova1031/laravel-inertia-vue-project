@@ -3,9 +3,9 @@
 namespace App\Http\Requests;
 
 use App\Application\Contracts\VideoFile;
+use App\Application\UseCase\Assessment\TaskData;
 use App\Application\UseCase\Lesson\CreateLessonCommand;
 use App\Application\UseCase\Lesson\UpdateLessonCommand;
-use App\Application\UseCase\Assessment\TaskData;
 use Illuminate\Foundation\Http\FormRequest;
 
 class LessonRequest extends FormRequest
@@ -74,7 +74,7 @@ class LessonRequest extends FormRequest
     {
         $task = $this->input('task');
 
-        if (!is_array($task) || empty($task['task_type'])) {
+        if (! is_array($task) || empty($task['task_type'])) {
             return null;
         }
 

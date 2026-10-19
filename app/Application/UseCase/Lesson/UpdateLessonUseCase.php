@@ -3,6 +3,8 @@
 namespace App\Application\UseCase\Lesson;
 
 use App\Application\Contracts\FileStorageInterface;
+use App\Application\UseCase\Assessment\DeleteTaskUseCase;
+use App\Application\UseCase\Assessment\SaveTaskUseCase;
 use App\Domain\Course\CourseRepositoryInterface;
 use App\Domain\Course\Exception\CourseNotFoundException;
 use App\Domain\Lesson\Exception\LessonNotFoundException;
@@ -10,12 +12,10 @@ use App\Domain\Lesson\Exception\LessonTaskRequiredException;
 use App\Domain\Lesson\LessonDescription;
 use App\Domain\Lesson\LessonId;
 use App\Domain\Lesson\LessonRepositoryInterface;
+use App\Domain\Lesson\LessonSequence;
 use App\Domain\Lesson\LessonTitle;
 use App\Domain\Lesson\LessonType;
 use Illuminate\Support\Facades\DB;
-use App\Domain\Lesson\LessonSequence;
-use App\Application\UseCase\Assessment\SaveTaskUseCase;
-use App\Application\UseCase\Assessment\DeleteTaskUseCase;
 use Throwable;
 
 final class UpdateLessonUseCase

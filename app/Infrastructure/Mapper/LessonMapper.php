@@ -4,12 +4,12 @@ namespace App\Infrastructure\Mapper;
 
 use App\Domain\Course\CourseId;
 use App\Domain\Lesson\Lesson;
-use App\Domain\Lesson\NewLesson;
+use App\Domain\Lesson\LessonContent;
 use App\Domain\Lesson\LessonDescription;
 use App\Domain\Lesson\LessonId;
 use App\Domain\Lesson\LessonTitle;
+use App\Domain\Lesson\NewLesson;
 use App\Domain\Lesson\SortOrder;
-use App\Domain\Lesson\LessonContent;
 use App\Infrastructure\Eloquent\LessonModel;
 
 final class LessonMapper
@@ -24,8 +24,7 @@ final class LessonMapper
             LessonContent::of($model->lesson_type, $model->lesson_content, $model->video_url),
             new SortOrder((int) $model->sort_order)
         );
-    } 
-
+    }
 
     public function toAttributes(Lesson $lesson): array
     {
@@ -36,7 +35,7 @@ final class LessonMapper
             'lesson_type' => $lesson->type(),
             'lesson_content' => $lesson->content(),
             'video_url' => $lesson->videoPath(),
-            'sort_order' => $lesson->sortOrder()->value(),  
+            'sort_order' => $lesson->sortOrder()->value(),
         ];
     }
 

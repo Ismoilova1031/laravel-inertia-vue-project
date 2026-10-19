@@ -4,8 +4,8 @@ namespace App\Infrastructure\Repository;
 
 use App\Domain\Student\EmailAddress;
 use App\Domain\Student\Exception\StudentNotFoundException;
-use App\Domain\Student\Student;
 use App\Domain\Student\NewStudent;
+use App\Domain\Student\Student;
 use App\Domain\Student\StudentId;
 use App\Domain\Student\StudentRepositoryInterface;
 use App\Domain\Student\Username;
@@ -44,14 +44,14 @@ final class EloquentStudentRepository implements StudentRepositoryInterface
     public function existsByUsername(Username $username, ?StudentId $exceptId = null): bool
     {
         return StudentModel::where('username', $username->value())
-            ->when($exceptId, fn($q) => $q->whereKeyNot($exceptId->value()))
+            ->when($exceptId, fn ($q) => $q->whereKeyNot($exceptId->value()))
             ->exists();
     }
 
     public function existsByEmail(EmailAddress $email, ?StudentId $exceptId = null): bool
     {
         return StudentModel::where('email', $email->value())
-            ->when($exceptId, fn($q) => $q->whereKeyNot($exceptId->value()))
+            ->when($exceptId, fn ($q) => $q->whereKeyNot($exceptId->value()))
             ->exists();
     }
 }

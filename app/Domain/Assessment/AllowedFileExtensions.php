@@ -11,12 +11,12 @@ final class AllowedFileExtensions
     public function __construct(array $items)
     {
         $unique = [];
-        foreach($items as $item){
+        foreach ($items as $item) {
             $unique[$item->value] = $item;
         }
 
-        if($unique === []){
-            throw new InvalidArgumentException("Kamida bitta fayl kengaytmasi tanlanishi kerak.");
+        if ($unique === []) {
+            throw new InvalidArgumentException('Kamida bitta fayl kengaytmasi tanlanishi kerak.');
         }
 
         $this->items = array_values($unique);
@@ -25,13 +25,13 @@ final class AllowedFileExtensions
     public static function fromStrings(array $values): self
     {
         return new self(array_map(
-            fn (string $v) => FileExtensions::tryFrom($v) 
+            fn (string $v) => FileExtensions::tryFrom($v)
                 ?? throw new InvalidArgumentException("Ruxsat etilmagan kengaytma: {$v}"),
-                $values,
+            $values,
         ));
     }
 
-    public function values(): array 
+    public function values(): array
     {
         return array_map(fn (FileExtensions $e) => $e->value, $this->items);
     }

@@ -38,7 +38,7 @@ final class LessonSequence
 
         $ordered = [];
         foreach ($orderedIds as $id) {
-            if (!isset($byId[$id])) {
+            if (! isset($byId[$id])) {
                 throw LessonNotFoundException::withId(new LessonId($id));
             }
             $ordered[] = $byId[$id];
@@ -59,7 +59,7 @@ final class LessonSequence
         foreach (array_values($ordered) as $i => $lesson) {
             $position = new SortOrder($i + 1);
 
-            if (!$lesson->sortOrder()->equals($position)) {
+            if (! $lesson->sortOrder()->equals($position)) {
                 $lesson->moveTo($position);
                 $changed[] = $lesson;
             }

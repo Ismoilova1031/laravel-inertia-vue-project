@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Application\UseCase\Course\ChangeCourseStatusUseCase;
 use App\Application\UseCase\Course\CreateCourseUseCase;
 use App\Application\UseCase\Course\DeleteCourseUseCase;
 use App\Application\UseCase\Course\GetCoursesUseCase;
@@ -10,8 +11,10 @@ use App\Application\UseCase\Course\UpdateCourseUseCase;
 use App\Application\UseCase\Student\GetAvailableStudentsUseCase;
 use App\Domain\Course\CourseCategory;
 use App\Domain\Course\CourseStatus;
+use App\Domain\Course\Exception\CannotDeleteNonDraftCourseException;
 use App\Domain\Course\Exception\CannotPublishWithoutLessonsException;
 use App\Domain\Course\Exception\CourseNotFoundException;
+use App\Http\Requests\ChangeCourseStatusRequest;
 use App\Http\Requests\CourseRequest;
 use App\Http\Resources\CourseListResource;
 use App\Http\Resources\CourseShowResource;
@@ -20,9 +23,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
-use App\Domain\Course\Exception\CannotDeleteNonDraftCourseException;
-use App\Application\UseCase\Course\ChangeCourseStatusUseCase;
-use App\Http\Requests\ChangeCourseStatusRequest;
 
 class CourseController extends Controller
 {

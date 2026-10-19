@@ -2,7 +2,11 @@
 
 namespace App\Infrastructure\Repository;
 
+use App\Domain\Assessment\Exception\TaskNotFoundException;
+use App\Domain\Assessment\NewQuestion;
+use App\Domain\Assessment\NewTask;
 use App\Domain\Assessment\Task;
+use App\Domain\Assessment\TaskId;
 use App\Domain\Assessment\TaskRepositoryInterface;
 use App\Domain\Lesson\LessonId;
 use App\Infrastructure\Eloquent\QuestionModel;
@@ -10,43 +14,57 @@ use App\Infrastructure\Eloquent\QuestionOptionModel;
 use App\Infrastructure\Eloquent\TaskModel;
 use App\Infrastructure\Mapper\TaskMapper;
 use Illuminate\Support\Facades\DB;
-use RuntimeException;
 
 final class EloquentTaskRepository implements TaskRepositoryInterface
 {
     public function __construct(private readonly TaskMapper $mapper) {}
 
-    public function findByLessonId(LessonId $lessonId): ?Task
+    public function findById(TaskId $id): ?Task
     {
-        $model = TaskModel::with('questions.options')
-            ->where('lesson_id', $lessonId->value())
-            ->first();
+        $model = TaskModel::with('questions.options')->find($id->value());
 
         return $model ? $this->mapper->toEntity($model) : null;
     }
 
-    public function save(Task $task): Task
+    public function findByLessonId(LessonId $lessonId): ?Task
     {
-        return DB::transaction(function () use ($task) {
-            $attributes = [
-                'lesson_id' => $task->lessonId()->value(),
+        $model = TaskModel::with('questions.options')->where('lesson_id', $lessonId->value())->first();
+
+        return $model ? $this->mapper->toEntity($model) : null;
+    }
+
+    public function create(NewTask $new): Task
+    {
+        return DB::transaction(function () use ($new) {
+            $model = TaskModel::create([
+                'lesson_id' => $new->lessonId->value(),
+                'task_type' => $new->content->type(),
+                'allowed_file_extensions' => $new->content->allowedExtensions()?->values(),
+            ]);
+
+            $this->insertQuestions((int) $model->id, $new->content->questions());
+
+            return $this->mapper->toEntity(TaskModel::with('questions.options')->find($model->id));
+        });
+    }
+
+    public function save(Task $task): void
+    {
+        DB::transaction(function () use ($task) {
+            $model = TaskModel::find($task->id()->value())
+                ?? throw TaskNotFoundException::withId($task->id());
+
+            $model->update([
                 'task_type' => $task->type(),
                 'allowed_file_extensions' => $task->allowedExtensions()?->values(),
-            ];
+            ]);
 
-            if ($task->id() === null) {
-                $model = TaskModel::create($attributes);
-            } else {
-                $model = TaskModel::find($task->id()->value())
-                    ?? throw new RuntimeException('Task topilmadi.');
-                $model->update($attributes);
+            $replacement = $task->questionReplacement();
+
+            if ($replacement !== null) {
+                QuestionModel::where('task_id', $model->id)->delete();
+                $this->insertQuestions((int) $model->id, $replacement);
             }
-
-            if ($task->questionsChanged()) {
-                $this->replaceQuestions($model, $task);
-            }
-
-            return $this->mapper->toEntity(TaskModel::with('questions.options')->findOrFail($model->id));
         });
     }
 
@@ -55,15 +73,14 @@ final class EloquentTaskRepository implements TaskRepositoryInterface
         TaskModel::where('lesson_id', $lessonId->value())->delete();
     }
 
-    private function replaceQuestions(TaskModel $model, Task $task): void
+    /** @param list<NewQuestion> $questions */
+    private function insertQuestions(int $taskId, array $questions): void
     {
-        QuestionModel::where('task_id', $model->id)->delete();  
-
         $now = now();
 
-        foreach ($task->questions() as $index => $question) {
+        foreach ($questions as $index => $question) {
             $questionModel = QuestionModel::create([
-                'task_id' => $model->id,
+                'task_id' => $taskId,
                 'question' => $question->text(),
                 'question_type' => $question->type(),
                 'points' => $question->points()->value(),

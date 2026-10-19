@@ -26,7 +26,7 @@ class LessonEditResource extends JsonResource
             'sort_order' => $this->sortOrder,
             'task' => $this->when(
                 $this->type === LessonType::TASK && $this->task !== null,
-                fn() => (new TaskResource($this->task))->resolve(),
+                fn () => (new TaskResource($this->task))->resolve(),
             ),
         ];
     }

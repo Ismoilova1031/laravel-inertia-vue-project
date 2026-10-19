@@ -8,7 +8,11 @@ interface TaskRepositoryInterface
 {
     public function findByLessonId(LessonId $lessonId): ?Task;
 
-    public function save(Task $task): Task;
+    public function findById(TaskId $taskId): ?Task;
+
+    public function create(NewTask $new): Task;
+
+    public function save(Task $task): void;
 
     public function deleteByLessonId(LessonId $lessonId): void;
 }

@@ -4,7 +4,6 @@ namespace App\Infrastructure\Eloquent;
 
 use App\Domain\Course\CourseCategory;
 use App\Domain\Course\CourseStatus;
-use App\Infrastructure\Eloquent\LessonModel;
 use Database\Factories\CourseFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

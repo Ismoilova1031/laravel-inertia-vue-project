@@ -23,7 +23,8 @@ final class TaskMapper
             $q->question_type,
             new Points((int) $q->points),
             $q->correct_answer,
-            $q->options->map(fn (QuestionOptionModel $o) => new QuestionOption($o->option, (bool) $o->is_correct))->all(),
+            $q->options->map(fn (QuestionOptionModel $o) => new QuestionOption(
+                (int) $o->id, $o->option, (bool) $o->is_correct))->all(),
         ))->all();
 
         return Task::reconstitute(

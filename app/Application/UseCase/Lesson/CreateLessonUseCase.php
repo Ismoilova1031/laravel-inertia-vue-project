@@ -3,20 +3,20 @@
 namespace App\Application\UseCase\Lesson;
 
 use App\Application\Contracts\FileStorageInterface;
+use App\Application\UseCase\Assessment\SaveTaskUseCase;
 use App\Domain\Course\CourseId;
 use App\Domain\Course\CourseRepositoryInterface;
 use App\Domain\Course\Exception\CourseNotFoundException;
 use App\Domain\Lesson\Exception\LessonTaskRequiredException;
-use App\Domain\Lesson\NewLesson;
 use App\Domain\Lesson\LessonContent;
 use App\Domain\Lesson\LessonDescription;
 use App\Domain\Lesson\LessonId;
 use App\Domain\Lesson\LessonRepositoryInterface;
 use App\Domain\Lesson\LessonTitle;
 use App\Domain\Lesson\LessonType;
+use App\Domain\Lesson\NewLesson;
 use App\Domain\Lesson\SortOrder;
 use Illuminate\Support\Facades\DB;
-use App\Application\UseCase\Assessment\SaveTaskUseCase;
 use Throwable;
 
 final class CreateLessonUseCase
@@ -57,7 +57,7 @@ final class CreateLessonUseCase
                 $lesson = $this->lessons->create($new);
 
                 if ($type === LessonType::TASK) {
-                    $this->saveTask->execute($lesson->id()->value(), $command->task);;
+                    $this->saveTask->execute($lesson->id()->value(), $command->task);
                 }
 
                 return $lesson->id();

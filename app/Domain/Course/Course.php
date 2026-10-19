@@ -2,8 +2,8 @@
 
 namespace App\Domain\Course;
 
-use App\Domain\Course\Exception\CannotPublishWithoutLessonsException;
 use App\Domain\Course\Exception\CannotDeleteNonDraftCourseException;
+use App\Domain\Course\Exception\CannotPublishWithoutLessonsException;
 
 final class Course
 {
@@ -14,7 +14,6 @@ final class Course
         private CourseCategory $category,
         private CourseStatus $status,
     ) {}
-
 
     public static function reconstitute(
         CourseId $id,

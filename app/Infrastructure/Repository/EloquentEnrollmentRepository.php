@@ -4,8 +4,8 @@ namespace App\Infrastructure\Repository;
 
 use App\Domain\Course\CourseId;
 use App\Domain\Enrollment\Enrollment;
-use App\Domain\Enrollment\NewEnrollment;
 use App\Domain\Enrollment\EnrollmentRepositoryInterface;
+use App\Domain\Enrollment\NewEnrollment;
 use App\Domain\Student\StudentId;
 use App\Infrastructure\Eloquent\EnrollmentModel;
 use App\Infrastructure\Mapper\EnrollmentMapper;

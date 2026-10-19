@@ -5,8 +5,8 @@ namespace App\Infrastructure\Query;
 use App\Application\UseCase\Course\CourseDetail;
 use App\Application\UseCase\Course\CourseListItem;
 use App\Application\UseCase\Course\CourseQueryInterface;
-use App\Infrastructure\Eloquent\CourseModel;
 use App\Application\UseCase\Lesson\LessonListItem;
+use App\Infrastructure\Eloquent\CourseModel;
 use App\Infrastructure\Eloquent\LessonModel;
 
 final class EloquentCourseQuery implements CourseQueryInterface
@@ -16,7 +16,7 @@ final class EloquentCourseQuery implements CourseQueryInterface
         return CourseModel::query()
             ->orderBy('id')
             ->get()
-            ->map(fn(CourseModel $m) => new CourseListItem(
+            ->map(fn (CourseModel $m) => new CourseListItem(
                 (int) $m->id,
                 $m->title,
                 $m->description,
@@ -30,7 +30,7 @@ final class EloquentCourseQuery implements CourseQueryInterface
     {
         $m = CourseModel::with(['lessons', 'students'])->find($id);
 
-        $lessons = $m->lessons->map(fn(LessonModel $l) => new LessonListItem(
+        $lessons = $m->lessons->map(fn (LessonModel $l) => new LessonListItem(
             (int) $l->id,
             $l->title,
             $l->description,
