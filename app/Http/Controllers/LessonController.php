@@ -48,8 +48,8 @@ class LessonController extends Controller
             $this->createLesson->execute($request->toCreateCommand());
         } catch (CourseNotFoundException) {
             abort(404);
-        } catch (LessonTaskRequiredException|AssessmentRuleViolation $e) {
-            throw ValidationException::withMessages(['task' => $e->getMessage()]);
+        } catch (LessonTaskRequiredException | AssessmentRuleViolation $e) {
+            throw ValidationException::withMessages(['task.task_type' => $e->getMessage()]);
         }
 
         return to_route('courses.show', ['course' => $course]);
@@ -74,10 +74,10 @@ class LessonController extends Controller
     {
         try {
             $this->updateLesson->execute($request->toUpdateCommand());
-        } catch (LessonNotFoundException|CourseNotFoundException) {
+        } catch (LessonNotFoundException | CourseNotFoundException) {
             abort(404);
-        } catch (LessonTaskRequiredException|AssessmentRuleViolation $e) {
-            throw ValidationException::withMessages(['task' => $e->getMessage()]);
+        } catch (LessonTaskRequiredException | AssessmentRuleViolation $e) {
+            throw ValidationException::withMessages(['task.task_type' => $e->getMessage()]);
         }
 
         return to_route('courses.show', ['course' => $course]);
@@ -124,7 +124,7 @@ class LessonController extends Controller
     private function types(): array
     {
         return collect(LessonType::cases())
-            ->map(fn (LessonType $t) => ['label' => $t->label(), 'value' => $t->value])
+            ->map(fn(LessonType $t) => ['label' => $t->label(), 'value' => $t->value])
             ->all();
     }
 }

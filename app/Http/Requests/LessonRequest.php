@@ -80,7 +80,7 @@ class LessonRequest extends FormRequest
 
         return new TaskData(
             type: (int) $task['task_type'],
-            fileExtensions: $task['file_extensions'] ?? null,
+            fileExtensions: $task['allowed_file_extensions'] ?? null,
             questions: $task['questions'] ?? null,
         );
     }
