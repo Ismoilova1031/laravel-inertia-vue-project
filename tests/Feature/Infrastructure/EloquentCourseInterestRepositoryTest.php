@@ -1,14 +1,11 @@
 <?php
 
-// tests/Feature/Infrastructure/EloquentCourseInterestRepositoryTest.php
-declare(strict_types=1);
-
 namespace Tests\Feature\Infrastructure;
 
 use App\Domain\Course\CourseId;
-use App\Domain\CourseInterest\CourseInterest;
 use App\Domain\CourseInterest\CourseInterestRepositoryInterface;
 use App\Domain\CourseInterest\InterestType;
+use App\Domain\CourseInterest\NewCourseInterest;
 use App\Domain\Student\StudentId;
 use App\Infrastructure\Eloquent\CourseModel;
 use App\Infrastructure\Eloquent\StudentModel;
@@ -33,30 +30,44 @@ final class EloquentCourseInterestRepositoryTest extends TestCase
 
         $course = CourseModel::factory()->create();
         $student = StudentModel::create([
-            'name' => 'Ali', 'surname' => 'Valiyev',
-            'email' => 'ali@example.com', 'username' => 'ali_v', 'password' => 'x',
+            'name' => 'Ali',
+            'surname' => 'Valiyev',
+            'email' => 'ali@example.com',
+            'username' => 'ali_v',
+            'password' => 'x',
         ]);
 
         $this->courseId = new CourseId($course->id);
         $this->studentId = new StudentId($student->id);
     }
 
-    public function test_save_persists_flags(): void
+    public function test_create_persists_only_given_flag(): void
     {
-        $interest = CourseInterest::create($this->courseId, $this->studentId);
-        $interest->mark(InterestType::LIKE);
+        $saved = $this->repository->create(
+            NewCourseInterest::with($this->courseId, $this->studentId, InterestType::LIKE)
+        );
 
-        $saved = $this->repository->save($interest);
-
-        $this->assertNotNull($saved->id());
+        $this->assertTrue($saved->has(InterestType::LIKE));
         $this->assertDatabaseHas('course_interests', ['is_liked' => 1, 'is_planned' => 0]);
+    }
+
+    public function test_save_updates_flags(): void
+    {
+        $saved = $this->repository->create(
+            NewCourseInterest::with($this->courseId, $this->studentId, InterestType::PLANNED)
+        );
+        $saved->mark(InterestType::LIKE);
+
+        $this->repository->save($saved);
+
+        $this->assertDatabaseHas('course_interests', ['is_liked' => 1, 'is_planned' => 1]);
     }
 
     public function test_delete_removes_row(): void
     {
-        $interest = CourseInterest::create($this->courseId, $this->studentId);
-        $interest->mark(InterestType::PLANNED);
-        $saved = $this->repository->save($interest);
+        $saved = $this->repository->create(
+            NewCourseInterest::with($this->courseId, $this->studentId, InterestType::PLANNED)
+        );
 
         $this->repository->delete($saved);
 

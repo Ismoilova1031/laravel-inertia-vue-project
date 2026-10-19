@@ -1,4 +1,5 @@
 <?php
+
 // tests/Feature/Application/LessonUseCasesTest.php
 declare(strict_types=1);
 

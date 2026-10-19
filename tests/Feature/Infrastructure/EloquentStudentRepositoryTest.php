@@ -4,8 +4,8 @@ namespace Tests\Feature\Infrastructure;
 
 use App\Domain\Student\EmailAddress;
 use App\Domain\Student\HashedPassword;
+use App\Domain\Student\NewStudent;
 use App\Domain\Student\PersonName;
-use App\Domain\Student\Student;
 use App\Domain\Student\StudentRepositoryInterface;
 use App\Domain\Student\Username;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -23,9 +23,9 @@ final class EloquentStudentRepositoryTest extends TestCase
         $this->repository = $this->app->make(StudentRepositoryInterface::class);
     }
 
-    private function newStudent(string $username = 'ali_v', string $email = 'ali@example.com'): Student
+    private function newStudent(string $username = 'ali_v', string $email = 'ali@example.com'): NewStudent
     {
-        return Student::register(
+        return NewStudent::register(
             new PersonName('Ali', 'Valiyev'),
             new EmailAddress($email),
             new Username($username),
@@ -33,26 +33,17 @@ final class EloquentStudentRepositoryTest extends TestCase
         );
     }
 
-    public function test_save_assigns_id_to_new_student(): void
+    public function test_create_returns_student_with_id(): void
     {
-        $saved = $this->repository->save($this->newStudent());
+        $saved = $this->repository->create($this->newStudent());
 
-        $this->assertNotNull($saved->id());
+        $this->assertSame('Ali Valiyev', $saved->name()->fullName());
         $this->assertDatabaseHas('students', ['username' => 'ali_v', 'surname' => 'Valiyev']);
-    }
-
-    public function test_find_by_id_returns_entity(): void
-    {
-        $saved = $this->repository->save($this->newStudent());
-
-        $found = $this->repository->findById($saved->id());
-
-        $this->assertSame('Ali Valiyev', $found->name()->fullName());
     }
 
     public function test_save_updates_existing_student(): void
     {
-        $saved = $this->repository->save($this->newStudent());
+        $saved = $this->repository->create($this->newStudent());
         $saved->rename(new PersonName('Vali', 'Karimov'));
 
         $this->repository->save($saved);
@@ -61,9 +52,18 @@ final class EloquentStudentRepositoryTest extends TestCase
         $this->assertDatabaseCount('students', 1);
     }
 
+    public function test_find_by_id_returns_entity(): void
+    {
+        $saved = $this->repository->create($this->newStudent());
+
+        $found = $this->repository->findById($saved->id());
+
+        $this->assertSame('Ali Valiyev', $found->name()->fullName());
+    }
+
     public function test_exists_by_username_ignores_given_id(): void
     {
-        $saved = $this->repository->save($this->newStudent());
+        $saved = $this->repository->create($this->newStudent());
 
         $this->assertTrue($this->repository->existsByUsername(new Username('ali_v')));
         $this->assertFalse($this->repository->existsByUsername(new Username('ali_v'), $saved->id()));
@@ -71,7 +71,7 @@ final class EloquentStudentRepositoryTest extends TestCase
 
     public function test_delete_removes_student(): void
     {
-        $saved = $this->repository->save($this->newStudent());
+        $saved = $this->repository->create($this->newStudent());
 
         $this->repository->delete($saved->id());
 

@@ -15,7 +15,7 @@ final class CourseInterestTest extends TestCase
 {
     private function interest(): CourseInterest
     {
-        return CourseInterest::create(new CourseId(1), new StudentId(1));
+        return CourseInterest::reconstitute(1, new CourseId(1), new StudentId(1), false, false);
     }
 
     public function test_new_interest_is_empty(): void

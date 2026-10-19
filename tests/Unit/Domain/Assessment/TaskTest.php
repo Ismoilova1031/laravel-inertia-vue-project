@@ -7,52 +7,63 @@ use App\Domain\Assessment\Exception\InvalidQuestionException;
 use App\Domain\Assessment\Exception\InvalidTaskException;
 use App\Domain\Assessment\Exception\TaskLockedException;
 use App\Domain\Assessment\FileExtensions;
+use App\Domain\Assessment\NewQuestion;
+use App\Domain\Assessment\NewQuestionOption;
 use App\Domain\Assessment\Points;
 use App\Domain\Assessment\Question;
 use App\Domain\Assessment\QuestionOption;
 use App\Domain\Assessment\QuestionType;
 use App\Domain\Assessment\Task;
+use App\Domain\Assessment\TaskContent;
+use App\Domain\Assessment\TaskId;
 use App\Domain\Assessment\TaskType;
 use App\Domain\Lesson\LessonId;
-use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
 final class TaskTest extends TestCase
 {
-    private function single(string $text = 'Savol'): Question
+    private function newSingle(string $text = 'Savol'): NewQuestion
     {
-        return Question::create($text, QuestionType::SINGLE_CHOICE, new Points(5), null, [
-            new QuestionOption('A', true),
-            new QuestionOption('B', false),
+        return NewQuestion::create($text, QuestionType::SINGLE_CHOICE, new Points(5), null, [
+            new NewQuestionOption('A', true),
+            new NewQuestionOption('B', false),
         ]);
     }
 
-    private function quiz(array $questions): Task
+    private function savedSingle(string $text = 'Savol'): Question
     {
-        return Task::create(new LessonId(1), TaskType::QUIZ, null, $questions);
+        return Question::reconstitute(1, $text, QuestionType::SINGLE_CHOICE, new Points(5), null, [
+            new QuestionOption(1, 'A', true),
+            new QuestionOption(2, 'B', false),
+        ]);
+    }
+
+    private function quizTask(string $text = 'Savol'): Task
+    {
+        return Task::reconstitute(new TaskId(1), new LessonId(1), TaskType::QUIZ, null, [$this->savedSingle($text)]);
     }
 
     public function test_quiz_requires_a_question(): void
     {
         $this->expectException(InvalidTaskException::class);
 
-        $this->quiz([]);
+        TaskContent::of(TaskType::QUIZ, null, []);
     }
 
     public function test_file_task_requires_extensions(): void
     {
         $this->expectException(InvalidTaskException::class);
 
-        Task::create(new LessonId(1), TaskType::FILE, null, []);
+        TaskContent::of(TaskType::FILE, null, []);
     }
 
     public function test_single_choice_needs_exactly_one_correct_option(): void
     {
         $this->expectException(InvalidQuestionException::class);
 
-        Question::create('S', QuestionType::SINGLE_CHOICE, new Points(1), null, [
-            new QuestionOption('A', true),
-            new QuestionOption('B', true),
+        NewQuestion::create('S', QuestionType::SINGLE_CHOICE, new Points(1), null, [
+            new NewQuestionOption('A', true),
+            new NewQuestionOption('B', true),
         ]);
     }
 
@@ -60,39 +71,73 @@ final class TaskTest extends TestCase
     {
         $this->expectException(InvalidQuestionException::class);
 
-        Question::create('S', QuestionType::SHORT_ANSWER, new Points(1), null, []);
+        NewQuestion::create('S', QuestionType::SHORT_ANSWER, new Points(1), null, []);
     }
 
     public function test_open_ended_drops_correct_answer(): void
     {
-        $q = Question::create('S', QuestionType::OPEN_ENDED, new Points(10), 'ortiqcha', []);
+        $q = NewQuestion::create('S', QuestionType::OPEN_ENDED, new Points(10), 'ortiqcha', []);
 
         $this->assertNull($q->correctAnswer());
     }
 
     public function test_total_points_is_sum_of_questions(): void
     {
-        $this->assertSame(10, $this->quiz([$this->single('a'), $this->single('b')])->totalPoints());
+        $task = Task::reconstitute(new TaskId(1), new LessonId(1), TaskType::QUIZ, null, [
+            $this->savedSingle('a'), $this->savedSingle('b'),
+        ]);
+
+        $this->assertSame(10, $task->totalPoints());
     }
 
-    public function test_file_task_drops_questions_and_quiz_drops_extensions(): void
+    public function test_content_drops_irrelevant_parts_by_type(): void
     {
         $ext = new AllowedFileExtensions([FileExtensions::PDF]);
-        $task = Task::create(new LessonId(1), TaskType::FILE, $ext, [$this->single()]);
 
-        $this->assertSame([], $task->questions());
+        $file = TaskContent::of(TaskType::FILE, $ext, [$this->newSingle()]);
+        $this->assertSame([], $file->questions());
 
-        $quiz = Task::create(new LessonId(1), TaskType::QUIZ, $ext, [$this->single()]);
-
+        $quiz = TaskContent::of(TaskType::QUIZ, $ext, [$this->newSingle()]);
         $this->assertNull($quiz->allowedExtensions());
     }
 
     public function test_structure_is_locked_when_submissions_exist(): void
     {
-        $task = $this->quiz([$this->single('a')]);
+        $task = $this->quizTask('Eski');
 
         $this->expectException(TaskLockedException::class);
 
-        $task->revise(TaskType::QUIZ, null, [$this->single('boshqa')], true);
+        $task->revise(TaskContent::of(TaskType::QUIZ, null, [$this->newSingle('Yangi')]), true);
+    }
+
+    public function test_same_structure_is_not_replaced_even_when_locked(): void
+    {
+        $task = $this->quizTask('Savol');
+
+        $task->revise(TaskContent::of(TaskType::QUIZ, null, [$this->newSingle('Savol')]), true);
+
+        $this->assertNull($task->questionReplacement());
+    }
+
+    public function test_changed_structure_is_queued_for_replacement_without_submissions(): void
+    {
+        $task = $this->quizTask('Eski');
+
+        $task->revise(TaskContent::of(TaskType::QUIZ, null, [$this->newSingle('Yangi')]), false);
+
+        $this->assertCount(1, $task->questionReplacement());
+    }
+
+    public function test_extensions_can_change_when_locked(): void
+    {
+        $task = Task::reconstitute(
+            new TaskId(1), new LessonId(1), TaskType::FILE,
+            new AllowedFileExtensions([FileExtensions::PDF]), [],
+        );
+
+        $task->revise(TaskContent::of(TaskType::FILE, new AllowedFileExtensions([FileExtensions::DOCX]), []), true);
+
+        $this->assertSame(['docx'], $task->allowedExtensions()->values());
+        $this->assertNull($task->questionReplacement());
     }
 }

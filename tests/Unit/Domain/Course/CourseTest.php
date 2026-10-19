@@ -8,8 +8,8 @@ use App\Domain\Course\CourseDescription;
 use App\Domain\Course\CourseId;
 use App\Domain\Course\CourseStatus;
 use App\Domain\Course\CourseTitle;
-use App\Domain\Course\Exception\CannotPublishWithoutLessonsException;
 use App\Domain\Course\Exception\CannotDeleteNonDraftCourseException;
+use App\Domain\Course\Exception\CannotPublishWithoutLessonsException;
 use PHPUnit\Framework\TestCase;
 
 final class CourseTest extends TestCase
@@ -22,7 +22,7 @@ final class CourseTest extends TestCase
             new CourseDescription('Asoslar'),
             CourseCategory::Programming,
             CourseStatus::DRAFT
-        );;
+        );
     }
 
     public function test_new_course_is_draft(): void

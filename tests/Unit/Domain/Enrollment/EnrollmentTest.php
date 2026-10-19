@@ -7,9 +7,11 @@ namespace Tests\Unit\Domain\Enrollment;
 
 use App\Domain\Course\CourseId;
 use App\Domain\Enrollment\Enrollment;
+use App\Domain\Enrollment\EnrollmentId;
 use App\Domain\Enrollment\EnrollmentStatus;
 use App\Domain\Enrollment\Exception\AlreadyEnrolledException;
 use App\Domain\Enrollment\Exception\EnrollmentNotActiveException;
+use App\Domain\Enrollment\NewEnrollment;
 use App\Domain\Student\StudentId;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
@@ -18,15 +20,26 @@ final class EnrollmentTest extends TestCase
 {
     private function newEnrollment(): Enrollment
     {
-        return Enrollment::enroll(new CourseId(1), new StudentId(1), new DateTimeImmutable('2026-01-01'));
+        return Enrollment::reconstitute(
+            new EnrollmentId(1),
+            new CourseId(1),
+            new StudentId(1),
+            EnrollmentStatus::ACTIVE,
+            new DateTimeImmutable('2026-01-01'),
+            null,
+        );
     }
 
-    public function test_new_enrollment_is_active(): void
+    public function test_new_enrollment_data_is_active(): void
     {
-        $e = $this->newEnrollment();
+        $new = NewEnrollment::enroll(new CourseId(1), new StudentId(1), new DateTimeImmutable('2026-01-01'));
 
-        $this->assertTrue($e->isActive());
-        $this->assertNull($e->id());
+        $this->assertSame(EnrollmentStatus::ACTIVE, $new->status());
+    }
+
+    public function test_enrollment_is_active(): void
+    {
+        $this->assertTrue($this->newEnrollment()->isActive());
     }
 
     public function test_cannot_reenroll_while_active(): void
