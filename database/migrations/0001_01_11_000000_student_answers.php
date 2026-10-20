@@ -13,22 +13,15 @@ return new class extends Migration
     {
         Schema::create('student_answers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('task_submission_id')
-                ->constrained('task_submissions')
-                ->cascadeOnDelete();
-
-            $table->foreignId('question_id')
-                ->constrained('questions')
-                ->cascadeOnDelete();
-
-            $table->foreignId('question_option_id')
-                ->nullable()
-                ->constrained('question_options')
-                ->nullOnDelete();
+            $table->foreignId('task_submission_id')->constrained('task_submissions')->cascadeOnDelete();
+            $table->foreignId('question_id')->constrained('questions')->cascadeOnDelete();
+            $table->json('selected_option_ids')->nullable();
             $table->text('answer')->nullable();
-            $table->integer('score')->nullable();
+            $table->unsignedInteger('score')->nullable();
             $table->text('teacher_comment')->nullable();
             $table->timestamps();
+
+            $table->unique(['task_submission_id', 'question_id']);
         });
     }
 

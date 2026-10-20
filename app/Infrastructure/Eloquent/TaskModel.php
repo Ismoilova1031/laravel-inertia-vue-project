@@ -3,7 +3,6 @@
 namespace App\Infrastructure\Eloquent;
 
 use App\Domain\Assessment\TaskType;
-use App\Models\TaskSubmission;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -31,6 +30,6 @@ class TaskModel extends Model
 
     public function taskSubmissions(): HasMany
     {
-        return $this->hasMany(TaskSubmission::class, 'task_id');
+        return $this->hasMany(TaskSubmissionModel::class, 'task_id');
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Infrastructure\Eloquent;
 
-use App\Models\StudentAnswer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -22,6 +21,6 @@ class QuestionOptionModel extends Model
 
     public function studentAnswers(): HasMany
     {
-        return $this->hasMany(StudentAnswer::class, 'question_option_id');
+        return $this->hasMany(StudentAnswerModel::class, 'question_option_id');
     }
 }

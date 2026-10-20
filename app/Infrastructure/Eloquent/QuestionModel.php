@@ -3,7 +3,6 @@
 namespace App\Infrastructure\Eloquent;
 
 use App\Domain\Assessment\QuestionType;
-use App\Models\StudentAnswer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -28,6 +27,6 @@ class QuestionModel extends Model
 
     public function studentAnswers(): HasMany
     {
-        return $this->hasMany(StudentAnswer::class, 'question_id');
+        return $this->hasMany(StudentAnswerModel::class, 'question_id');
     }
 }
