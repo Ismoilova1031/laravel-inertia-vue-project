@@ -8,29 +8,30 @@ use App\Domain\Assessment\NewTask;
 use App\Domain\Assessment\Task;
 use App\Domain\Assessment\TaskId;
 use App\Domain\Assessment\TaskRepositoryInterface;
+use App\Domain\Assessment\AllowedFileExtensions;
+use App\Domain\Assessment\Points;
+use App\Domain\Assessment\Question;
+use App\Domain\Assessment\QuestionOption;
 use App\Domain\Lesson\LessonId;
 use App\Infrastructure\Eloquent\QuestionModel;
 use App\Infrastructure\Eloquent\QuestionOptionModel;
 use App\Infrastructure\Eloquent\TaskModel;
-use App\Infrastructure\Mapper\TaskMapper;
 use Illuminate\Support\Facades\DB;
 
 final class EloquentTaskRepository implements TaskRepositoryInterface
 {
-    public function __construct(private readonly TaskMapper $mapper) {}
-
     public function findById(TaskId $id): ?Task
     {
         $model = TaskModel::with('questions.options')->find($id->value());
 
-        return $model ? $this->mapper->toEntity($model) : null;
+        return $model ? $this->toEntity($model) : null;
     }
 
     public function findByLessonId(LessonId $lessonId): ?Task
     {
         $model = TaskModel::with('questions.options')->where('lesson_id', $lessonId->value())->first();
 
-        return $model ? $this->mapper->toEntity($model) : null;
+        return $model ? $this->toEntity($model) : null;
     }
 
     public function create(NewTask $new): Task
@@ -44,7 +45,7 @@ final class EloquentTaskRepository implements TaskRepositoryInterface
 
             $this->insertQuestions((int) $model->id, $new->content->questions());
 
-            return $this->mapper->toEntity(TaskModel::with('questions.options')->find($model->id));
+            return $this->toEntity(TaskModel::with('questions.options')->find($model->id));
         });
     }
 
@@ -100,5 +101,28 @@ final class EloquentTaskRepository implements TaskRepositoryInterface
                 QuestionOptionModel::insert($rows);
             }
         }
+    }
+
+    private function toEntity(TaskModel $model): Task
+    {
+        $questions = $model->questions->map(fn (QuestionModel $q) => Question::reconstitute(
+            (int) $q->id,
+            $q->question,
+            $q->question_type,
+            new Points((int) $q->points),
+            $q->correct_answer,
+            $q->options->map(fn (QuestionOptionModel $o) => new QuestionOption(
+                (int) $o->id, $o->option, (bool) $o->is_correct))->all(),
+        ))->all();
+
+        return Task::reconstitute(
+            new TaskId((int) $model->id),
+            new LessonId((int) $model->lesson_id),
+            $model->task_type,
+            $model->allowed_file_extensions
+                ? AllowedFileExtensions::fromStrings($model->allowed_file_extensions)
+                : null,
+            $questions,
+        );
     }
 }
