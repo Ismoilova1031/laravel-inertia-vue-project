@@ -11,7 +11,7 @@ final class SubmissionAttempts
     public static function next(Task $task, array $existing): AttemptNumber
     {
         if (count($existing) >= AttemptNumber::MAX) {
-            throw SubmissionRuleException::because('Urinishlar tugagan (' . AttemptNumber::MAX . ') ta.');
+            throw SubmissionRuleException::because('Urinishlar tugagan ('.AttemptNumber::MAX.') ta.');
         }
 
         if ($task->type() !== TaskType::QUIZ) {

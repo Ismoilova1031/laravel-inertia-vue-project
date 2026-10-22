@@ -14,10 +14,12 @@ class QuestionOptionResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $option = $this->resource;
+
         return [
-            'id' => $this->id,
-            'option' => $this->option,
-            'is_correct' => $this->is_correct,
+            'id' => $option->id(),
+            'option' => $option->option(),
+            'is_correct' => $option->isCorrect(),
         ];
     }
 }

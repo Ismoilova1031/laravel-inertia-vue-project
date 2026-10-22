@@ -14,13 +14,15 @@ class StudentListResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $student = $this->resource;
+
         return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'surname' => $this->surname,
-            'fullName' => "{$this->name} {$this->surname}",
-            'email' => $this->email,
-            'username' => $this->username,
+            'id' => $student->id()->value(),
+            'name' => $student->name()->name(),
+            'surname' => $student->name()->surname(),
+            'fullName' => $student->name()->fullName(),
+            'email' => $student->email()->value(),
+            'username' => $student->username()->value(),
         ];
     }
 }

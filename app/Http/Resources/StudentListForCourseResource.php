@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Domain\Enrollment\EnrollmentStatus;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -15,14 +14,16 @@ class StudentListForCourseResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $student = $this->resource->student;
+
         return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'surname' => $this->surname,
-            'fullName' => "{$this->name} {$this->surname}",
-            'email' => $this->email,
-            'username' => $this->username,
-            'isActive' => (int) $this->pivot->status === EnrollmentStatus::ACTIVE->value,
+            'id' => $student->id()->value(),
+            'name' => $student->name()->name(),
+            'surname' => $student->name()->surname(),
+            'fullName' => $student->name()->fullName(),
+            'email' => $student->email()->value(),
+            'username' => $student->username()->value(),
+            'isActive' => $this->resource->enrollment->isActive(),
         ];
     }
 }

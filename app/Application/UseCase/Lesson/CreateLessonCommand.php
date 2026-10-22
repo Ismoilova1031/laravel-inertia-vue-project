@@ -2,8 +2,8 @@
 
 namespace App\Application\UseCase\Lesson;
 
-use App\Domain\Shared\UploadedFileData;
 use App\Application\UseCase\Assessment\TaskData;
+use App\Domain\Shared\UploadedFileData;
 
 final class CreateLessonCommand
 {

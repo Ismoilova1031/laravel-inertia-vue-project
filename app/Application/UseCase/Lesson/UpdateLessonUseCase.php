@@ -2,7 +2,6 @@
 
 namespace App\Application\UseCase\Lesson;
 
-use App\Domain\Shared\FileStorageInterface;
 use App\Application\UseCase\Assessment\DeleteTaskUseCase;
 use App\Application\UseCase\Assessment\SaveTaskUseCase;
 use App\Domain\Course\CourseRepositoryInterface;
@@ -15,6 +14,7 @@ use App\Domain\Lesson\LessonRepositoryInterface;
 use App\Domain\Lesson\LessonSequence;
 use App\Domain\Lesson\LessonTitle;
 use App\Domain\Lesson\LessonType;
+use App\Domain\Shared\FileStorageInterface;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 

@@ -11,8 +11,8 @@ final class QuizResult
 
     public static function of(array $answers): self
     {
-        foreach($answers as $answer){
-            if(!$answer->isGraded()){
+        foreach ($answers as $answer) {
+            if (! $answer->isGraded()) {
                 return new self(SubmissionStatus::PENDING, null);
             }
         }

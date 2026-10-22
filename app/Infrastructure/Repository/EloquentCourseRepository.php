@@ -3,13 +3,14 @@
 namespace App\Infrastructure\Repository;
 
 use App\Domain\Course\Course;
+use App\Domain\Course\CourseDescription;
 use App\Domain\Course\CourseId;
 use App\Domain\Course\CourseRepositoryInterface;
 use App\Domain\Course\CourseTitle;
-use App\Domain\Course\CourseDescription;
 use App\Domain\Course\Exception\CourseNotFoundException;
 use App\Domain\Course\NewCourse;
 use App\Infrastructure\Eloquent\CourseModel;
+use Illuminate\Support\Collection;
 
 final class EloquentCourseRepository implements CourseRepositoryInterface
 {
@@ -62,5 +63,11 @@ final class EloquentCourseRepository implements CourseRepositoryInterface
             $model->category,
             $model->status,
         );
+    }
+
+    public function all(): Collection
+    {
+        return CourseModel::query()->orderBy('id')->get()
+            ->map(fn (CourseModel $m) => $this->toEntity($m));
     }
 }

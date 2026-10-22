@@ -2,21 +2,21 @@
 
 namespace App\Application\UseCase\Assessment;
 
-use App\Domain\Shared\FileStorageInterface;
 use App\Domain\Assessment\Exception\SubmissionRuleException;
 use App\Domain\Assessment\Exception\TaskNotFoundException;
+use App\Domain\Assessment\Submission\AttemptNumber;
 use App\Domain\Assessment\Submission\NewTaskSubmission;
 use App\Domain\Assessment\Submission\SubmissionAttempts;
 use App\Domain\Assessment\Submission\SubmissionId;
 use App\Domain\Assessment\Submission\TaskSubmissionRepositoryInterface;
+use App\Domain\Assessment\Task;
 use App\Domain\Assessment\TaskId;
 use App\Domain\Assessment\TaskRepositoryInterface;
 use App\Domain\Assessment\TaskType;
 use App\Domain\Enrollment\EnrollmentRepositoryInterface;
 use App\Domain\Enrollment\Exception\StudentNotActiveInCourseException;
+use App\Domain\Shared\FileStorageInterface;
 use App\Domain\Student\StudentId;
-use App\Domain\Assessment\Task;
-use App\Domain\Assessment\Submission\AttemptNumber;
 use DateTimeImmutable;
 use Throwable;
 
@@ -25,7 +25,6 @@ final class SubmitTaskUseCase
     public function __construct(
         private readonly TaskRepositoryInterface $tasks,
         private readonly TaskSubmissionRepositoryInterface $submissions,
-        private readonly TaskCourseLookupInterface $taskCourses,
         private readonly EnrollmentRepositoryInterface $enrollments,
         private readonly FileStorageInterface $storage,
     ) {}
@@ -36,26 +35,27 @@ final class SubmitTaskUseCase
         $studentId = new StudentId($command->studentId);
 
         $task = $this->tasks->findById($taskId) ?? throw TaskNotFoundException::withId($taskId);
-        $courseId = $this->taskCourses->courseIdOf($taskId) ?? throw TaskNotFoundException::withId($taskId);
+        $courseId = $this->tasks->courseIdOf($taskId) ?? throw TaskNotFoundException::withId($taskId);
 
         $enrollment = $this->enrollments->findByCourseAndStudent($courseId, $studentId);
-        if($enrollment === null || !$enrollment->isActive()) {
+        if ($enrollment === null || ! $enrollment->isActive()) {
             throw StudentNotActiveInCourseException::create();
         }
 
         $attempt = SubmissionAttempts::next($task, $this->submissions->findByTaskAndStudent($taskId, $studentId));
-        $now = new DateTimeImmutable();
+        $now = new DateTimeImmutable;
         $filePath = null;
 
         try {
-            $new = match($task->type()){
+            $new = match ($task->type()) {
                 TaskType::QUIZ => NewTaskSubmission::quiz($task, $studentId, $attempt, $command->answers ?? [], $now),
                 TaskType::DISCUSSION => NewTaskSubmission::discussion($task, $studentId, $attempt, $command->text ?? '', $now),
                 TaskType::FILE => $this->fileSubmission($command, $task, $studentId, $attempt, $now, $filePath),
             };
+
             return $this->submissions->create($new)->id();
         } catch (Throwable $e) {
-            if($filePath !== null) {
+            if ($filePath !== null) {
                 $this->storage->delete($filePath);
             }
             throw $e;
@@ -72,7 +72,7 @@ final class SubmitTaskUseCase
     ): NewTaskSubmission {
         $file = $command->file ?? throw SubmissionRuleException::because('Fayl yuklanmagan.');
 
-        if (!$task->acceptsExtension($file->extension)) {
+        if (! $task->acceptsExtension($file->extension)) {
             throw SubmissionRuleException::because('Bu fayl turi ruxsat etilmagan.');
         }
 

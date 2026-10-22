@@ -18,10 +18,33 @@ final class StudentAnswer
         $this->teacherComment = $comment;
     }
 
-    public function isGraded(): bool { return $this->score !== null; }
-    public function questionId(): int { return $this->questionId; }
-    public function selectesOptionIds(): array { return $this->selectesOptionIds; }
-    public function text(): ?string { return $this->text; }
-    public function score(): ?int { return $this->score; }
-    public function teacherComment(): ?string { return $this->teacherComment; }
+    public function isGraded(): bool
+    {
+        return $this->score !== null;
+    }
+
+    public function questionId(): int
+    {
+        return $this->questionId;
+    }
+
+    public function selectesOptionIds(): array
+    {
+        return $this->selectesOptionIds;
+    }
+
+    public function text(): ?string
+    {
+        return $this->text;
+    }
+
+    public function score(): ?int
+    {
+        return $this->score;
+    }
+
+    public function teacherComment(): ?string
+    {
+        return $this->teacherComment;
+    }
 }

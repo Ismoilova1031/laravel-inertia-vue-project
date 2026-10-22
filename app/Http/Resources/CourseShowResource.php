@@ -14,20 +14,22 @@ class CourseShowResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $course = $this->resource->course;
+
         return [
-            'id' => $this->id,
-            'title' => $this->title,
-            'description' => $this->description,
+            'id' => $course->id()->value(),
+            'title' => $course->title()->value(),
+            'description' => $course->description()->value(),
             'category' => [
-                'value' => $this->category->value,
-                'label' => $this->category->label(),
+                'value' => $course->category()->value,
+                'label' => $course->category()->label(),
             ],
             'status' => [
-                'value' => $this->status->value,
-                'label' => $this->status->label(),
+                'value' => $course->status()->value,
+                'label' => $course->status()->label(),
             ],
-            'lessons' => LessonListResource::collection($this->lessons)->resolve(),
-            'students' => StudentListForCourseResource::collection($this->students)->resolve(),
+            'lessons' => LessonListResource::collection($this->resource->lessons)->resolve(),
+            'students' => StudentListForCourseResource::collection($this->resource->members)->resolve(),
         ];
     }
 }

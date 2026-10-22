@@ -2,19 +2,18 @@
 
 namespace App\Application\UseCase\Course;
 
-use App\Domain\Course\CourseCategory;
-use App\Domain\Course\CourseStatus;
+use App\Domain\Course\Course;
+use App\Domain\Lesson\Lesson;
 
 final class CourseDetail
 {
+    /**
+     * @param  list<Lesson>  $lessons
+     * @param  list<CourseMember>  $members
+     */
     public function __construct(
-        public readonly int $id,
-        public readonly string $title,
-        public readonly string $description,
-        public readonly CourseCategory $category,
-        public readonly CourseStatus $status,
-
-        public readonly iterable $lessons,
-        public readonly iterable $students,
+        public readonly Course $course,
+        public readonly array $lessons,
+        public readonly array $members,
     ) {}
 }

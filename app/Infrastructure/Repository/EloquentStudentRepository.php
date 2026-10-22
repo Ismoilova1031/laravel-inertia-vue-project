@@ -4,18 +4,18 @@ namespace App\Infrastructure\Repository;
 
 use App\Domain\Student\EmailAddress;
 use App\Domain\Student\Exception\StudentNotFoundException;
+use App\Domain\Student\HashedPassword;
 use App\Domain\Student\NewStudent;
 use App\Domain\Student\PersonName;
-use App\Domain\Student\HashedPassword;
 use App\Domain\Student\Student;
 use App\Domain\Student\StudentId;
 use App\Domain\Student\StudentRepositoryInterface;
 use App\Domain\Student\Username;
 use App\Infrastructure\Eloquent\StudentModel;
+use Illuminate\Support\Collection;
 
 final class EloquentStudentRepository implements StudentRepositoryInterface
 {
-
     public function findById(StudentId $id): ?Student
     {
         $model = StudentModel::find($id->value());
@@ -56,14 +56,14 @@ final class EloquentStudentRepository implements StudentRepositoryInterface
     public function existsByUsername(Username $username, ?StudentId $exceptId = null): bool
     {
         return StudentModel::where('username', $username->value())
-            ->when($exceptId, fn($q) => $q->whereKeyNot($exceptId->value()))
+            ->when($exceptId, fn ($q) => $q->whereKeyNot($exceptId->value()))
             ->exists();
     }
 
     public function existsByEmail(EmailAddress $email, ?StudentId $exceptId = null): bool
     {
         return StudentModel::where('email', $email->value())
-            ->when($exceptId, fn($q) => $q->whereKeyNot($exceptId->value()))
+            ->when($exceptId, fn ($q) => $q->whereKeyNot($exceptId->value()))
             ->exists();
     }
 
@@ -76,5 +76,29 @@ final class EloquentStudentRepository implements StudentRepositoryInterface
             new Username($model->username),
             new HashedPassword($model->password),
         );
+    }
+
+    public function all(): Collection
+    {
+        dd(StudentModel::query()->orderBy('surname')->orderBy('name')->get()->map(fn (StudentModel $m) => $this->toEntity($m)));
+
+        return StudentModel::query()->orderBy('surname')->orderBy('name')->get()
+            ->map(fn (StudentModel $m) => $this->toEntity($m));
+    }
+
+    public function findByIds(array $ids): Collection
+    {
+        return StudentModel::query()
+            ->whereIn('id', array_map(fn (StudentId $id) => $id->value(), $ids))
+            ->get()
+            ->map(fn (StudentModel $m) => $this->toEntity($m));
+    }
+
+    public function findExcludingIds(array $ids): Collection
+    {
+        return StudentModel::query()
+            ->whereNotIn('id', array_map(fn (StudentId $id) => $id->value(), $ids))
+            ->orderBy('surname')->orderBy('name')->get()
+            ->map(fn (StudentModel $m) => $this->toEntity($m));
     }
 }

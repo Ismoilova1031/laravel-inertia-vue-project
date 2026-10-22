@@ -4,8 +4,8 @@ namespace App\Infrastructure\Repository;
 
 use App\Domain\Course\CourseId;
 use App\Domain\CourseInterest\CourseInterest;
-use App\Domain\CourseInterest\InterestType;
 use App\Domain\CourseInterest\CourseInterestRepositoryInterface;
+use App\Domain\CourseInterest\InterestType;
 use App\Domain\CourseInterest\NewCourseInterest;
 use App\Domain\Student\StudentId;
 use App\Infrastructure\Eloquent\CourseInterestModel;
@@ -63,6 +63,4 @@ final class EloquentCourseInterestRepository implements CourseInterestRepository
             (bool) $model->is_planned,
         );
     }
-
-    
 }

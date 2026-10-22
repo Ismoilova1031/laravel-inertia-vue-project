@@ -14,15 +14,17 @@ class CourseListResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $course = $this->resource;
+
         return [
-            'id' => $this->id,
-            'title' => $this->title,
-            'category' => $this->category->label(),
+            'id' => $course->id()->value(),
+            'title' => $course->title()->value(),
+            'category' => $course->category()->label(),
             'status' => [
-                'value' => $this->status->value,
-                'label' => $this->status->label(),
+                'value' => $course->status()->value,
+                'label' => $course->status()->label(),
             ],
-            'description' => $this->description,
+            'description' => $course->description()->value(),
         ];
     }
 }

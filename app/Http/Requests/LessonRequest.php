@@ -2,10 +2,10 @@
 
 namespace App\Http\Requests;
 
-use App\Domain\Shared\UploadedFileData;
 use App\Application\UseCase\Assessment\TaskData;
 use App\Application\UseCase\Lesson\CreateLessonCommand;
 use App\Application\UseCase\Lesson\UpdateLessonCommand;
+use App\Domain\Shared\UploadedFileData;
 use Illuminate\Foundation\Http\FormRequest;
 
 class LessonRequest extends FormRequest

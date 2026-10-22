@@ -5,7 +5,6 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Application;
 
-use App\Domain\Shared\UploadedFileData;
 use App\Application\UseCase\Lesson\CreateLessonCommand;
 use App\Application\UseCase\Lesson\CreateLessonUseCase;
 use App\Application\UseCase\Lesson\DeleteLessonUseCase;
@@ -14,6 +13,7 @@ use App\Application\UseCase\Lesson\ReorderLessonsUseCase;
 use App\Domain\Lesson\Exception\LessonNotFoundException;
 use App\Domain\Lesson\Exception\LessonTaskRequiredException;
 use App\Domain\Lesson\LessonType;
+use App\Domain\Shared\UploadedFileData;
 use App\Infrastructure\Eloquent\CourseModel;
 use App\Infrastructure\Eloquent\LessonModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;

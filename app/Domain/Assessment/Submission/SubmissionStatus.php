@@ -2,7 +2,7 @@
 
 namespace App\Domain\Assessment\Submission;
 
-enum SubmissionStatus: int 
+enum SubmissionStatus: int
 {
     case PENDING = 0;
     case ACCEPTED = 1;

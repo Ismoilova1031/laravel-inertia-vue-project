@@ -2,13 +2,15 @@
 
 namespace App\Application\UseCase\Course;
 
+use App\Domain\Course\CourseRepositoryInterface;
+use Illuminate\Support\Collection;
+
 final class GetCoursesUseCase
 {
-    public function __construct(private readonly CourseQueryInterface $query) {}
+    public function __construct(private readonly CourseRepositoryInterface $courses) {}
 
-    /** @return list<CourseListItem> */
-    public function execute(): array
+    public function execute(): Collection
     {
-        return $this->query->all();
+        return $this->courses->all();
     }
 }

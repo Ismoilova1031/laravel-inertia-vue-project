@@ -2,16 +2,17 @@
 
 namespace App\Infrastructure\Repository;
 
+use App\Domain\Assessment\AllowedFileExtensions;
 use App\Domain\Assessment\Exception\TaskNotFoundException;
 use App\Domain\Assessment\NewQuestion;
 use App\Domain\Assessment\NewTask;
-use App\Domain\Assessment\Task;
-use App\Domain\Assessment\TaskId;
-use App\Domain\Assessment\TaskRepositoryInterface;
-use App\Domain\Assessment\AllowedFileExtensions;
 use App\Domain\Assessment\Points;
 use App\Domain\Assessment\Question;
 use App\Domain\Assessment\QuestionOption;
+use App\Domain\Assessment\Task;
+use App\Domain\Assessment\TaskId;
+use App\Domain\Assessment\TaskRepositoryInterface;
+use App\Domain\Course\CourseId;
 use App\Domain\Lesson\LessonId;
 use App\Infrastructure\Eloquent\QuestionModel;
 use App\Infrastructure\Eloquent\QuestionOptionModel;
@@ -74,6 +75,16 @@ final class EloquentTaskRepository implements TaskRepositoryInterface
         TaskModel::where('lesson_id', $lessonId->value())->delete();
     }
 
+    public function courseIdOf(TaskId $taskId): ?CourseId
+    {
+        $id = TaskModel::query()
+            ->join('lessons', 'lessons.id', '=', 'tasks.lesson_id')
+            ->where('tasks.id', $taskId->value())
+            ->value('lessons.course_id');
+
+        return $id !== null ? new CourseId((int) $id) : null;
+    }
+
     /** @param list<NewQuestion> $questions */
     private function insertQuestions(int $taskId, array $questions): void
     {
@@ -112,7 +123,10 @@ final class EloquentTaskRepository implements TaskRepositoryInterface
             new Points((int) $q->points),
             $q->correct_answer,
             $q->options->map(fn (QuestionOptionModel $o) => new QuestionOption(
-                (int) $o->id, $o->option, (bool) $o->is_correct))->all(),
+                (int) $o->id,
+                $o->option,
+                (bool) $o->is_correct
+            ))->all(),
         ))->all();
 
         return Task::reconstitute(

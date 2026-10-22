@@ -15,4 +15,6 @@ interface LessonRepositoryInterface
     public function save(Lesson $lesson): void;
 
     public function delete(LessonId $id): void;
+
+    public function countByCourse(CourseId $courseId): int;
 }

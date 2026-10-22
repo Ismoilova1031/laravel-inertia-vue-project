@@ -2,6 +2,7 @@
 
 namespace App\Domain\Assessment;
 
+use App\Domain\Course\CourseId;
 use App\Domain\Lesson\LessonId;
 
 interface TaskRepositoryInterface
@@ -15,4 +16,6 @@ interface TaskRepositoryInterface
     public function save(Task $task): void;
 
     public function deleteByLessonId(LessonId $lessonId): void;
+
+    public function courseIdOf(TaskId $taskId): ?CourseId;
 }

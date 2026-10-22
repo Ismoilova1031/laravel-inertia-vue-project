@@ -40,7 +40,7 @@ final class NewTaskSubmission
         }
 
         foreach (array_keys($given) as $questionId) {
-            if (!isset($questions[$questionId])) {
+            if (! isset($questions[$questionId])) {
                 throw SubmissionRuleException::because('Bu topshiriqda bunda savol mavjud emas');
             }
         }
@@ -75,7 +75,7 @@ final class NewTaskSubmission
     ): self {
         self::assertType($task, TaskType::FILE);
 
-        if (!$task->acceptsExtension($extension)) {
+        if (! $task->acceptsExtension($extension)) {
             throw SubmissionRuleException::because('Bu fayl turi ruxsat etilmagan.');
         }
 
@@ -136,12 +136,11 @@ final class NewTaskSubmission
         $points = $question->points()->value();
 
         $score = match ($question->type()) {
-            QuestionType::SINGLE_CHOICE, QuestionType::MULTIPLE_SELECT
-            => self::sameSet($ids, $question->correctOptionIds()) ? $points : 0,
-            QuestionType::SHORT_ANSWER
-            => $text !== null && self::normalize($text) === self::normalize((string) $question->correctAnswer()) ? $points : 0,
+            QuestionType::SINGLE_CHOICE, QuestionType::MULTIPLE_SELECT => self::sameSet($ids, $question->correctOptionIds()) ? $points : 0,
+            QuestionType::SHORT_ANSWER => $text !== null && self::normalize($text) === self::normalize((string) $question->correctAnswer()) ? $points : 0,
             QuestionType::OPEN_ENDED => $text === null ? 0 : null,
         };
+
         return new StudentAnswer($question->id(), $ids, $text, $score);
     }
 
@@ -160,7 +159,7 @@ final class NewTaskSubmission
 
     private static function assertType(Task $task, TaskType $expected): void
     {
-        if($task->type() !== $expected){
+        if ($task->type() !== $expected) {
             throw SubmissionRuleException::because('Topshiriq turi mos emas.');
         }
     }

@@ -5,19 +5,17 @@ namespace App\Infrastructure\Repository;
 use App\Domain\Course\CourseId;
 use App\Domain\Lesson\Exception\LessonNotFoundException;
 use App\Domain\Lesson\Lesson;
-use App\Domain\Lesson\LessonId;
 use App\Domain\Lesson\LessonContent;
 use App\Domain\Lesson\LessonDescription;
-use App\Domain\Lesson\LessonTitle;
-use App\Domain\Lesson\SortOrder;
+use App\Domain\Lesson\LessonId;
 use App\Domain\Lesson\LessonRepositoryInterface;
+use App\Domain\Lesson\LessonTitle;
 use App\Domain\Lesson\NewLesson;
+use App\Domain\Lesson\SortOrder;
 use App\Infrastructure\Eloquent\LessonModel;
-
 
 final class EloquentLessonRepository implements LessonRepositoryInterface
 {
-
     public function findById(LessonId $id): ?Lesson
     {
         $model = LessonModel::find($id->value());
@@ -32,7 +30,7 @@ final class EloquentLessonRepository implements LessonRepositoryInterface
             ->orderBy('sort_order')
             ->orderBy('id')
             ->get()
-            ->map(fn(LessonModel $m) => $this->toEntity($m))
+            ->map(fn (LessonModel $m) => $this->toEntity($m))
             ->all();
     }
 
@@ -82,5 +80,10 @@ final class EloquentLessonRepository implements LessonRepositoryInterface
             LessonContent::of($model->lesson_type, $model->lesson_content, $model->video_url),
             new SortOrder((int) $model->sort_order)
         );
+    }
+
+    public function countByCourse(CourseId $courseId): int
+    {
+        return LessonModel::where('course_id', $courseId->value())->count();
     }
 }

@@ -63,7 +63,7 @@ final class TaskSubmission
         }
 
         $comment = $comment !== null ? trim($comment) : null;
-        if (!$accept && ($comment === null || $comment === '')) {
+        if (! $accept && ($comment === null || $comment === '')) {
             throw SubmissionRuleException::because('Rad etish uchun izoh kiritilishi shart.');
         }
 
@@ -83,12 +83,12 @@ final class TaskSubmission
             throw SubmissionRuleException::because('Bu topshiriqda bunday savol mavjud emas.');
         }
 
-        if($score < 0 || $score > $question->points()->value()) {
+        if ($score < 0 || $score > $question->points()->value()) {
             throw SubmissionRuleException::because("Ball 0 dan {$question->points()->value()} gacha bo'lishi kerak.");
         }
 
-        foreach($this->answers as $answer){
-            if($answer->questionId() === $questionId){
+        foreach ($this->answers as $answer) {
+            if ($answer->questionId() === $questionId) {
                 $answer->grade($score, $comment);
 
                 $result = QuizResult::of($this->answers);
@@ -102,15 +102,58 @@ final class TaskSubmission
         throw SubmissionRuleException::because('Bu savolga javob berilmagan.');
     }
 
-    public function id(): SubmissionId { return $this->id; }
-    public function taskId(): TaskId { return $this->taskId; }
-    public function studentId(): StudentId { return $this->studentId; }
-    public function attempt(): AttemptNumber { return $this->attempt; }
-    public function content(): ?string { return $this->content; }
-    public function filePath(): ?string { return $this->filePath; }
-    public function status(): SubmissionStatus { return $this->status; }
-    public function score(): ?int { return $this->score; }
-    public function teacherComment(): ?string { return $this->teacherComment; }
-    public function submittedAt(): DateTimeImmutable { return $this->submittedAt; }
-    public function answers(): array { return $this->answers; }
+    public function id(): SubmissionId
+    {
+        return $this->id;
+    }
+
+    public function taskId(): TaskId
+    {
+        return $this->taskId;
+    }
+
+    public function studentId(): StudentId
+    {
+        return $this->studentId;
+    }
+
+    public function attempt(): AttemptNumber
+    {
+        return $this->attempt;
+    }
+
+    public function content(): ?string
+    {
+        return $this->content;
+    }
+
+    public function filePath(): ?string
+    {
+        return $this->filePath;
+    }
+
+    public function status(): SubmissionStatus
+    {
+        return $this->status;
+    }
+
+    public function score(): ?int
+    {
+        return $this->score;
+    }
+
+    public function teacherComment(): ?string
+    {
+        return $this->teacherComment;
+    }
+
+    public function submittedAt(): DateTimeImmutable
+    {
+        return $this->submittedAt;
+    }
+
+    public function answers(): array
+    {
+        return $this->answers;
+    }
 }

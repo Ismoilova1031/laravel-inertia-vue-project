@@ -9,6 +9,7 @@ use App\Domain\Enrollment\EnrollmentRepositoryInterface;
 use App\Domain\Enrollment\NewEnrollment;
 use App\Domain\Student\StudentId;
 use App\Infrastructure\Eloquent\EnrollmentModel;
+use Illuminate\Support\Collection;
 use RuntimeException;
 
 class EloquentEnrollmentRepository implements EnrollmentRepositoryInterface
@@ -58,5 +59,11 @@ class EloquentEnrollmentRepository implements EnrollmentRepositoryInterface
             $model->enrolled_at,
             $model->deactivated_at,
         );
+    }
+
+    public function findByCourse(CourseId $courseId): Collection
+    {
+        return EnrollmentModel::query()->where('course_id', $courseId->value())->get()
+            ->map(fn (EnrollmentModel $m) => $this->toEntity($m));
     }
 }

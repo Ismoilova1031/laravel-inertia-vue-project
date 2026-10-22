@@ -2,13 +2,25 @@
 
 namespace App\Application\UseCase\Student;
 
+use App\Domain\Course\CourseId;
+use App\Domain\Enrollment\Enrollment;
+use App\Domain\Enrollment\EnrollmentRepositoryInterface;
+use App\Domain\Student\StudentRepositoryInterface;
+use Illuminate\Support\Collection;
+
 final class GetAvailableStudentsUseCase
 {
-    public function __construct(private readonly StudentQueryInterface $query) {}
+    public function __construct(
+        private readonly StudentRepositoryInterface $students,
+        private readonly EnrollmentRepositoryInterface $enrollments) {}
 
-    /** @return list<StudentListItem> */
-    public function execute(int $courseId): array
+    public function execute(int $courseId): Collection
     {
-        return $this->query->availableForCourse($courseId);
+        $activeIds = $this->enrollments->findByCourse(new CourseId($courseId))
+            ->filter(fn (Enrollment $enrollment) => $enrollment->isActive())
+            ->map(fn (Enrollment $enrollment) => $enrollment->studentId())
+            ->values()->all();
+
+        return $this->students->findExcludingIds($activeIds);
     }
 }

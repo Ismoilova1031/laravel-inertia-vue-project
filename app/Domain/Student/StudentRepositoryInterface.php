@@ -2,6 +2,8 @@
 
 namespace App\Domain\Student;
 
+use Illuminate\Support\Collection;
+
 interface StudentRepositoryInterface
 {
     public function findById(StudentId $id): ?Student;
@@ -15,4 +17,13 @@ interface StudentRepositoryInterface
     public function existsByUsername(Username $username, ?StudentId $exceptId = null): bool;
 
     public function existsByEmail(EmailAddress $email, ?StudentId $exceptId = null): bool;
+
+    /** @return Collection<int, Student> */
+    public function all(): Collection;
+
+    /** @param list<StudentId> $ids @return Collection<int, Student> */
+    public function findByIds(array $ids): Collection;
+
+    /** @param list<StudentId> $ids @return Collection<int, Student> */
+    public function findExcludingIds(array $ids): Collection;
 }

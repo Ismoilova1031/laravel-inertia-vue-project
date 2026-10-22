@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Domain\Lesson\LessonType;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Storage;
@@ -16,18 +15,18 @@ class LessonEditResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $lesson = $this->resource->lesson;
+        $task = $this->resource->task;
+
         return [
-            'id' => $this->id,
-            'title' => $this->title,
-            'description' => $this->description,
-            'lesson_type' => ['value' => $this->type->value, 'label' => $this->type->label()],
-            'video_url' => $this->videoPath ? Storage::url($this->videoPath) : null,
-            'lesson_content' => $this->content,
-            'sort_order' => $this->sortOrder,
-            'task' => $this->when(
-                $this->type === LessonType::TASK && $this->task !== null,
-                fn () => (new TaskResource($this->task))->resolve(),
-            ),
+            'id' => $lesson->id()->value(),
+            'title' => $lesson->title()->value(),
+            'description' => $lesson->description()->value(),
+            'lesson_type' => ['value' => $lesson->type()->value, 'label' => $lesson->type()->label()],
+            'video_url' => $lesson->videoPath() ? Storage::url($lesson->videoPath()) : null,
+            'lesson_content' => $lesson->content(),
+            'sort_order' => $lesson->sortOrder()->value(),
+            'task' => $this->when($task !== null, fn () => (new TaskResource($task))->resolve()),
         ];
     }
 }

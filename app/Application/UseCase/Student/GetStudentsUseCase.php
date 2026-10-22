@@ -2,13 +2,15 @@
 
 namespace App\Application\UseCase\Student;
 
+use App\Domain\Student\StudentRepositoryInterface;
+use Illuminate\Support\Collection;
+
 final class GetStudentsUseCase
 {
-    public function __construct(private readonly StudentQueryInterface $studentQuery) {}
+    public function __construct(private readonly StudentRepositoryInterface $students) {}
 
-    /** @return list<StudentListItem> */
-    public function execute(): array
+    public function execute(): Collection
     {
-        return $this->studentQuery->all();
+        return $this->students->all();
     }
 }
