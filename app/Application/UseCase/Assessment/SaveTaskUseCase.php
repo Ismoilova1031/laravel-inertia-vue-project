@@ -10,6 +10,7 @@ use App\Domain\Assessment\Points;
 use App\Domain\Assessment\QuestionType;
 use App\Domain\Assessment\TaskContent;
 use App\Domain\Assessment\TaskRepositoryInterface;
+use App\Domain\Assessment\Submission\TaskSubmissionRepositoryInterface;
 use App\Domain\Assessment\TaskType;
 use App\Domain\Lesson\LessonId;
 
@@ -17,7 +18,7 @@ final class SaveTaskUseCase
 {
     public function __construct(
         private readonly TaskRepositoryInterface $tasks,
-        private readonly TaskSubmissionLookupInterface $submissions,
+        private readonly TaskSubmissionRepositoryInterface $submissions,
     ) {}
 
     public function execute(int $lessonId, TaskData $data): void
@@ -38,7 +39,7 @@ final class SaveTaskUseCase
             return;
         }
 
-        $task->revise($content, $this->submissions->exists($task->id()));
+        $task->revise($content, $this->submissions->existsForTask($task->id()));
         $this->tasks->save($task);
     }
 

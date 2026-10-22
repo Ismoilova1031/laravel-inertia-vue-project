@@ -6,7 +6,7 @@ final class StudentAnswer
 {
     public function __construct(
         private readonly int $questionId,
-        private readonly array $selectesOptionIds,
+        private readonly array $selectedOptionIds,
         private readonly ?string $text,
         private ?int $score,
         private ?string $teacherComment = null,
@@ -28,9 +28,9 @@ final class StudentAnswer
         return $this->questionId;
     }
 
-    public function selectesOptionIds(): array
+    public function selectedOptionIds(): array
     {
-        return $this->selectesOptionIds;
+        return $this->selectedOptionIds;
     }
 
     public function text(): ?string

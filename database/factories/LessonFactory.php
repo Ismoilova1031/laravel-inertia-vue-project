@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use App\Domain\Lesson\LessonType;
 use App\Infrastructure\Eloquent\LessonModel;
-use App\Models\Task;
+use App\Infrastructure\Eloquent\TaskModel;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -29,6 +29,6 @@ class LessonFactory extends Factory
     public function task(): static
     {
         return $this->state(['lesson_type' => LessonType::TASK, 'lesson_content' => null])
-            ->has(Task::factory(), 'task');
+            ->has(TaskModel::factory(), 'task');
     }
 }

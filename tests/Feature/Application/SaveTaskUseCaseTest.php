@@ -85,6 +85,7 @@ final class SaveTaskUseCaseTest extends TestCase
             'task_id' => DB::table('tasks')->where('lesson_id', $lessonId)->value('id'),
             'student_id' => $student->id,
             'attempt' => 1,
+            'submitted_at' => now(),
             'created_at' => now(),
             'updated_at' => now(),
         ]);
