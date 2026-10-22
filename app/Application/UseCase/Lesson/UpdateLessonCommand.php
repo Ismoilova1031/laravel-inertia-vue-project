@@ -2,7 +2,7 @@
 
 namespace App\Application\UseCase\Lesson;
 
-use App\Application\Contracts\VideoFile;
+use App\Domain\Shared\UploadedFileData;
 use App\Application\UseCase\Assessment\TaskData;
 
 final class UpdateLessonCommand
@@ -14,7 +14,7 @@ final class UpdateLessonCommand
         public readonly int $type,
         public readonly int $sortOrder,
         public readonly ?string $content = null,
-        public readonly ?VideoFile $video = null,
+        public readonly ?UploadedFileData $video = null,
         public readonly ?TaskData $task = null,
     ) {}
 }

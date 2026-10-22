@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Application\Contracts\VideoFile;
+use App\Domain\Shared\UploadedFileData;
 use App\Application\UseCase\Assessment\TaskData;
 use App\Application\UseCase\Lesson\CreateLessonCommand;
 use App\Application\UseCase\Lesson\UpdateLessonCommand;
@@ -63,11 +63,11 @@ class LessonRequest extends FormRequest
         );
     }
 
-    private function videoFile(): ?VideoFile
+    private function videoFile(): ?UploadedFileData
     {
         $file = $this->file('video');
 
-        return $file ? new VideoFile($file->getRealPath(), $file->getClientOriginalExtension()) : null;
+        return $file ? new UploadedFileData($file->getRealPath(), $file->getClientOriginalExtension()) : null;
     }
 
     private function taskDto(): ?TaskData

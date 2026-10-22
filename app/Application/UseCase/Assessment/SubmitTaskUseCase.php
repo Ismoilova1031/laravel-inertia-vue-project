@@ -2,7 +2,7 @@
 
 namespace App\Application\UseCase\Assessment;
 
-use App\Application\Contracts\FileStorageInterface;
+use App\Domain\Shared\FileStorageInterface;
 use App\Domain\Assessment\Exception\SubmissionRuleException;
 use App\Domain\Assessment\Exception\TaskNotFoundException;
 use App\Domain\Assessment\Submission\NewTaskSubmission;

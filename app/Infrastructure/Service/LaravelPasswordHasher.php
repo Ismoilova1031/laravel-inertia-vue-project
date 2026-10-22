@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Security;
+namespace App\Infrastructure\Service;
 
 use App\Domain\Student\HashedPassword;
 use App\Domain\Student\PasswordHasherInterface;

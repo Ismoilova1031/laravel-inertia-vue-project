@@ -2,7 +2,7 @@
 
 namespace App\Application\UseCase\Lesson;
 
-use App\Application\Contracts\FileStorageInterface;
+use App\Domain\Shared\FileStorageInterface;
 use App\Domain\Lesson\Exception\LessonNotFoundException;
 use App\Domain\Lesson\LessonId;
 use App\Domain\Lesson\LessonRepositoryInterface;

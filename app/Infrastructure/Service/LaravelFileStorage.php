@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Infrastructure\Storage;
+namespace App\Infrastructure\Service;
 
-use App\Application\Contracts\FileStorageInterface;
-use App\Application\Contracts\VideoFile;
+use App\Domain\Shared\FileStorageInterface;
+use App\Domain\Shared\UploadedFileData;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 final class LaravelFileStorage implements FileStorageInterface
 {
-    public function store(string $directory, VideoFile $file): string
+    public function store(string $directory, UploadedFileData $file): string
     {
         $path = trim($directory, '/').'/'.Str::uuid().'.'.$file->extension;
 

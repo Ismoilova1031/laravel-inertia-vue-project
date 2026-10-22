@@ -2,7 +2,7 @@
 
 namespace App\Application\UseCase\Lesson;
 
-use App\Application\Contracts\FileStorageInterface;
+use App\Domain\Shared\FileStorageInterface;
 use App\Application\UseCase\Assessment\SaveTaskUseCase;
 use App\Domain\Course\CourseId;
 use App\Domain\Course\CourseRepositoryInterface;

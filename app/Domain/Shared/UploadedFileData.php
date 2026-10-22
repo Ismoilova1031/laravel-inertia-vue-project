@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Application\Contracts;
+namespace App\Domain\Shared;
 
-final class VideoFile
+final class UploadedFileData
 {
     public function __construct(
         public readonly string $path,

@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Provider;
 
-use App\Application\Contracts\FileStorageInterface;
+use App\Domain\Shared\FileStorageInterface;
 use App\Application\UseCase\Assessment\TaskSubmissionLookupInterface;
 use App\Application\UseCase\Course\CourseLessonCounterInterface;
 use App\Application\UseCase\Course\CourseQueryInterface;
@@ -26,8 +26,8 @@ use App\Infrastructure\Repository\EloquentEnrollmentRepository;
 use App\Infrastructure\Repository\EloquentLessonRepository;
 use App\Infrastructure\Repository\EloquentStudentRepository;
 use App\Infrastructure\Repository\EloquentTaskRepository;
-use App\Infrastructure\Security\LaravelPasswordHasher;
-use App\Infrastructure\Storage\LaravelFileStorage;
+use App\Infrastructure\Service\LaravelPasswordHasher;
+use App\Infrastructure\Service\LaravelFileStorage;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider

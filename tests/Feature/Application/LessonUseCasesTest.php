@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Application;
 
-use App\Application\Contracts\VideoFile;
+use App\Domain\Shared\UploadedFileData;
 use App\Application\UseCase\Lesson\CreateLessonCommand;
 use App\Application\UseCase\Lesson\CreateLessonUseCase;
 use App\Application\UseCase\Lesson\DeleteLessonUseCase;
@@ -24,7 +24,7 @@ final class LessonUseCasesTest extends TestCase
 {
     use RefreshDatabase;
 
-    private function create(int $courseId, LessonType $type, int $sort = 1, ?VideoFile $video = null): int
+    private function create(int $courseId, LessonType $type, int $sort = 1, ?UploadedFileData $video = null): int
     {
         return (int) $this->app->make(CreateLessonUseCase::class)->execute(new CreateLessonCommand(
             courseId: $courseId,
@@ -52,7 +52,7 @@ final class LessonUseCasesTest extends TestCase
         $tmp = tempnam(sys_get_temp_dir(), 'vid');
         file_put_contents($tmp, 'video-bytes');
 
-        $id = $this->create($course->id, LessonType::VIDEO, 1, new VideoFile($tmp, 'mp4'));
+        $id = $this->create($course->id, LessonType::VIDEO, 1, new UploadedFileData($tmp, 'mp4'));
 
         $path = LessonModel::find($id)->video_url;
         $this->assertNotNull($path);

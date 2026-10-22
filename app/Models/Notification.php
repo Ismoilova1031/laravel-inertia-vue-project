@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\NotificationType;
+use App\Domain\Notification\NotificationType;
 use App\Infrastructure\Eloquent\CourseModel;
 use App\Infrastructure\Eloquent\LessonModel;
 use Illuminate\Database\Eloquent\Model;

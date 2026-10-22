@@ -2,7 +2,7 @@
 
 namespace App\Application\UseCase\Assessment;
 
-use App\Application\Contracts\VideoFile;
+use App\Domain\Shared\UploadedFileData;
 
 final class SubmitTaskCommand
 {
@@ -11,6 +11,6 @@ final class SubmitTaskCommand
         public readonly int $studentId,
         public readonly ?array $answers = null,
         public readonly ?string $text = null,
-        public readonly ?VideoFile $file = null
+        public readonly ?UploadedFileData $file = null
     ) {}
 }
