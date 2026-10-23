@@ -3,6 +3,7 @@
 namespace App\Domain\Lesson;
 
 use App\Domain\Course\CourseId;
+use Illuminate\Support\Collection;
 
 interface LessonRepositoryInterface
 {
@@ -17,4 +18,6 @@ interface LessonRepositoryInterface
     public function delete(LessonId $id): void;
 
     public function countByCourse(CourseId $courseId): int;
+
+    public function findByCourseIds(array $courseIds): Collection;
 }

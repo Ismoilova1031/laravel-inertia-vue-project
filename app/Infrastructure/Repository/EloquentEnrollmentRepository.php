@@ -64,6 +64,12 @@ class EloquentEnrollmentRepository implements EnrollmentRepositoryInterface
     public function findByCourse(CourseId $courseId): Collection
     {
         return EnrollmentModel::query()->where('course_id', $courseId->value())->get()
-            ->map(fn (EnrollmentModel $m) => $this->toEntity($m));
+            ->map(fn(EnrollmentModel $m) => $this->toEntity($m));
+    }
+
+    public function findByStudent(StudentId $studentId): Collection
+    {
+        return EnrollmentModel::query()->where('student_id', $studentId->value())->get()
+            ->map(fn(EnrollmentModel $m) => $this->toEntity($m));
     }
 }

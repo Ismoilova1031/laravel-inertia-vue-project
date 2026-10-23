@@ -68,6 +68,13 @@ final class EloquentCourseRepository implements CourseRepositoryInterface
     public function all(): Collection
     {
         return CourseModel::query()->orderBy('id')->get()
-            ->map(fn (CourseModel $m) => $this->toEntity($m));
+            ->map(fn(CourseModel $m) => $this->toEntity($m));
+    }
+
+    public function findByIds(array $ids): Collection
+    {
+        return CourseModel::query()
+            ->whereIn('id', array_map(fn(CourseId $id) => $id->value(), $ids))->get()
+            ->map(fn(CourseModel $m) => $this->toEntity($m));
     }
 }

@@ -15,4 +15,6 @@ interface EnrollmentRepositoryInterface
     public function save(Enrollment $enrollment): void;
 
     public function findByCourse(CourseId $courseId): Collection;
+
+    public function findByStudent(StudentId $studentId): Collection;
 }

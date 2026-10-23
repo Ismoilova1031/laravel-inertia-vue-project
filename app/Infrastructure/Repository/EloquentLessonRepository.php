@@ -13,6 +13,7 @@ use App\Domain\Lesson\LessonTitle;
 use App\Domain\Lesson\NewLesson;
 use App\Domain\Lesson\SortOrder;
 use App\Infrastructure\Eloquent\LessonModel;
+use Illuminate\Support\Collection;
 
 final class EloquentLessonRepository implements LessonRepositoryInterface
 {
@@ -30,7 +31,7 @@ final class EloquentLessonRepository implements LessonRepositoryInterface
             ->orderBy('sort_order')
             ->orderBy('id')
             ->get()
-            ->map(fn (LessonModel $m) => $this->toEntity($m))
+            ->map(fn(LessonModel $m) => $this->toEntity($m))
             ->all();
     }
 
@@ -68,6 +69,14 @@ final class EloquentLessonRepository implements LessonRepositoryInterface
     public function delete(LessonId $id): void
     {
         LessonModel::whereKey($id->value())->delete();
+    }
+
+    public function findByCourseIds(array $courseIds): Collection
+    {
+        return LessonModel::query()
+            ->whereIn('course_id', array_map(fn(CourseId $id) => $id->value(), $courseIds))
+            ->orderBy('course_id')->orderBy('sort_order')->get()
+            ->map(fn(LessonModel $m) => $this->toEntity($m));
     }
 
     private function toEntity(LessonModel $model): Lesson

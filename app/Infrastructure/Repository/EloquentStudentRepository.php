@@ -80,8 +80,6 @@ final class EloquentStudentRepository implements StudentRepositoryInterface
 
     public function all(): Collection
     {
-        dd(StudentModel::query()->orderBy('surname')->orderBy('name')->get()->map(fn (StudentModel $m) => $this->toEntity($m)));
-
         return StudentModel::query()->orderBy('surname')->orderBy('name')->get()
             ->map(fn (StudentModel $m) => $this->toEntity($m));
     }

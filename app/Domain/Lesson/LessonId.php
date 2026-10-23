@@ -13,7 +13,7 @@ final class LessonId
         }
     }
 
-    public function value(): string
+    public function value(): int
     {
         return $this->value;
     }

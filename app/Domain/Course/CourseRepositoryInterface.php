@@ -16,4 +16,6 @@ interface CourseRepositoryInterface
 
     /** @return Collection<int, Course> */
     public function all(): Collection;
+
+    public function findByIds(array $ids): Collection;
 }

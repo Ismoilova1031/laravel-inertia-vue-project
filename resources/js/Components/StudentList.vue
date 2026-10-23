@@ -34,7 +34,10 @@
 
                                 <v-list-item prepend-icon="mdi-delete-outline" title="O‘chirish" class="text-error"
                                     @click="confirmDelete(student)" />
+                                <v-list-item prepend-icon="mdi-school-outline" title="View as student"
+                                    @click="router.visit(LearningController.courses({ student: student.id }).url)" />
                             </v-list>
+
                         </v-menu>
                     </div>
                 </template>
@@ -53,6 +56,7 @@
                     Birinchi studentni qo‘shing.
                 </v-list-item-subtitle>
             </v-list-item>
+
         </v-list>
     </v-card>
 
@@ -90,7 +94,7 @@ import {
     destroy,
 } from "../actions/App/Http/Controllers/StudentController";
 import type { Student } from "../types/student";
-
+import LearningController from "../actions/App/Http/Controllers/LearningController";
 defineProps<{
     students: Student[];
 }>();

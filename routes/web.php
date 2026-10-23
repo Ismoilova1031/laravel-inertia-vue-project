@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\LearningController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [DashboardController::class, 'index'])
@@ -50,3 +51,11 @@ Route::post('/courses/{course}/students', [StudentController::class, 'storeForCo
 
 Route::patch('/courses/{course}/status', [CourseController::class, 'changeStatus'])
     ->name('courses.status.update');
+
+
+Route::prefix('/students/{student}')->name('learn.')->group(function () {
+    Route::get('/courses', [LearningController::class, 'courses'])->name('courses');
+    Route::get('/courses/{course}', [LearningController::class, 'course'])->name('course');
+    Route::get('/courses/{course}/lessons/{lesson}', [LearningController::class, 'lesson'])->name('lesson');
+    Route::post('/lessons/{lesson}/complete', [LearningController::class, 'complete'])->name('complete');
+});

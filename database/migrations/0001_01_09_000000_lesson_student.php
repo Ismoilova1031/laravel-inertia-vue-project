@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('lesson_student', function (Blueprint $table) {
+        Schema::create('lesson_progress', function (Blueprint $table) {
             $table->id();
             $table->foreignId('lesson_id')->constrained()->cascadeOnDelete();
             $table->foreignId('student_id')->constrained()->cascadeOnDelete();
-            $table->boolean('is_completed')->default(false);
-            $table->integer('completion_percent')->nullable();
-            $table->integer('score')->nullable();
+            $table->dateTime('completed_at');
             $table->timestamps();
 
             $table->unique(['lesson_id', 'student_id']);
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('lesson_student');
+        Schema::dropIfExists('lesson_progress');
     }
 };
