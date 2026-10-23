@@ -13,5 +13,6 @@ final class StudentLessonView
         public readonly bool $completed,
         public readonly ?Lesson $previous,
         public readonly ?Lesson $next,
+        public readonly ?StudentTaskView $task = null,
     ) {}
 }

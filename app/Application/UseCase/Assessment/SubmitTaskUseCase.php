@@ -56,7 +56,7 @@ final class SubmitTaskUseCase
             return $this->submissions->create($new)->id();
         } catch (Throwable $e) {
             if ($filePath !== null) {
-                $this->storage->delete($filePath);
+                $this->storage->delete($filePath, true);
             }
             throw $e;
         }
@@ -76,7 +76,7 @@ final class SubmitTaskUseCase
             throw SubmissionRuleException::because('Bu fayl turi ruxsat etilmagan.');
         }
 
-        $filePath = $this->storage->store("submissions/{$task->id()->value()}/{$studentId->value()}", $file);
+        $filePath = $this->storage->store("submissions/{$task->id()->value()}/{$studentId->value()}", $file, true);
 
         return NewTaskSubmission::file($task, $studentId, $attempt, $filePath, $file->extension, $now);
     }

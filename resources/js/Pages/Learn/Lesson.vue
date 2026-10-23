@@ -20,12 +20,7 @@
             <v-divider />
 
             <v-card-text class="pa-6">
-                <video
-                    v-if="isVideo && lesson.videoUrl"
-                    :src="lesson.videoUrl"
-                    controls
-                    class="w-100 rounded-lg"
-                />
+                <video v-if="isVideo && lesson.videoUrl" :src="lesson.videoUrl" controls class="w-100 rounded-lg" />
                 <v-alert v-else-if="isVideo" type="info" variant="tonal">
                     The video for this lesson is not available yet.
                 </v-alert>
@@ -33,43 +28,32 @@
                 <!-- Kontentni o'qituvchi kiritadi (ishonchli manba) -->
                 <div v-else-if="isText" class="lesson-content" v-html="lesson.content" />
 
+                <TaskPanel v-else-if="lesson.task" :student-id="student.id" :task="lesson.task" />
+
                 <v-alert v-else type="info" variant="tonal" icon="mdi-clipboard-check-outline">
-                    This lesson contains a task. Submitting tasks will be available soon.
+                    This lesson has no task yet.
                 </v-alert>
             </v-card-text>
 
             <v-divider />
 
             <v-card-actions class="pa-4 ga-2">
-                <v-btn
-                    v-if="lesson.previous"
-                    variant="text"
-                    prepend-icon="mdi-arrow-left"
-                    @click="goTo(lesson.previous.id)"
-                >
+                <v-btn v-if="lesson.previous" variant="text" prepend-icon="mdi-arrow-left"
+                    @click="goTo(lesson.previous.id)">
                     Previous
                 </v-btn>
 
                 <v-spacer />
 
-                <v-btn
-                    v-if="!isTask"
-                    :color="lesson.completed ? 'success' : 'primary'"
+                <v-btn v-if="!isTask" :color="lesson.completed ? 'success' : 'primary'"
                     :variant="lesson.completed ? 'tonal' : 'flat'"
                     :prepend-icon="lesson.completed ? 'mdi-check' : 'mdi-check-circle-outline'"
-                    :disabled="lesson.completed"
-                    :loading="completing"
-                    @click="markCompleted"
-                >
+                    :disabled="lesson.completed" :loading="completing" @click="markCompleted">
                     {{ lesson.completed ? "Completed" : "Mark as completed" }}
                 </v-btn>
 
-                <v-btn
-                    v-if="lesson.next"
-                    variant="outlined"
-                    append-icon="mdi-arrow-right"
-                    @click="goTo(lesson.next.id)"
-                >
+                <v-btn v-if="lesson.next" variant="outlined" append-icon="mdi-arrow-right"
+                    @click="goTo(lesson.next.id)">
                     Next
                 </v-btn>
             </v-card-actions>
@@ -85,6 +69,7 @@ import StudentViewBanner from "../../components/StudentViewBanner.vue";
 import LearningController from "../../actions/App/Http/Controllers/LearningController";
 import { LessonType } from "../../types/lesson-types";
 import type { LearnLesson, LearnStudent } from "../../types/learning";
+import TaskPanel from "../../components/TaskPanel.vue";
 
 const props = defineProps<{
     student: LearnStudent;

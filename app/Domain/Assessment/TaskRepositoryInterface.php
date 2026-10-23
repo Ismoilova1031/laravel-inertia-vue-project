@@ -4,6 +4,7 @@ namespace App\Domain\Assessment;
 
 use App\Domain\Course\CourseId;
 use App\Domain\Lesson\LessonId;
+use Illuminate\Support\Collection;
 
 interface TaskRepositoryInterface
 {
@@ -18,4 +19,6 @@ interface TaskRepositoryInterface
     public function deleteByLessonId(LessonId $lessonId): void;
 
     public function courseIdOf(TaskId $taskId): ?CourseId;
+
+    public function findByLessonIds(array $lessonIds): Collection;
 }

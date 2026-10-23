@@ -41,7 +41,7 @@ final class SubmitTaskUseCaseTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        Storage::fake('public');
+        Storage::fake('local');
 
         $this->courseId = CourseModel::factory()->create(['status' => CourseStatus::PUBLISHED])->id;
         $this->lessonId = LessonModel::factory()->create(['course_id' => $this->courseId])->id;
@@ -135,7 +135,7 @@ final class SubmitTaskUseCaseTest extends TestCase
 
         $first = $this->submit(new SubmitTaskCommand($taskId, $this->studentId, file: $this->pdf()));
         $this->assertDatabaseHas('task_submissions', ['id' => $first, 'status' => 0]);
-        $this->assertTrue(Storage::disk('public')->exists(DB::table('task_submissions')->where('id', $first)->value('file_path')));
+        $this->assertTrue(Storage::disk('local')->exists(DB::table('task_submissions')->where('id', $first)->value('file_path')));
 
         try {
             $this->submit(new SubmitTaskCommand($taskId, $this->studentId, file: $this->pdf()));
@@ -165,7 +165,7 @@ final class SubmitTaskUseCaseTest extends TestCase
         }
 
         $this->assertDatabaseCount('task_submissions', 0);
-        $this->assertSame([], Storage::disk('public')->allFiles());
+        $this->assertSame([], Storage::disk('local')->allFiles());
     }
 
     public function test_discussion_is_accepted_immediately_once(): void

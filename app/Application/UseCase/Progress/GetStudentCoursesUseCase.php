@@ -18,35 +18,33 @@ final class GetStudentCoursesUseCase
         private readonly EnrollmentRepositoryInterface $enrollments,
         private readonly CourseRepositoryInterface $courses,
         private readonly LessonRepositoryInterface $lessons,
-        private readonly LessonProgressRepositoryInterface $progress,
-    ){}
+        private readonly LessonCompletionResolver $completion,
+    ) {}
 
+    /** @return list<StudentCourseItem> */
     public function execute(int $studentId): array
     {
         $studentId = new StudentId($studentId);
 
         $enrollments = $this->enrollments->findByStudent($studentId);
-        if($enrollments->isEmpty()){
+        if ($enrollments->isEmpty()) {
             return [];
         }
 
-        $courseIds = $enrollments->map(fn (Enrollment $enrollment) => $enrollment->courseId())->all();
-        $courses = $this->courses->findByIds($courseIds)->keyBy(fn (Course $course) => $course->id()->value());
+        $courseIds = $enrollments->map(fn (Enrollment $e) => $e->courseId())->all();
+        $courses = $this->courses->findByIds($courseIds)->keyBy(fn (Course $c) => $c->id()->value());
 
         $lessons = $this->lessons->findByCourseIds($courseIds);
-        $done = $this->progress->completedLessonIds(
-            $studentId,
-            $lessons->map(fn (Lesson $lesson) => $lesson->id())->all(),
-        );
-        $lessonsByCourse = $lessons->groupBy(fn (Lesson $lesson) => $lesson->courseId()->value());
+       $done = $this->completion->completedIds($studentId, $lessons->all());
+        $lessonsByCourse = $lessons->groupBy(fn (Lesson $l) => $l->courseId()->value());
 
         return $enrollments
-            ->filter(fn (Enrollment $enrollment) => $courses->has($enrollment->courseId()->value()))
-            ->map(fn (Enrollment $enrollment) => new StudentCourseItem(
-                $courses[$enrollment->courseId()->value()],
-                $enrollment,
+            ->filter(fn (Enrollment $e) => $courses->has($e->courseId()->value()))
+            ->map(fn (Enrollment $e) => new StudentCourseItem(
+                $courses[$e->courseId()->value()],
+                $e,
                 CourseProgress::of(
-                    $lessonsByCourse->get($enrollment->courseId()->value(), collect())->values()->all(),
+                    $lessonsByCourse->get($e->courseId()->value(), collect())->values()->all(),
                     $done,
                 ),
             ))

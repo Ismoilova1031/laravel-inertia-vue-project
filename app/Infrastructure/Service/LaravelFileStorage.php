@@ -9,14 +9,13 @@ use Illuminate\Support\Str;
 
 final class LaravelFileStorage implements FileStorageInterface
 {
-    public function store(string $directory, UploadedFileData $file): string
+    public function store(string $directory, UploadedFileData $file, bool $private = false): string
     {
-        $path = trim($directory, '/').'/'.Str::uuid().'.'.$file->extension;
-
+        $path = trim($directory, '/') . '/' . Str::uuid() . '.' . $file->extension;
         $stream = fopen($file->path, 'rb');
 
         try {
-            Storage::disk('public')->put($path, $stream);
+            Storage::disk($private ? 'local' : 'public')->put($path, $stream);
         } finally {
             if (is_resource($stream)) {
                 fclose($stream);
@@ -26,8 +25,8 @@ final class LaravelFileStorage implements FileStorageInterface
         return $path;
     }
 
-    public function delete(string $path): void
+    public function delete(string $path, bool $private = false): void
     {
-        Storage::disk('public')->delete($path);
+        Storage::disk($private ? 'local' : 'public')->delete($path);
     }
 }

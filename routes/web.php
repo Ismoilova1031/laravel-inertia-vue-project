@@ -58,4 +58,5 @@ Route::prefix('/students/{student}')->name('learn.')->group(function () {
     Route::get('/courses/{course}', [LearningController::class, 'course'])->name('course');
     Route::get('/courses/{course}/lessons/{lesson}', [LearningController::class, 'lesson'])->name('lesson');
     Route::post('/lessons/{lesson}/complete', [LearningController::class, 'complete'])->name('complete');
+    Route::post('/tasks/{task}/submissions', [LearningController::class, 'submit'])->name('submit');
 });

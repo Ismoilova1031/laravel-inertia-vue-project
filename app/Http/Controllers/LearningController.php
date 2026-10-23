@@ -16,6 +16,11 @@ use App\Domain\Student\Exception\StudentNotFoundException;
 use App\Http\Resources\LearnCourseItemResource;
 use App\Http\Resources\LearnCourseResource;
 use App\Http\Resources\LearnLessonResource;
+use App\Application\UseCase\Assessment\SubmitTaskUseCase;
+use App\Domain\Assessment\Exception\AssessmentRuleViolation;
+use App\Domain\Assessment\Exception\TaskNotFoundException;
+use Illuminate\Database\UniqueConstraintViolationException;
+use App\Http\Requests\SubmitTaskRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
@@ -29,6 +34,7 @@ final class LearningController extends Controller
         private readonly GetStudentCourseUseCase $getCourse,
         private readonly GetStudentLessonUseCase $getLesson,
         private readonly MarkLessonCompletedUseCase $markCompleted,
+        private readonly SubmitTaskUseCase $submitTask
     ) {}
 
     public function courses(int $student): Response
@@ -98,5 +104,22 @@ final class LearningController extends Controller
         }
 
         return ['id' => $s->id()->value(), 'fullName' => $s->name()->fullName()];
+    }
+
+    public function submit(SubmitTaskRequest $request, int $student, int $task): RedirectResponse
+    {
+        try {
+            $this->submitTask->execute($request->toCommand());
+        } catch (TaskNotFoundException) {
+            abort(404);
+        } catch (StudentNotActiveInCourseException) {
+            abort(403);
+        } catch (AssessmentRuleViolation $e) {
+            throw ValidationException::withMessages(['submission' => $e->getMessage()]);
+        } catch (UniqueConstraintViolationException) {
+            throw ValidationException::withMessages(['submission' => 'Iltimos, qayta urinib ko\'ring.']);
+        }
+
+        return back();
     }
 }

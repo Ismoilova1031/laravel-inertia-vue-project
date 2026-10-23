@@ -19,7 +19,7 @@ final class GetStudentCourseUseCase
         private readonly EnrollmentRepositoryInterface $enrollments,
         private readonly CourseRepositoryInterface $courses,
         private readonly LessonRepositoryInterface $lessons,
-        private readonly LessonProgressRepositoryInterface $progress,
+        private readonly LessonCompletionResolver $completion,
     ) {}
 
     public function execute(int $studentId, int $courseId): StudentCourseView
@@ -32,7 +32,7 @@ final class GetStudentCourseUseCase
         $course = $this->courses->findById($courseId) ?? throw CourseNotFoundException::withId($courseId);
 
         $lessons = $this->lessons->findByCourse($courseId);
-        $done = $this->progress->completedLessonIds($studentId, array_map(fn (Lesson $lesson) => $lesson->id(), $lessons));
+        $done = $this->completion->completedIds($studentId, $lessons);
 
 
         return new StudentCourseView($course, $enrollment, $lessons, $done, CourseProgress::of($lessons, $done));

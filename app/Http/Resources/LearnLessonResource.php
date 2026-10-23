@@ -26,6 +26,7 @@ class LearnLessonResource extends JsonResource
             'course' => ['id' => $v->course->id()->value(), 'title' => $v->course->title()->value()],
             'previous' => $ref($v->previous),
             'next' => $ref($v->next),
+            'task' => $v->task ? LearnTaskResource::make($v->task)->resolve() : null,
         ];
     }
 }

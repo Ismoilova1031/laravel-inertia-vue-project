@@ -18,6 +18,7 @@ use App\Domain\Student\StudentId;
 use App\Infrastructure\Eloquent\StudentAnswerModel;
 use App\Infrastructure\Eloquent\TaskSubmissionModel;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Collection;
 
 final class EloquentTaskSubmissionRepository implements TaskSubmissionRepositoryInterface
 {
@@ -129,5 +130,15 @@ final class EloquentTaskSubmissionRepository implements TaskSubmissionRepository
     public function existsForTask(TaskId $taskId): bool
     {
         return TaskSubmissionModel::where('task_id', $taskId->value())->exists();
+    }
+
+    public function findByStudentAndTaskIds(StudentId $studentId, array $taskIds): Collection
+    {
+        return TaskSubmissionModel::with('answers')
+            ->where('student_id', $studentId->value())
+            ->whereIn('task_id', array_map(fn(TaskId $id) => $id->value(), $taskIds))
+            ->orderBy('attempt')
+            ->get()
+            ->map(fn(TaskSubmissionModel $m) => $this->toEntity($m));
     }
 }

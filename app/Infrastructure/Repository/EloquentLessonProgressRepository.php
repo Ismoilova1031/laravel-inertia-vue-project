@@ -19,18 +19,18 @@ final class EloquentLessonProgressRepository implements LessonProgressRepository
             ->where('student_id', $studentId->value())
             ->first();
 
-            return $model ? $this->toEntity($model) : null;
+        return $model ? $this->toEntity($model) : null;
     }
 
     public function completedLessonIds(StudentId $studentId, array $lessonIds): array
     {
-        if($lessonIds === []){
+        if ($lessonIds === []) {
             return [];
         }
 
         return LessonProgressModel::query()
             ->where('student_id', $studentId->value())
-            ->whereIn('lesson_id', array_map(fn (Lessonid $id) => $id->value(), $lessonIds))
+            ->whereIn('lesson_id', array_map(fn (LessonId $id) => $id->value(), $lessonIds))
             ->pluck('lesson_id')
             ->map(fn ($id) => (int) $id)
             ->all();

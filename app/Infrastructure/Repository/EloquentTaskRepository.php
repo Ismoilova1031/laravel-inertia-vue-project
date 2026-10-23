@@ -18,6 +18,7 @@ use App\Infrastructure\Eloquent\QuestionModel;
 use App\Infrastructure\Eloquent\QuestionOptionModel;
 use App\Infrastructure\Eloquent\TaskModel;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Collection;
 
 final class EloquentTaskRepository implements TaskRepositoryInterface
 {
@@ -85,6 +86,14 @@ final class EloquentTaskRepository implements TaskRepositoryInterface
         return $id !== null ? new CourseId((int) $id) : null;
     }
 
+    public function findByLessonIds(array $lessonIds): Collection
+    {
+        return TaskModel::with('questions.options')
+            ->whereIn('lesson_id', array_map(fn(LessonId $id) => $id->value(), $lessonIds))
+            ->get()
+            ->map(fn(TaskModel $m) => $this->toEntity($m));
+    }
+
     /** @param list<NewQuestion> $questions */
     private function insertQuestions(int $taskId, array $questions): void
     {
@@ -100,7 +109,7 @@ final class EloquentTaskRepository implements TaskRepositoryInterface
                 'correct_answer' => $question->correctAnswer(),
             ]);
 
-            $rows = array_map(fn ($option) => [
+            $rows = array_map(fn($option) => [
                 'question_id' => $questionModel->id,
                 'option' => $option->text(),
                 'is_correct' => $option->isCorrect(),
@@ -116,13 +125,13 @@ final class EloquentTaskRepository implements TaskRepositoryInterface
 
     private function toEntity(TaskModel $model): Task
     {
-        $questions = $model->questions->map(fn (QuestionModel $q) => Question::reconstitute(
+        $questions = $model->questions->map(fn(QuestionModel $q) => Question::reconstitute(
             (int) $q->id,
             $q->question,
             $q->question_type,
             new Points((int) $q->points),
             $q->correct_answer,
-            $q->options->map(fn (QuestionOptionModel $o) => new QuestionOption(
+            $q->options->map(fn(QuestionOptionModel $o) => new QuestionOption(
                 (int) $o->id,
                 $o->option,
                 (bool) $o->is_correct
