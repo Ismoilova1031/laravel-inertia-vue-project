@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\SubmissionController;
 use App\Http\Controllers\LearningController;
 use Illuminate\Support\Facades\Route;
 
@@ -60,3 +61,8 @@ Route::prefix('/students/{student}')->name('learn.')->group(function () {
     Route::post('/lessons/{lesson}/complete', [LearningController::class, 'complete'])->name('complete');
     Route::post('/tasks/{task}/submissions', [LearningController::class, 'submit'])->name('submit');
 });
+
+Route::get('/submissions/{submission}/file', [SubmissionController::class, 'file'])->name('submissions.file');
+Route::post('/submissions/{submission}/review', [SubmissionController::class, 'review'])->name('submissions.review');
+Route::post('/submissions/{submission}/answers/{question}/grade', [SubmissionController::class, 'grade'])->name('submissions.grade');
+Route::get('/submissions/{submission}/preview', [SubmissionController::class, 'preview'])->name('submissions.preview');

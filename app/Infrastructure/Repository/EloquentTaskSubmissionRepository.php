@@ -141,4 +141,13 @@ final class EloquentTaskSubmissionRepository implements TaskSubmissionRepository
             ->get()
             ->map(fn(TaskSubmissionModel $m) => $this->toEntity($m));
     }
+
+    public function findByTaskIds(array $taskIds): Collection
+    {
+        return TaskSubmissionModel::with('answers')
+            ->whereIn('task_id', array_map(fn(TaskId $id) => $id->value(), $taskIds))
+            ->orderByDesc('submitted_at')
+            ->get()
+            ->map(fn(TaskSubmissionModel $m) => $this->toEntity($m));
+    }
 }

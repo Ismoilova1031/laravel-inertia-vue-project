@@ -22,4 +22,6 @@ interface TaskSubmissionRepositoryInterface
     public function existsForTask(TaskId $taskId): bool;
 
     public function findByStudentAndTaskIds(StudentId $studentId, array $taskIds): Collection;
+
+    public function findByTaskIds(array $taskIds): Collection;
 }

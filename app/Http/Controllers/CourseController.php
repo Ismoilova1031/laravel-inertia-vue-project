@@ -9,6 +9,7 @@ use App\Application\UseCase\Course\GetCoursesUseCase;
 use App\Application\UseCase\Course\GetCourseUseCase;
 use App\Application\UseCase\Course\UpdateCourseUseCase;
 use App\Application\UseCase\Student\GetAvailableStudentsUseCase;
+use App\Application\UseCase\Assessment\GetCourseSubmissionsUseCase;
 use App\Domain\Course\CourseCategory;
 use App\Domain\Course\CourseStatus;
 use App\Domain\Course\Exception\CannotDeleteNonDraftCourseException;
@@ -19,6 +20,7 @@ use App\Http\Requests\CourseRequest;
 use App\Http\Resources\CourseListResource;
 use App\Http\Resources\CourseShowResource;
 use App\Http\Resources\StudentListResource;
+use App\Http\Resources\SubmissionRowResource;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
@@ -34,6 +36,7 @@ class CourseController extends Controller
         private readonly GetCourseUseCase $getCourse,
         private readonly GetAvailableStudentsUseCase $getAvailableStudents,
         private readonly ChangeCourseStatusUseCase $changeCourseStatus,
+        private readonly GetCourseSubmissionsUseCase $getSubmissions
     ) {}
 
     public function index(): Response
@@ -73,6 +76,7 @@ class CourseController extends Controller
             'availableStudents' => StudentListResource::collection(
                 $this->getAvailableStudents->execute($course)
             )->resolve(),
+            'submissions' => SubmissionRowResource::collection($this->getSubmissions->execute($course))->resolve(),
         ]);
     }
 

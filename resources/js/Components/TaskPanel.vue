@@ -16,7 +16,8 @@
 
         <template v-if="task.canSubmit">
             <QuizAnswerForm v-if="isQuiz" :questions="task.questions" :loading="loading" @submit="submit" />
-            <FileSubmitForm v-else-if="isFile" :extensions="task.allowedExtensions" :loading="loading" @submit="submit" />
+            <FileSubmitForm v-else-if="isFile" :extensions="task.allowedExtensions" :loading="loading"
+                @submit="submit" />
             <DiscussionForm v-else :loading="loading" @submit="submit" />
         </template>
 
@@ -24,12 +25,8 @@
             {{ task.blockedReason }}
         </v-alert>
 
-        <SubmissionHistory
-            v-if="task.submissions.length"
-            class="mt-6"
-            :submissions="task.submissions"
-            :max-score="task.maxScore"
-        />
+        <SubmissionHistory v-if="task.submissions.length" class="mt-6" :submissions="task.submissions"
+            :questions="task.questions" :max-score="task.maxScore" :reveal="task.revealAnswers" />
 
         <QuizReview v-if="isQuiz && task.revealAnswers" class="mt-6" :questions="task.questions" />
     </div>

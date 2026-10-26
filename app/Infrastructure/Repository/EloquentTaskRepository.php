@@ -14,6 +14,7 @@ use App\Domain\Assessment\TaskId;
 use App\Domain\Assessment\TaskRepositoryInterface;
 use App\Domain\Course\CourseId;
 use App\Domain\Lesson\LessonId;
+use App\Infrastructure\Eloquent\LessonModel;    
 use App\Infrastructure\Eloquent\QuestionModel;
 use App\Infrastructure\Eloquent\QuestionOptionModel;
 use App\Infrastructure\Eloquent\TaskModel;
@@ -90,6 +91,14 @@ final class EloquentTaskRepository implements TaskRepositoryInterface
     {
         return TaskModel::with('questions.options')
             ->whereIn('lesson_id', array_map(fn(LessonId $id) => $id->value(), $lessonIds))
+            ->get()
+            ->map(fn(TaskModel $m) => $this->toEntity($m));
+    }
+
+    public function findByCourse(CourseId $courseId): Collection
+    {
+        return TaskModel::with('questions.options')
+            ->whereIn('lesson_id', LessonModel::where('course_id', $courseId->value())->select('id'))
             ->get()
             ->map(fn(TaskModel $m) => $this->toEntity($m));
     }

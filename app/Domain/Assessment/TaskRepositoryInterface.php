@@ -21,4 +21,6 @@ interface TaskRepositoryInterface
     public function courseIdOf(TaskId $taskId): ?CourseId;
 
     public function findByLessonIds(array $lessonIds): Collection;
+
+    public function findByCourse(CourseId $courseId): Collection;
 }
