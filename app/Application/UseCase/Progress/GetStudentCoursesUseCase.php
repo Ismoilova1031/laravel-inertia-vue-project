@@ -9,7 +9,6 @@ use App\Domain\Enrollment\EnrollmentRepositoryInterface;
 use App\Domain\Lesson\Lesson;
 use App\Domain\Lesson\LessonRepositoryInterface;
 use App\Domain\Progress\CourseProgress;
-use App\Domain\Progress\LessonProgressRepositoryInterface;
 use App\Domain\Student\StudentId;
 
 final class GetStudentCoursesUseCase

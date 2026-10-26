@@ -94,7 +94,6 @@ final class LearningController extends Controller
         return back();
     }
 
-    /** @return array{id: int, fullName: string} */
     private function studentProps(int $id): array
     {
         try {
@@ -106,7 +105,7 @@ final class LearningController extends Controller
         return ['id' => $s->id()->value(), 'fullName' => $s->name()->fullName()];
     }
 
-    public function submit(SubmitTaskRequest $request, int $student, int $task): RedirectResponse
+    public function submit(SubmitTaskRequest $request): RedirectResponse
     {
         try {
             $this->submitTask->execute($request->toCommand());

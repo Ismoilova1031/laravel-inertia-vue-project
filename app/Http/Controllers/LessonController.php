@@ -1,7 +1,5 @@
 <?php
 
-// app/Http/Controllers/LessonController.php
-
 namespace App\Http\Controllers;
 
 use App\Application\UseCase\Course\GetCourseUseCase;
@@ -70,7 +68,7 @@ class LessonController extends Controller
         ]);
     }
 
-    public function update(LessonRequest $request, int $course, int $lesson): RedirectResponse
+    public function update(LessonRequest $request, int $course): RedirectResponse
     {
         try {
             $this->updateLesson->execute($request->toUpdateCommand());
@@ -94,7 +92,7 @@ class LessonController extends Controller
         return to_route('courses.show', ['course' => $course]);
     }
 
-    public function reorder(ReorderLessonsRequest $request, int $course): RedirectResponse
+    public function reorder(ReorderLessonsRequest $request): RedirectResponse
     {
         try {
             $this->reorderLessons->execute($request->toCommand());

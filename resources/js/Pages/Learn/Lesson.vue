@@ -25,7 +25,6 @@
                     The video for this lesson is not available yet.
                 </v-alert>
 
-                <!-- Kontentni o'qituvchi kiritadi (ishonchli manba) -->
                 <div v-else-if="isText" class="lesson-content" v-html="lesson.content" />
 
                 <TaskPanel v-else-if="lesson.task" :student-id="student.id" :task="lesson.task" />

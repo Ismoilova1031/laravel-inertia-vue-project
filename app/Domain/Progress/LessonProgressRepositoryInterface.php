@@ -11,7 +11,7 @@ interface LessonProgressRepositoryInterface
 
     /**
      * @param list<LessonId> $lessonIds
-     * @return list<int> bajarilgan dars ID'lari
+     * @return list<int> 
      */
     public function completedLessonIds(StudentId $studentId, array $lessonIds): array;
 

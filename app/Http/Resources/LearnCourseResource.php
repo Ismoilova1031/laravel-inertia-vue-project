@@ -10,28 +10,28 @@ class LearnCourseResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-        $v = $this->resource;
-        $done = array_flip($v->completedLessonIds);
+        $value = $this->resource;
+        $done = array_flip($value->completedLessonIds);
 
         return [
-            'id' => $v->course->id()->value(),
-            'title' => $v->course->title()->value(),
-            'description' => $v->course->description()->value(),
-            'category' => $v->course->category()->label(),
-            'isActive' => $v->enrollment->isActive(),
+            'id' => $value->course->id()->value(),
+            'title' => $value->course->title()->value(),
+            'description' => $value->course->description()->value(),
+            'category' => $value->course->category()->label(),
+            'isActive' => $value->enrollment->isActive(),
             'progress' => [
-                'total' => $v->progress->total,
-                'completed' => $v->progress->completed,
-                'percent' => $v->progress->percent(),
+                'total' => $value->progress->total,
+                'completed' => $value->progress->completed,
+                'percent' => $value->progress->percent(),
             ],
-            'nextLessonId' => $v->progress->next()?->id()->value(),
-            'lessons' => array_map(fn (Lesson $l) => [
-                'id' => $l->id()->value(),
-                'title' => $l->title()->value(),
-                'description' => $l->description()->value(),
-                'type' => ['value' => $l->type()->value, 'label' => $l->type()->label()],
-                'completed' => isset($done[$l->id()->value()]),
-            ], $v->lessons),
+            'nextLessonId' => $value->progress->next()?->id()->value(),
+            'lessons' => array_map(fn (Lesson $lesson) => [
+                'id' => $lesson->id()->value(),
+                'title' => $lesson->title()->value(),
+                'description' => $lesson->description()->value(),
+                'type' => ['value' => $lesson->type()->value, 'label' => $lesson->type()->label()],
+                'completed' => isset($done[$lesson->id()->value()]),
+            ], $value->lessons),
         ];
     }
 }

@@ -102,7 +102,7 @@ final class StudentController extends Controller
         ]);
     }
 
-    public function update(UpdateStudentRequest $request, int $student): RedirectResponse
+    public function update(UpdateStudentRequest $request): RedirectResponse
     {
         try {
             $this->updateStudent->execute($request->toCommand());

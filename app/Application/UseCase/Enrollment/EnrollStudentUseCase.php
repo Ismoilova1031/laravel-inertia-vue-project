@@ -1,8 +1,5 @@
 <?php
 
-// app/Application/Enrollment/EnrollStudent/EnrollStudentUseCase.php
-declare(strict_types=1);
-
 namespace App\Application\UseCase\Enrollment;
 
 use App\Domain\Course\CourseId;
