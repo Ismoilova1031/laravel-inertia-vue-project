@@ -1,3 +1,7 @@
+import type { SelectOption } from "./common";
+import type { LessonRef } from "./lesson";
+import type { StudentSummary } from "./student";
+
 export interface SubmissionAnswerRow {
     questionId: number;
     question: string;
@@ -13,13 +17,13 @@ export interface SubmissionAnswerRow {
 export interface SubmissionRow {
     id: number;
     attempt: number;
-    status: { value: number; label: string };
+    status: SelectOption;
     score: number | null;
     maxScore: number;
     submittedAt: string;
-    student: { id: number; fullName: string };
-    lesson: { id: number; title: string };
-    taskType: { value: number; label: string };
+    student: StudentSummary;
+    lesson: LessonRef;
+    taskType: SelectOption;
     content: string | null;
     hasFile: boolean;
     teacherComment: string | null;

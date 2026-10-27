@@ -67,11 +67,12 @@ import LessonTypeAvatar from "../../components/LessonTypeAvatar.vue";
 import StudentViewBanner from "../../components/StudentViewBanner.vue";
 import LearningController from "../../actions/App/Http/Controllers/LearningController";
 import { LessonType } from "../../types/lesson";
-import type { LearnLesson, LearnStudent } from "../../types/learning";
+import type { LearnLesson } from "../../types/learning";
 import TaskPanel from "../../components/TaskPanel.vue";
+import type { StudentSummary } from "../../types/student";
 
 const props = defineProps<{
-    student: LearnStudent;
+    student: StudentSummary;
     lesson: LearnLesson;
 }>();
 

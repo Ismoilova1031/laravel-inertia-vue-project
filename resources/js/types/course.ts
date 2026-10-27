@@ -2,9 +2,12 @@ import type { Lesson } from "./lesson";
 import type { StudentForCourse } from "./student";
 import type { SelectOption } from "./common";
 
-export interface CourseBase {
+export interface CourseRef {
     id: number;
     title: string;
+}
+
+export interface CourseBase extends CourseRef {
     description: string;
 }
 

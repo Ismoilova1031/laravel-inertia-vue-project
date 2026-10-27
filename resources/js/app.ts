@@ -1,6 +1,6 @@
-import { createApp, h } from "vue";
+
+import { createApp, h, type DefineComponent } from "vue";
 import { createInertiaApp } from "@inertiajs/vue3";
-import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 
 import "@mdi/font/css/materialdesignicons.css";
 import "vuetify/styles";
@@ -12,19 +12,29 @@ const vuetify = createVuetify();
 
 const appName = import.meta.env.VITE_APP_NAME || "Laravel";
 
-const pages = Object.fromEntries(
-    Object.entries(
-        import.meta.glob("/resources/js/pages/**/*.vue", { eager: true }),
-    ).map(([path, page]) => [path.replace("/resources/js", "."), page]),
-);
+type PageModule = {
+    default: DefineComponent & {
+        layout?: typeof AppLayout;
+    };
+};
+
+const pages = import.meta.glob<PageModule>("./pages/**/*.vue");
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
 
     resolve: async (name) => {
-        const page = await resolvePageComponent(`./pages/${name}.vue`, pages);
+        const path = `./pages/${name}.vue`;
+        const importPage = pages[path];
 
-        page.default.layout = page.default.layout || AppLayout;
+        if (!importPage) {
+            throw new Error(`Page not found: ${path}`);
+        }
+
+        const module = await importPage();
+        const page = module.default;
+
+        page.layout = page.layout || AppLayout;
 
         return page;
     },

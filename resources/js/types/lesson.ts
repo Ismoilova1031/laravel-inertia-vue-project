@@ -1,7 +1,10 @@
-import { SelectOption } from "./common";
-export interface Lesson {
+import type { SelectOption } from "./common";
+
+export interface LessonRef {
     id: number;
     title: string;
+}
+export interface Lesson extends LessonRef {
     description: string;
     lesson_type: SelectOption;
     lesson_content: string | null;

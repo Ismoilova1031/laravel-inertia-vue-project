@@ -1,7 +1,7 @@
-export interface LearnStudent {
-    id: number;
-    fullName: string;
-}
+import type { SelectOption } from "./common";
+import type { Course, CourseRef } from "./course";
+import type { LessonRef } from "./lesson";
+
 
 export interface LearnProgress {
     total: number;
@@ -9,51 +9,27 @@ export interface LearnProgress {
     percent: number;
 }
 
-export interface LearnCourseItem {
-    id: number;
-    title: string;
-    description: string;
-    category: string;
-    status: { value: number; label: string };
+export interface LearnCourseItem extends Course {
     isActive: boolean;
     progress: LearnProgress;
     nextLessonId: number | null;
 }
 
-export interface LearnLessonItem {
-    id: number;
-    title: string;
+export interface LearnLessonItem extends LessonRef {
     description: string;
-    type: { value: number; label: string };
+    type: SelectOption;
     completed: boolean;
 }
 
-export interface LearnCourse {
-    id: number;
-    title: string;
-    description: string;
-    category: string;
-    isActive: boolean;
-    progress: LearnProgress;
-    nextLessonId: number | null;
+export interface LearnCourse extends LearnCourseItem {
     lessons: LearnLessonItem[];
 }
 
-export interface LessonRef {
-    id: number;
-    title: string;
-}
-
-export interface LearnLesson {
-    id: number;
-    title: string;
-    description: string;
-    type: { value: number; label: string };
+export interface LearnLesson extends LearnLessonItem {
     content: string | null;
     videoUrl: string | null;
-    completed: boolean;
     task: LearnTask | null
-    course: LessonRef;
+    course: CourseRef;
     previous: LessonRef | null;
     next: LessonRef | null;
 }
@@ -67,7 +43,7 @@ export interface LearnOption {
 export interface LearnQuestion {
     id: number;
     text: string;
-    type: { value: number; label: string };
+    type: SelectOption;
     points: number;
     options: LearnOption[];
     correctAnswer: string | null;
@@ -83,7 +59,7 @@ export interface LearnAnswer {
 
 export interface LearnSubmission {
     attempt: number;
-    status: { value: number; label: string };
+    status: SelectOption;
     score: number | null;
     content: string | null;
     hasFile: boolean;
@@ -94,7 +70,7 @@ export interface LearnSubmission {
 
 export interface LearnTask {
     id: number;
-    type: { value: number; label: string };
+    type: SelectOption;
     allowedExtensions: string[];
     questions: LearnQuestion[];
     canSubmit: boolean;

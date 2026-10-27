@@ -25,7 +25,7 @@
 <script setup lang="ts">
 import { router } from "@inertiajs/vue3";
 import StudentController from "../actions/App/Http/Controllers/StudentController";
-import type { LearnStudent } from "../types/learning";
+import type { StudentSummary } from "../types/student";
 
-defineProps<{ student: LearnStudent }>();
+defineProps<{ student: StudentSummary }>();
 </script>

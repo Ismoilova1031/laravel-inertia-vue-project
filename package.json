@@ -4,7 +4,8 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
-        "dev": "vite"
+        "dev": "vite",
+        "type-check": "vue-tsc --noEmit"
     },
     "devDependencies": {
         "@laravel/vite-plugin-wayfinder": "^0.1.7",
