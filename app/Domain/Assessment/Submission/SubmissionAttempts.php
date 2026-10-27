@@ -3,6 +3,7 @@
 namespace App\Domain\Assessment\Submission;
 
 use App\Domain\Assessment\Exception\SubmissionRuleException;
+use App\Domain\Assessment\Submission\VO\AttemptNumber;
 use App\Domain\Assessment\Task;
 use App\Domain\Assessment\TaskType;
 

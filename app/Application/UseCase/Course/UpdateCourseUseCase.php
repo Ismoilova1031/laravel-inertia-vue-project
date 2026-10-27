@@ -3,11 +3,11 @@
 namespace App\Application\UseCase\Course;
 
 use App\Domain\Course\CourseCategory;
-use App\Domain\Course\CourseDescription;
-use App\Domain\Course\CourseId;
+use App\Domain\Course\VO\CourseDescription;
+use App\Domain\Course\VO\CourseId;
 use App\Domain\Course\CourseRepositoryInterface;
 use App\Domain\Course\CourseStatus;
-use App\Domain\Course\CourseTitle;
+use App\Domain\Course\VO\CourseTitle;
 use App\Domain\Course\Exception\CourseNotFoundException;
 use App\Domain\Lesson\LessonRepositoryInterface;
 

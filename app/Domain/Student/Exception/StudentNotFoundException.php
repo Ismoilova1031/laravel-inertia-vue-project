@@ -2,7 +2,7 @@
 
 namespace App\Domain\Student\Exception;
 
-use App\Domain\Student\StudentId;
+use App\Domain\Student\VO\StudentId;
 use DomainException;
 
 final class StudentNotFoundException extends DomainException

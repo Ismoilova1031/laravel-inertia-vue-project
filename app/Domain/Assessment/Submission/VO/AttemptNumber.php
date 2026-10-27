@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Assessment\Submission;
+namespace App\Domain\Assessment\Submission\VO;
 
 use InvalidArgumentException;
 

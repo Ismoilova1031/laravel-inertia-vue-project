@@ -2,7 +2,7 @@
 
 namespace App\Domain\Student\Exception;
 
-use App\Domain\Student\Username;
+use App\Domain\Student\VO\Username;
 use DomainException;
 
 final class UsernameAlreadyTakenException extends DomainException

@@ -2,12 +2,12 @@
 
 namespace App\Infrastructure\Repository;
 
-use App\Domain\Lesson\LessonId;
+use App\Domain\Lesson\VO\LessonId;
 use App\Domain\Progress\LessonProgress;
 use App\Domain\Progress\LessonProgressId;
 use App\Domain\Progress\LessonProgressRepositoryInterface;
 use App\Domain\Progress\NewLessonProgress;
-use App\Domain\Student\StudentId;
+use App\Domain\Student\VO\StudentId;
 use App\Infrastructure\Eloquent\LessonProgressModel;
 
 final class EloquentLessonProgressRepository implements LessonProgressRepositoryInterface

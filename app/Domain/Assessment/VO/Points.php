@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Domain\Lesson;
+namespace App\Domain\Assessment\VO;
 
 use InvalidArgumentException;
 
-final class LessonId
+final class Points
 {
     public function __construct(private readonly int $value)
     {
-        if ($value <= 0) {
-            throw new InvalidArgumentException('LessonId musbat son bo\'lishi kerak');
+        if ($value < 1 || $value > 1000) {
+            throw new InvalidArgumentException('Ball 1 dan 1000 gacha bo\'lishi kerak');
         }
     }
 

@@ -3,6 +3,7 @@
 namespace App\Domain\Assessment;
 
 use App\Domain\Assessment\Exception\InvalidQuestionException;
+use App\Domain\Assessment\VO\Points;
 
 final class NewQuestion
 {

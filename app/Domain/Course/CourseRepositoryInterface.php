@@ -2,6 +2,7 @@
 
 namespace App\Domain\Course;
 
+use App\Domain\Course\VO\CourseId;
 use Illuminate\Support\Collection;
 
 interface CourseRepositoryInterface

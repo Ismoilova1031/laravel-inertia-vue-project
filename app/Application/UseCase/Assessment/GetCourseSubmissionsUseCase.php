@@ -7,7 +7,7 @@ use App\Domain\Assessment\Submission\TaskSubmission;
 use App\Domain\Assessment\Task;
 use App\Domain\Assessment\TaskRepositoryInterface;
 use App\Domain\Assessment\Submission\TaskSubmissionRepositoryInterface;
-use App\Domain\Course\CourseId;
+use App\Domain\Course\VO\CourseId;
 use App\Domain\Lesson\LessonRepositoryInterface;
 use App\Domain\Student\Student;
 use App\Domain\Student\StudentRepositoryInterface;

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Domain\Lesson;
+namespace App\Domain\Course\VO;
 
 use InvalidArgumentException;
 
-final class LessonTitle
+final class CourseTitle
 {
     private readonly string $value;
 
@@ -12,8 +12,8 @@ final class LessonTitle
     {
         $value = trim($value);
 
-        if ($value === '') {
-            throw new InvalidArgumentException('Dars nomi bo\'sh bo\'lishi mumkin emas');
+        if ($value === '' || mb_strlen($value) > 255) {
+            throw new InvalidArgumentException('Kurs nomi bo\'sh bo\'lishi yoki 255 ta belgidan oshmasligi kerak.');
         }
 
         $this->value = $value;

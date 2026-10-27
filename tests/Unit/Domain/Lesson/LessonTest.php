@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Domain\Lesson;
 
-use App\Domain\Course\CourseId;
+use App\Domain\Course\VO\CourseId;
 use App\Domain\Lesson\Lesson;
 use App\Domain\Lesson\LessonContent;
-use App\Domain\Lesson\LessonDescription;
-use App\Domain\Lesson\LessonId;
-use App\Domain\Lesson\LessonTitle;
+use App\Domain\Lesson\VO\LessonDescription;
+use App\Domain\Lesson\VO\LessonId;
+use App\Domain\Lesson\VO\LessonTitle;
 use App\Domain\Lesson\LessonType;
 use App\Domain\Lesson\NewLesson;
-use App\Domain\Lesson\SortOrder;
+use App\Domain\Lesson\VO\SortOrder;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 

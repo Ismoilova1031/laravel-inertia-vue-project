@@ -3,7 +3,9 @@
 namespace App\Domain\Assessment;
 
 use App\Domain\Assessment\Exception\TaskLockedException;
-use App\Domain\Lesson\LessonId;
+use App\Domain\Assessment\VO\TaskContent;
+use App\Domain\Lesson\VO\LessonId;
+use App\Domain\Assessment\VO\TaskId;
 
 final class Task
 {

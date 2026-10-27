@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Domain\Student;
+namespace App\Domain\Course\VO;
 
 use InvalidArgumentException;
 
-final class StudentId
+final class CourseId
 {
     public function __construct(private readonly int $value)
     {
         if ($value <= 0) {
-            throw new InvalidArgumentException('StudentId musbat son bo\'lishi kerak');
+            throw new InvalidArgumentException('CourseId musbat son bo\'lishi kerak');
         }
     }
 

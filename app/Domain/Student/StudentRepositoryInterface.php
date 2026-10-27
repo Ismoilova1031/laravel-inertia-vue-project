@@ -2,6 +2,9 @@
 
 namespace App\Domain\Student;
 
+use App\Domain\Student\VO\EmailAddress;
+use App\Domain\Student\VO\StudentId;
+use App\Domain\Student\VO\Username;
 use Illuminate\Support\Collection;
 
 interface StudentRepositoryInterface

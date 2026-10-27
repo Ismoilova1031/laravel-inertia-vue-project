@@ -2,12 +2,12 @@
 
 namespace Tests\Feature\Infrastructure;
 
-use App\Domain\Student\EmailAddress;
-use App\Domain\Student\HashedPassword;
+use App\Domain\Student\VO\EmailAddress;
+use App\Domain\Student\VO\HashedPassword;
 use App\Domain\Student\NewStudent;
-use App\Domain\Student\PersonName;
+use App\Domain\Student\VO\PersonName;
 use App\Domain\Student\StudentRepositoryInterface;
-use App\Domain\Student\Username;
+use App\Domain\Student\VO\Username;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 

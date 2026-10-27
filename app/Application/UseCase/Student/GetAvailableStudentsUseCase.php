@@ -2,7 +2,7 @@
 
 namespace App\Application\UseCase\Student;
 
-use App\Domain\Course\CourseId;
+use App\Domain\Course\VO\CourseId;
 use App\Domain\Enrollment\Enrollment;
 use App\Domain\Enrollment\EnrollmentRepositoryInterface;
 use App\Domain\Student\StudentRepositoryInterface;

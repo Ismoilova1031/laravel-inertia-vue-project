@@ -2,7 +2,7 @@
 
 namespace App\Domain\Assessment\Exception;
 
-use App\Domain\Assessment\Submission\SubmissionId;
+use App\Domain\Assessment\Submission\VO\SubmissionId;
 
 final class SubmissionNotFoundException extends \DomainException
 {

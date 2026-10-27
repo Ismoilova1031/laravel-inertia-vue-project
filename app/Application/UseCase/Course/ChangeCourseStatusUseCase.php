@@ -2,7 +2,7 @@
 
 namespace App\Application\UseCase\Course;
 
-use App\Domain\Course\CourseId;
+use App\Domain\Course\VO\CourseId;
 use App\Domain\Course\CourseRepositoryInterface;
 use App\Domain\Course\CourseStatus;
 use App\Domain\Course\Exception\CourseNotFoundException;

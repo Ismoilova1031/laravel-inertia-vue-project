@@ -5,7 +5,7 @@ namespace App\Application\UseCase\Assessment;
 use App\Domain\Assessment\Exception\TaskLockedException;
 use App\Domain\Assessment\TaskRepositoryInterface;
 use App\Domain\Assessment\Submission\TaskSubmissionRepositoryInterface;
-use App\Domain\Lesson\LessonId;
+use App\Domain\Lesson\VO\LessonId;
 
 final class DeleteTaskUseCase
 {

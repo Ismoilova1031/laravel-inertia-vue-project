@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Domain\Assessment;
+namespace App\Domain\Assessment\Submission\VO;
 
 use InvalidArgumentException;
 
-final class TaskId
+final class SubmissionId
 {
     public function __construct(private readonly int $value)
     {
         if ($value <= 0) {
-            throw new InvalidArgumentException('Task Id musbat son bo\'lishi kerak');
+            throw new InvalidArgumentException('SubmissionId musbat son bo\'lishi kerak');
         }
     }
 

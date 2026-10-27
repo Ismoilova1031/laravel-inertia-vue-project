@@ -2,9 +2,10 @@
 
 namespace App\Domain\Assessment\Submission;
 
-use App\Domain\Assessment\TaskId;
-use App\Domain\Course\CourseId;
-use App\Domain\Student\StudentId;
+use App\Domain\Assessment\Submission\VO\SubmissionId;
+use App\Domain\Assessment\VO\TaskId;
+use App\Domain\Course\VO\CourseId;
+use App\Domain\Student\VO\StudentId;
 use Illuminate\Support\Collection;
 
 interface TaskSubmissionRepositoryInterface

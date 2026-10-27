@@ -2,10 +2,10 @@
 
 namespace App\Domain\Enrollment;
 
-use App\Domain\Course\CourseId;
+use App\Domain\Course\VO\CourseId;
 use App\Domain\Enrollment\Exception\AlreadyEnrolledException;
 use App\Domain\Enrollment\Exception\EnrollmentNotActiveException;
-use App\Domain\Student\StudentId;
+use App\Domain\Student\VO\StudentId;
 use DateTimeImmutable;
 
 final class Enrollment

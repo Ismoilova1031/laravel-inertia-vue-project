@@ -1,8 +1,11 @@
 <?php
 
-namespace App\Domain\Assessment;
+namespace App\Domain\Assessment\VO;
 
 use App\Domain\Assessment\Exception\InvalidTaskException;
+use App\Domain\Assessment\NewQuestion;
+use App\Domain\Assessment\TaskType;
+use App\Domain\Assessment\AllowedFileExtensions;
 
 final class TaskContent
 {

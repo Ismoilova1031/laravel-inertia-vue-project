@@ -2,7 +2,7 @@
 
 namespace App\Domain\Assessment\Exception;
 
-use App\Domain\Assessment\TaskId;
+use App\Domain\Assessment\VO\TaskId;
 use DomainException;
 
 class TaskNotFoundException extends DomainException

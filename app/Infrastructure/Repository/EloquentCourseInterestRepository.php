@@ -2,12 +2,12 @@
 
 namespace App\Infrastructure\Repository;
 
-use App\Domain\Course\CourseId;
+use App\Domain\Course\VO\CourseId;
 use App\Domain\CourseInterest\CourseInterest;
 use App\Domain\CourseInterest\CourseInterestRepositoryInterface;
 use App\Domain\CourseInterest\InterestType;
 use App\Domain\CourseInterest\NewCourseInterest;
-use App\Domain\Student\StudentId;
+use App\Domain\Student\VO\StudentId;
 use App\Infrastructure\Eloquent\CourseInterestModel;
 use RuntimeException;
 

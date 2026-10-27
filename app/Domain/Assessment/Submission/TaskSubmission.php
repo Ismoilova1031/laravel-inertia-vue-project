@@ -3,9 +3,11 @@
 namespace App\Domain\Assessment\Submission;
 
 use App\Domain\Assessment\Exception\SubmissionRuleException;
+use App\Domain\Assessment\Submission\VO\AttemptNumber;
+use App\Domain\Assessment\Submission\VO\SubmissionId;
 use App\Domain\Assessment\Task;
-use App\Domain\Assessment\TaskId;
-use App\Domain\Student\StudentId;
+use App\Domain\Assessment\VO\TaskId;
+use App\Domain\Student\VO\StudentId;
 use DateTimeImmutable;
 
 final class TaskSubmission

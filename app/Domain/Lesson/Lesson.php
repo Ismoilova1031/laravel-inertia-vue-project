@@ -2,7 +2,11 @@
 
 namespace App\Domain\Lesson;
 
-use App\Domain\Course\CourseId;
+use App\Domain\Course\VO\CourseId;
+use App\Domain\Lesson\VO\LessonDescription;
+use App\Domain\Lesson\VO\LessonId;
+use App\Domain\Lesson\VO\LessonTitle;
+use App\Domain\Lesson\VO\SortOrder;
 
 final class Lesson
 {

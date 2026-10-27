@@ -5,11 +5,11 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Infrastructure;
 
-use App\Domain\Course\CourseId;
+use App\Domain\Course\VO\CourseId;
 use App\Domain\Enrollment\EnrollmentRepositoryInterface;
 use App\Domain\Enrollment\EnrollmentStatus;
 use App\Domain\Enrollment\NewEnrollment;
-use App\Domain\Student\StudentId;
+use App\Domain\Student\VO\StudentId;
 use App\Infrastructure\Eloquent\CourseModel;
 use App\Infrastructure\Eloquent\StudentModel;
 use DateTimeImmutable;

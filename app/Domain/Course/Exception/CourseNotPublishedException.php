@@ -2,7 +2,7 @@
 
 namespace App\Domain\Course\Exception;
 
-use App\Domain\Course\CourseId;
+use App\Domain\Course\VO\CourseId;
 use DomainException;
 
 final class CourseNotPublishedException extends DomainException

@@ -3,7 +3,7 @@
 namespace App\Application\UseCase\Assessment;
 
 use App\Domain\Assessment\Exception\SubmissionNotFoundException;
-use App\Domain\Assessment\Submission\SubmissionId;
+use App\Domain\Assessment\Submission\VO\SubmissionId;
 use App\Domain\Assessment\Submission\TaskSubmissionRepositoryInterface;
 
 final class ReviewSubmissionUseCase

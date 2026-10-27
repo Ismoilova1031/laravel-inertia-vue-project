@@ -2,7 +2,8 @@
 
 namespace App\Domain\Assessment;
 
-use App\Domain\Lesson\LessonId;
+use App\Domain\Assessment\VO\TaskContent;
+use App\Domain\Lesson\VO\LessonId;
 
 final class NewTask
 {

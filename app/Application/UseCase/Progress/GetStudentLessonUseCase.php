@@ -3,7 +3,7 @@
 namespace App\Application\UseCase\Progress;
 
 use App\Domain\Assessment\Exception\SubmissionRuleException;
-use App\Domain\Assessment\Submission\AttemptNumber;
+use App\Domain\Assessment\Submission\VO\AttemptNumber;
 use App\Domain\Assessment\Submission\SubmissionAttempts;
 use App\Domain\Assessment\Submission\TaskCompletion;
 use App\Domain\Assessment\Submission\TaskSubmissionRepositoryInterface;
@@ -14,11 +14,11 @@ use App\Domain\Enrollment\EnrollmentRepositoryInterface;
 use App\Domain\Enrollment\Exception\StudentNotActiveInCourseException;
 use App\Domain\Lesson\Exception\LessonNotFoundException;
 use App\Domain\Lesson\Lesson;
-use App\Domain\Lesson\LessonId;
+use App\Domain\Lesson\VO\LessonId;
 use App\Domain\Lesson\LessonRepositoryInterface;
 use App\Domain\Lesson\LessonType;
 use App\Domain\Progress\LessonProgressRepositoryInterface;
-use App\Domain\Student\StudentId;
+use App\Domain\Student\VO\StudentId;
 
 final class GetStudentLessonUseCase
 {

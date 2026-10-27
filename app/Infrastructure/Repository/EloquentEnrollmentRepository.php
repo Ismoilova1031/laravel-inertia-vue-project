@@ -2,12 +2,12 @@
 
 namespace App\Infrastructure\Repository;
 
-use App\Domain\Course\CourseId;
+use App\Domain\Course\VO\CourseId;
 use App\Domain\Enrollment\Enrollment;
 use App\Domain\Enrollment\EnrollmentId;
 use App\Domain\Enrollment\EnrollmentRepositoryInterface;
 use App\Domain\Enrollment\NewEnrollment;
-use App\Domain\Student\StudentId;
+use App\Domain\Student\VO\StudentId;
 use App\Infrastructure\Eloquent\EnrollmentModel;
 use Illuminate\Support\Collection;
 use RuntimeException;

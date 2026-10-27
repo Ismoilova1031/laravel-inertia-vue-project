@@ -2,10 +2,10 @@
 
 namespace App\Application\UseCase\Enrollment;
 
-use App\Domain\Course\CourseId;
+use App\Domain\Course\VO\CourseId;
 use App\Domain\Enrollment\EnrollmentRepositoryInterface;
 use App\Domain\Enrollment\Exception\EnrollmentNotFoundException;
-use App\Domain\Student\StudentId;
+use App\Domain\Student\VO\StudentId;
 use DateTimeImmutable;
 
 final class DeactivateEnrollmentUseCase

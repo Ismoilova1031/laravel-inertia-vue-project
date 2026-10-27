@@ -2,14 +2,14 @@
 
 namespace App\Application\UseCase\Progress;
 
-use App\Domain\Course\CourseId;
+use App\Domain\Course\VO\CourseId;
 use App\Domain\Course\CourseRepositoryInterface;
 use App\Domain\Course\Exception\CourseNotFoundException;
 use App\Domain\Enrollment\EnrollmentRepositoryInterface;
 use App\Domain\Enrollment\Exception\EnrollmentNotFoundException;
 use App\Domain\Lesson\LessonRepositoryInterface;
 use App\Domain\Progress\CourseProgress;
-use App\Domain\Student\StudentId;
+use App\Domain\Student\VO\StudentId;
 
 final class GetStudentCourseUseCase
 {

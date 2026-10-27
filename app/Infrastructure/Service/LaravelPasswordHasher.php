@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Service;
 
-use App\Domain\Student\HashedPassword;
+use App\Domain\Student\VO\HashedPassword;
 use App\Domain\Student\PasswordHasherInterface;
 use Illuminate\Contracts\Hashing\Hasher;
 

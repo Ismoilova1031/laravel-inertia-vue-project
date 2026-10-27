@@ -2,7 +2,8 @@
 
 namespace App\Domain\Lesson;
 
-use App\Domain\Course\CourseId;
+use App\Domain\Course\VO\CourseId;
+use App\Domain\Lesson\VO\LessonId;
 use Illuminate\Support\Collection;
 
 interface LessonRepositoryInterface

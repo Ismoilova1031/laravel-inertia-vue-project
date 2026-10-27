@@ -4,7 +4,7 @@ namespace App\Application\UseCase\Assessment;
 
 use App\Domain\Assessment\Exception\SubmissionNotFoundException;
 use App\Domain\Assessment\Exception\TaskNotFoundException;
-use App\Domain\Assessment\Submission\SubmissionId;
+use App\Domain\Assessment\Submission\VO\SubmissionId;
 use App\Domain\Assessment\Submission\TaskSubmissionRepositoryInterface;
 use App\Domain\Assessment\TaskRepositoryInterface;
 

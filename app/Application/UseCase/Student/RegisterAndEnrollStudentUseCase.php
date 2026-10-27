@@ -4,7 +4,7 @@ namespace App\Application\UseCase\Student;
 
 use App\Application\UseCase\Enrollment\EnrollStudentCommand;
 use App\Application\UseCase\Enrollment\EnrollStudentUseCase;
-use App\Domain\Student\StudentId;
+use App\Domain\Student\VO\StudentId;
 use Illuminate\Support\Facades\DB;
 
 final class RegisterAndEnrollStudentUseCase

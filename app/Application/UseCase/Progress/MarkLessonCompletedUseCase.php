@@ -5,11 +5,11 @@ namespace App\Application\UseCase\Progress;
 use App\Domain\Enrollment\EnrollmentRepositoryInterface;
 use App\Domain\Enrollment\Exception\StudentNotActiveInCourseException;
 use App\Domain\Lesson\Exception\LessonNotFoundException;
-use App\Domain\Lesson\LessonId;
+use App\Domain\Lesson\VO\LessonId;
 use App\Domain\Lesson\LessonRepositoryInterface;
 use App\Domain\Progress\LessonProgressRepositoryInterface;
 use App\Domain\Progress\NewLessonProgress;
-use App\Domain\Student\StudentId;
+use App\Domain\Student\VO\StudentId;
 use DateTimeImmutable;
 
 final class MarkLessonCompletedUseCase

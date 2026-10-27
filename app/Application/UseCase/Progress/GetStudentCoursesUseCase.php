@@ -9,7 +9,7 @@ use App\Domain\Enrollment\EnrollmentRepositoryInterface;
 use App\Domain\Lesson\Lesson;
 use App\Domain\Lesson\LessonRepositoryInterface;
 use App\Domain\Progress\CourseProgress;
-use App\Domain\Student\StudentId;
+use App\Domain\Student\VO\StudentId;
 
 final class GetStudentCoursesUseCase
 {

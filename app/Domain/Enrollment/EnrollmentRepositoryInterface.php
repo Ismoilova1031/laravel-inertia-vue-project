@@ -2,8 +2,8 @@
 
 namespace App\Domain\Enrollment;
 
-use App\Domain\Course\CourseId;
-use App\Domain\Student\StudentId;
+use App\Domain\Course\VO\CourseId;
+use App\Domain\Student\VO\StudentId;
 use Illuminate\Support\Collection;
 
 interface EnrollmentRepositoryInterface

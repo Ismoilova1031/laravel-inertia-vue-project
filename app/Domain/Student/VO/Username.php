@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Domain\Student;
+namespace App\Domain\Student\VO;
 
 use InvalidArgumentException;
 
-final class EmailAddress
+final class Username
 {
     private readonly string $value;
 
@@ -12,8 +12,10 @@ final class EmailAddress
     {
         $value = mb_strtolower(trim($value));
 
-        if (mb_strlen($value) > 255 || ! filter_var($value, FILTER_VALIDATE_EMAIL)) {
-            throw new InvalidArgumentException('Email manzili noto\'g\'ri');
+        if (! preg_match('/^[a-z0-9_]{3,30}$/', $value)) {
+            throw new InvalidArgumentException(
+                'Username 3-30 belgi bo\'lishi va faqat a-z, 0-9, _ dan iborat bo\'lishi kerak.'
+            );
         }
 
         $this->value = $value;

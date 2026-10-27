@@ -6,13 +6,13 @@ use App\Domain\Assessment\AllowedFileExtensions;
 use App\Domain\Assessment\NewQuestion;
 use App\Domain\Assessment\NewQuestionOption;
 use App\Domain\Assessment\NewTask;
-use App\Domain\Assessment\Points;
+use App\Domain\Assessment\VO\Points;
 use App\Domain\Assessment\QuestionType;
-use App\Domain\Assessment\TaskContent;
+use App\Domain\Assessment\VO\TaskContent;
 use App\Domain\Assessment\TaskRepositoryInterface;
 use App\Domain\Assessment\Submission\TaskSubmissionRepositoryInterface;
 use App\Domain\Assessment\TaskType;
-use App\Domain\Lesson\LessonId;
+use App\Domain\Lesson\VO\LessonId;
 
 final class SaveTaskUseCase
 {

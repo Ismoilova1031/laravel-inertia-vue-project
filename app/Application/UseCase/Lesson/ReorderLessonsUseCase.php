@@ -2,7 +2,7 @@
 
 namespace App\Application\UseCase\Lesson;
 
-use App\Domain\Course\CourseId;
+use App\Domain\Course\VO\CourseId;
 use App\Domain\Lesson\LessonRepositoryInterface;
 use App\Domain\Lesson\LessonSequence;
 use Illuminate\Support\Facades\DB;

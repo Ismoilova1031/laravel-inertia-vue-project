@@ -2,6 +2,11 @@
 
 namespace App\Domain\Student;
 
+use App\Domain\Student\VO\EmailAddress;
+use App\Domain\Student\VO\HashedPassword;
+use App\Domain\Student\VO\PersonName;
+use App\Domain\Student\VO\Username;
+
 final class NewStudent
 {
     private function __construct(

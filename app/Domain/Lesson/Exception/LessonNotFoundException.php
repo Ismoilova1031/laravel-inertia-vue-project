@@ -2,7 +2,7 @@
 
 namespace App\Domain\Lesson\Exception;
 
-use App\Domain\Lesson\LessonId;
+use App\Domain\Lesson\VO\LessonId;
 use DomainException;
 
 final class LessonNotFoundException extends DomainException

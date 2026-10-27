@@ -2,13 +2,13 @@
 
 namespace tests\Unit\Domain\Student;
 
-use App\Domain\Student\EmailAddress;
-use App\Domain\Student\HashedPassword;
+use App\Domain\Student\VO\EmailAddress;
+use App\Domain\Student\VO\HashedPassword;
 use App\Domain\Student\NewStudent;
-use App\Domain\Student\PersonName;
+use App\Domain\Student\VO\PersonName;
 use App\Domain\Student\Student;
-use App\Domain\Student\StudentId;
-use App\Domain\Student\Username;
+use App\Domain\Student\VO\StudentId;
+use App\Domain\Student\VO\Username;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 

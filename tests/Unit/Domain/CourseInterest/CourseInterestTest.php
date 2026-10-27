@@ -5,10 +5,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Domain\CourseInterest;
 
-use App\Domain\Course\CourseId;
+use App\Domain\Course\VO\CourseId;
 use App\Domain\CourseInterest\CourseInterest;
 use App\Domain\CourseInterest\InterestType;
-use App\Domain\Student\StudentId;
+use App\Domain\Student\VO\StudentId;
 use PHPUnit\Framework\TestCase;
 
 final class CourseInterestTest extends TestCase

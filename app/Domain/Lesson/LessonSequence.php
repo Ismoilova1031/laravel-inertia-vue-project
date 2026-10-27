@@ -3,6 +3,8 @@
 namespace App\Domain\Lesson;
 
 use App\Domain\Lesson\Exception\LessonNotFoundException;
+use App\Domain\Lesson\VO\LessonId;
+use App\Domain\Lesson\VO\SortOrder;
 
 final class LessonSequence
 {

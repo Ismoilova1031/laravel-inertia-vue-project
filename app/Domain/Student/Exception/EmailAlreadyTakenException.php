@@ -2,7 +2,7 @@
 
 namespace App\Domain\Student\Exception;
 
-use App\Domain\Student\EmailAddress;
+use App\Domain\Student\VO\EmailAddress;
 use DomainException;
 
 final class EmailAlreadyTakenException extends DomainException

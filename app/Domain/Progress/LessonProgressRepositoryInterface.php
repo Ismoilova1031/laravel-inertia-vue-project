@@ -2,8 +2,8 @@
 
 namespace App\Domain\Progress;
 
-use App\Domain\Lesson\LessonId;
-use App\Domain\Student\StudentId;
+use App\Domain\Lesson\VO\LessonId;
+use App\Domain\Student\VO\StudentId;
 
 interface LessonProgressRepositoryInterface
 {

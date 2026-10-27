@@ -2,6 +2,8 @@
 
 namespace App\Domain\Assessment;
 
+use App\Domain\Assessment\VO\Points;
+
 final class Question
 {
     private function __construct(

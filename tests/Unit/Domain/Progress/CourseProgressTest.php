@@ -2,18 +2,18 @@
 
 namespace Tests\Unit\Domain\Progress;
 
-use App\Domain\Course\CourseId;
+use App\Domain\Course\VO\CourseId;
 use App\Domain\Lesson\Lesson;
 use App\Domain\Lesson\LessonContent;
-use App\Domain\Lesson\LessonDescription;
-use App\Domain\Lesson\LessonId;
-use App\Domain\Lesson\LessonTitle;
+use App\Domain\Lesson\VO\LessonDescription;
+use App\Domain\Lesson\VO\LessonId;
+use App\Domain\Lesson\VO\LessonTitle;
 use App\Domain\Lesson\LessonType;
-use App\Domain\Lesson\SortOrder;
+use App\Domain\Lesson\VO\SortOrder;
 use App\Domain\Progress\CourseProgress;
 use App\Domain\Progress\Exception\LessonNotCompletableManuallyException;
 use App\Domain\Progress\NewLessonProgress;
-use App\Domain\Student\StudentId;
+use App\Domain\Student\VO\StudentId;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
