@@ -66,7 +66,7 @@ import { computed, ref } from "vue";
 import LessonTypeAvatar from "../../components/LessonTypeAvatar.vue";
 import StudentViewBanner from "../../components/StudentViewBanner.vue";
 import LearningController from "../../actions/App/Http/Controllers/LearningController";
-import { LessonType } from "../../types/lesson-types";
+import { LessonType } from "../../types/lesson";
 import type { LearnLesson, LearnStudent } from "../../types/learning";
 import TaskPanel from "../../components/TaskPanel.vue";
 

@@ -1,6 +1,6 @@
 import z from "zod";
 import { useForm } from "@inertiajs/vue3";
-import { LessonType } from "../types/lesson-types";
+import { LessonType } from "../types/lesson";
 import { taskFormSchema } from "./taskForm";
 import LessonController from "../actions/App/Http/Controllers/LessonController";
 

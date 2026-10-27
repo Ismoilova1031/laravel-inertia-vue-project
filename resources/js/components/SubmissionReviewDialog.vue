@@ -108,8 +108,8 @@ import { computed, ref, watch } from "vue";
 import OpenAnswerGrader from "./OpenAnswerGrader.vue";
 import SubmissionFilePreview from "./SubmissionFilePreview.vue";
 import SubmissionController from "../actions/App/Http/Controllers/SubmissionController";
-import { QuestionType } from "../types/question-types";
-import { TaskTypes } from "../types/task-types";
+import { QuestionType } from "../types/question.js";
+import { TaskTypes } from "../types/task.js";
 import type { SubmissionAnswerRow, SubmissionRow } from "../types/submission";
 
 const props = defineProps<{ submission: SubmissionRow | null }>();
@@ -125,7 +125,6 @@ const errorMessages = computed(() => [...new Set(Object.values(errors.value))]);
 
 const isOpen = (a: SubmissionAnswerRow) => a.questionType === QuestionType.OPEN_ENDED;
 
-// Baholanmaganlar tepada
 const openAnswers = computed(() =>
     (props.submission?.answers ?? [])
         .filter((a) => isOpen(a) && a.text !== null)

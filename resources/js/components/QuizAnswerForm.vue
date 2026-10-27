@@ -60,7 +60,7 @@
 
 <script setup lang="ts">
 import { reactive } from "vue";
-import { QuestionType } from "../types/question-types";
+import { QuestionType } from "../types/question";
 import type { LearnQuestion, QuizPayload } from "../types/learning";
 
 const props = defineProps<{ questions: LearnQuestion[]; loading: boolean }>();

@@ -98,7 +98,6 @@
                             </v-chip>
                         </div>
 
-                        <!-- Student's answer -->
                         <div class="text-caption text-medium-emphasis mb-2">
                             Your answer
                         </div>
@@ -131,7 +130,6 @@
                             </span>
                         </div>
 
-                        <!-- Correct answer: revealed after the third attempt -->
                         <div
                             v-if="canRevealAnswers(s)"
                             class="mt-3"
@@ -166,7 +164,6 @@
                             </div>
                         </div>
 
-                        <!-- Teacher feedback -->
                         <v-alert
                             v-if="row.answer.teacherComment"
                             type="info"
@@ -185,7 +182,7 @@
 </template>
 
 <script setup lang="ts">
-import { QuestionType } from "../types/question-types";
+import { QuestionType } from "../types/question";
 import type {
     LearnAnswer,
     LearnQuestion,
