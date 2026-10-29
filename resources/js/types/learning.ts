@@ -23,6 +23,20 @@ export interface LearnLessonItem extends LessonRef {
 
 export interface LearnCourse extends LearnCourseItem {
     lessons: LearnLessonItem[];
+    isComplete: boolean;
+    certificate: { number: string } | null;
+    rating: { average: number; count: number };
+    myReview: { rating: number; comment: string | null } | null;
+}
+
+export interface LearnNotification {
+    id: number;
+    type: number;
+    title: string;
+    description: string | null;
+    courseId: number | null;
+    isRead: boolean;
+    createdAt: string;
 }
 
 export interface LearnLesson extends LearnLessonItem {

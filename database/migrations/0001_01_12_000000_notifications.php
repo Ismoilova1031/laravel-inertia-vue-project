@@ -13,27 +13,15 @@ return new class extends Migration
     {
         Schema::create('notifications', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('student_id')
-                ->constrained('students')
-                ->cascadeOnDelete();
-
-            $table->foreignId('course_id')
-                ->nullable()
-                ->constrained('courses')
-                ->nullOnDelete();
-
-            $table->foreignId('lesson_id')
-                ->nullable()
-                ->constrained('lessons')
-                ->nullOnDelete();
-            $table->integer('type');
+            $table->foreignId('student_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('course_id')->nullable()->constrained()->nullOnDelete();
+            $table->unsignedTinyInteger('type');
             $table->string('title');
-            $table->text('description');
-            $table->boolean('is_read')->default(false);
-            $table->datetime('read_at')->nullable();
-            $table->datetime('email_sent_at')->nullable();
-            $table->datetime('notified_at');
+            $table->text('description')->nullable();
+            $table->dateTime('read_at')->nullable();
             $table->timestamps();
+
+            $table->index(['student_id', 'read_at']);
         });
     }
 

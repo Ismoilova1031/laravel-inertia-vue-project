@@ -25,13 +25,19 @@ class LearnCourseResource extends JsonResource
                 'percent' => $value->progress->percent(),
             ],
             'nextLessonId' => $value->progress->next()?->id()->value(),
-            'lessons' => array_map(fn (Lesson $lesson) => [
+            'lessons' => array_map(fn(Lesson $lesson) => [
                 'id' => $lesson->id()->value(),
                 'title' => $lesson->title()->value(),
                 'description' => $lesson->description()->value(),
                 'type' => ['value' => $lesson->type()->value, 'label' => $lesson->type()->label()],
                 'completed' => isset($done[$lesson->id()->value()]),
             ], $value->lessons),
+            'isComplete' => $value->progress->isComplete(),
+            'certificate' => $value->certificate ? ['number' => $value->certificate->number()->value()] : null,
+            'rating' => ['average' => $value->rating->average, 'count' => $value->rating->count],
+            'myReview' => $value->review
+                ? ['rating' => $value->review->rating()->value(), 'comment' => $value->review->comment()->value()]
+                : null,
         ];
     }
 }

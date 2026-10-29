@@ -7,6 +7,8 @@ use App\Domain\Course\CourseRepositoryInterface;
 use App\Domain\Course\Exception\CourseNotFoundException;
 use App\Domain\Enrollment\EnrollmentRepositoryInterface;
 use App\Domain\Enrollment\Exception\EnrollmentNotFoundException;
+use App\Domain\Certificate\CertificateRepositoryInterface;
+use App\Domain\Review\ReviewRepositoryInterface;
 use App\Domain\Lesson\LessonRepositoryInterface;
 use App\Domain\Progress\CourseProgress;
 use App\Domain\Student\VO\StudentId;
@@ -18,6 +20,8 @@ final class GetStudentCourseUseCase
         private readonly CourseRepositoryInterface $courses,
         private readonly LessonRepositoryInterface $lessons,
         private readonly LessonCompletionResolver $completion,
+        private readonly CertificateRepositoryInterface $certificates,
+        private readonly ReviewRepositoryInterface $reviews,
     ) {}
 
     public function execute(int $studentId, int $courseId): StudentCourseView
@@ -32,7 +36,15 @@ final class GetStudentCourseUseCase
         $lessons = $this->lessons->findByCourse($courseId);
         $done = $this->completion->completedIds($studentId, $lessons);
 
-
-        return new StudentCourseView($course, $enrollment, $lessons, $done, CourseProgress::of($lessons, $done));
+        return new StudentCourseView(
+            $course,
+            $enrollment,
+            $lessons,
+            $done,
+            CourseProgress::of($lessons, $done),
+            $this->certificates->findByCourseAndStudent($courseId, $studentId),
+            $this->reviews->findByCourseAndStudent($courseId, $studentId),
+            $this->reviews->summary($courseId),
+        );
     }
 }

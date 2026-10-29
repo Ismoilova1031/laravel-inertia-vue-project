@@ -7,6 +7,9 @@ use App\Http\Controllers\LessonController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubmissionController;
 use App\Http\Controllers\LearningController;
+use App\Http\Controllers\CertificateController;
+use App\Http\Controllers\CourseReviewController;
+use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [DashboardController::class, 'index'])
@@ -60,9 +63,16 @@ Route::prefix('/students/{student}')->name('learn.')->group(function () {
     Route::get('/courses/{course}/lessons/{lesson}', [LearningController::class, 'lesson'])->name('lesson');
     Route::post('/lessons/{lesson}/complete', [LearningController::class, 'complete'])->name('complete');
     Route::post('/tasks/{task}/submissions', [LearningController::class, 'submit'])->name('submit');
+    Route::post('/courses/{course}/certificate', [CertificateController::class, 'issue'])->name('certificate.issue');
+    Route::post('/courses/{course}/review', [CourseReviewController::class, 'store'])->name('review.store');
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications');
+    Route::post('/notifications/read', [NotificationController::class, 'readAll'])->name('notifications.readAll');
+    Route::post('/notifications/{notification}/read', [NotificationController::class, 'read'])->name('notifications.read');
 });
 
 Route::get('/submissions/{submission}/file', [SubmissionController::class, 'file'])->name('submissions.file');
 Route::post('/submissions/{submission}/review', [SubmissionController::class, 'review'])->name('submissions.review');
 Route::post('/submissions/{submission}/answers/{question}/grade', [SubmissionController::class, 'grade'])->name('submissions.grade');
 Route::get('/submissions/{submission}/preview', [SubmissionController::class, 'preview'])->name('submissions.preview');
+
+Route::get('/certificates/{number}', [CertificateController::class, 'show'])->name('certificates.show');

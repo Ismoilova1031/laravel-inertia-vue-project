@@ -4,16 +4,8 @@ namespace App\Domain\Notification;
 
 enum NotificationType: int
 {
-    case TASK_ASSIGNED = 1;
-    case TASK_COMPLETED = 2;
-    case LESSON_PUBLISHED = 3;
-
-    public function label(): string
-    {
-        return match ($this) {
-            self::TASK_ASSIGNED => 'Task Assigned',
-            self::TASK_COMPLETED => 'Task Completed',
-            self::LESSON_PUBLISHED => 'Lesson Published',
-        };
-    }
+    case CERTIFICATE_ISSUED = 1;
+    case FILE_ACCEPTED = 2;
+    case FILE_REJECTED = 3;
+    case ANSWER_GRADED = 4;
 }
