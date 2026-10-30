@@ -48,7 +48,7 @@ final class EloquentCertificateRepository implements CertificateRepositoryInterf
             new StudentId((int) $model->student_id),
             new CertificateNumber($model->number),
             $model->grade,
-            $model->oercent !== null ? (int) $model->percent : null,
+            $model->percent !== null ? (int) $model->percent : null,
             $model->issued_at,
         );
     }
