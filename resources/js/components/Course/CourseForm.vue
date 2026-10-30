@@ -55,7 +55,7 @@
     </form>
 </template>
 <script setup lang="ts">
-import type { CourseFormInstance } from "@/forms/courseForm";
+import type { CourseFormInstance } from "@/composables/useCourseForm";
 import type { SelectOption } from "@/types/common";
 defineProps<{
     form: CourseFormInstance;

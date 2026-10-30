@@ -89,7 +89,7 @@ import type { SelectOption } from "@/types/common.ts";
 import { ref, computed } from "vue";
 import LessonsList from "@/components/Lesson/LessonsList.vue";
 import StudentListForCourse from "@/components/Student/StudentListForCourse.vue";
-import { useCourseForm } from "@/forms/courseForm.js";
+import { useCourseForm } from "@/composables/useCourseForm";
 import CourseForm from "@/components/Course/CourseForm.vue";
 import type { Student } from "@/types/student.ts";
 import CourseSubmissions from "@/components/Course/CourseSubmissions.vue";

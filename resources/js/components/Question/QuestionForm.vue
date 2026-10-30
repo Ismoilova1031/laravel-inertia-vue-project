@@ -68,7 +68,7 @@ import OptionList from "./OptionList.vue";
 import {
     questionFormSchema,
     type QuestionFormData,
-} from "@/forms/questionForm";
+} from "@/composables/useTaskForm";
 
 const props = defineProps<{
     errors?: Record<string, string>;

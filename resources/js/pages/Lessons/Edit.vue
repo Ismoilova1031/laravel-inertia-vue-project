@@ -23,7 +23,7 @@
 
 <script setup lang="ts">
 import LessonForm from "@/components/Lesson/LessonForm.vue";
-import { useLessonForm } from "@/forms/lessonForm";
+import { useLessonForm } from "@/composables/useLessonForm";
 import type { Course } from "@/types/course";
 import type { Lesson } from "@/types/lesson";
 import type { SelectOption } from "@/types/common";

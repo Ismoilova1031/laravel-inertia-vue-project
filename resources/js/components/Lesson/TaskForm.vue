@@ -42,7 +42,7 @@ import { computed } from "vue";
 import { TaskTypes } from "@/types/task";
 import { FileExtensions } from "@/types/file-extensions";
 import QuestionList from "@/components/Question/QuestionList.vue";
-import type { TaskFormData } from "@/forms/taskForm";
+import type { TaskFormData } from "@/composables/useTaskForm";
 
 const task = defineModel<TaskFormData>({
     required: true,
