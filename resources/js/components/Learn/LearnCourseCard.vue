@@ -61,7 +61,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import type { LearnCourseItem } from "../types/learning";
+import type { LearnCourseItem } from "../../types/learning";
 
 const props = defineProps<{ course: LearnCourseItem }>();
 

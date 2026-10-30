@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import LessonForm from "../../components/LessonForm.vue";
+import LessonForm from "../../components/Lesson/LessonForm.vue";
 import { useLessonForm } from "../../forms/lessonForm";
 import type { Course } from "../../types/course";
 import type { Lesson } from "../../types/lesson";

@@ -63,12 +63,12 @@
 <script setup lang="ts">
 import { router } from "@inertiajs/vue3";
 import { computed, ref } from "vue";
-import LessonTypeAvatar from "../../components/LessonTypeAvatar.vue";
-import StudentViewBanner from "../../components/StudentViewBanner.vue";
+import LessonTypeAvatar from "../../components/Lesson/LessonTypeAvatar.vue";
+import StudentViewBanner from "../../components/Student/StudentViewBanner.vue";
 import LearningController from "../../actions/App/Http/Controllers/LearningController";
 import { LessonType } from "../../types/lesson";
 import type { LearnLesson } from "../../types/learning";
-import TaskPanel from "../../components/TaskPanel.vue";
+import TaskPanel from "../../components/Learn/TaskPanel.vue";
 import type { StudentSummary } from "../../types/student";
 
 const props = defineProps<{

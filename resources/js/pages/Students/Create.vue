@@ -29,7 +29,7 @@
 
 <script setup lang="ts">
 import { Head } from "@inertiajs/vue3";
-import StudentForm from "../../components/StudentForm.vue";
+import StudentForm from "../../components/Student/StudentForm.vue";
 import { index } from "../../actions/App/Http/Controllers/StudentController.js";
 import { useStudentForm } from "../../forms/studentForm";
 

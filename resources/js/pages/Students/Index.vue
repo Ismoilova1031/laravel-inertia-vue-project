@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Head } from "@inertiajs/vue3";
-import StudentList from "../../components/StudentList.vue";
+import StudentList from "../../components/Student/StudentList.vue";
 import type { Student } from "../../types/student";
 import { create } from "../../actions/App/Http/Controllers/StudentController.js";
 

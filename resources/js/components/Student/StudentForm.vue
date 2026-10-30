@@ -109,7 +109,7 @@
 </template>
 
 <script setup lang="ts">
-import type { StudentFormInstance } from "../forms/studentForm";
+import type { StudentFormInstance } from "../../forms/studentForm";
 
 defineProps<{
     form: StudentFormInstance;

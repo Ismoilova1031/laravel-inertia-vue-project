@@ -40,9 +40,9 @@ import FileSubmitForm from "./FileSubmitForm.vue";
 import QuizAnswerForm from "./QuizAnswerForm.vue";
 import QuizReview from "./QuizReview.vue";
 import SubmissionHistory from "./SubmissionHistory.vue";
-import LearningController from "../actions/App/Http/Controllers/LearningController";
-import { TaskTypes } from "../types/task.js";
-import type { LearnTask, QuizPayload } from "../types/learning";
+import LearningController from "../../actions/App/Http/Controllers/LearningController";
+import { TaskTypes } from "../../types/task.js";
+import type { LearnTask, QuizPayload } from "../../types/learning";
 import type { RequestPayload } from "@inertiajs/core";
 
 const props = defineProps<{ studentId: number; task: LearnTask }>();

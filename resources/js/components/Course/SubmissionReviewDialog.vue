@@ -107,10 +107,10 @@ import { router } from "@inertiajs/vue3";
 import { computed, ref, watch } from "vue";
 import OpenAnswerGrader from "./OpenAnswerGrader.vue";
 import SubmissionFilePreview from "./SubmissionFilePreview.vue";
-import SubmissionController from "../actions/App/Http/Controllers/SubmissionController";
-import { QuestionType } from "../types/question.js";
-import { TaskTypes } from "../types/task.js";
-import type { SubmissionAnswerRow, SubmissionRow } from "../types/submission";
+import SubmissionController from "../../actions/App/Http/Controllers/SubmissionController";
+import { QuestionType } from "../../types/question.js";
+import { TaskTypes } from "../../types/task.js";
+import type { SubmissionAnswerRow, SubmissionRow } from "../../types/submission";
 
 const props = defineProps<{ submission: SubmissionRow | null }>();
 const emit = defineEmits<{ close: [] }>();

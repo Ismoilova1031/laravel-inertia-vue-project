@@ -28,8 +28,8 @@
 import { router } from "@inertiajs/vue3";
 import { ref } from "vue";
 import CourseReviewForm from "./CourseReviewForm.vue";
-import CertificateController from "../actions/App/Http/Controllers/CertificateController";
-import type { LearnCourse } from "../types/learning";
+import CertificateController from "../../actions/App/Http/Controllers/CertificateController";
+import type { LearnCourse } from "../../types/learning";
 
 const props = defineProps<{ studentId: number; course: LearnCourse }>();
 

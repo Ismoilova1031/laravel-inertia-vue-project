@@ -87,12 +87,12 @@
 import type { CourseDetail } from "../../types/course.ts";
 import type { SelectOption } from "../../types/common.ts";
 import { ref, computed } from "vue";
-import LessonsList from "../../components/LessonsList.vue";
-import StudentListForCourse from "../../components/StudentListForCourse.vue";
+import LessonsList from "../../components/Lesson/LessonsList.vue";
+import StudentListForCourse from "../../components/Student/StudentListForCourse.vue";
 import { useCourseForm } from "../../forms/courseForm.js";
-import CourseForm from "../../components/CourseForm.vue";
+import CourseForm from "../../components/Course/CourseForm.vue";
 import type { Student } from "../../types/student.ts";
-import CourseSubmissions from "../../components/CourseSubmissions.vue";
+import CourseSubmissions from "../../components/Course/CourseSubmissions.vue";
 import type { SubmissionRow } from "../../types/submission";
 
 const { course, categories, statuses, availableStudents, submissions } = defineProps<{

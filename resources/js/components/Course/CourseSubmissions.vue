@@ -31,7 +31,7 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import SubmissionReviewDialog from "./SubmissionReviewDialog.vue";
-import type { SubmissionRow } from "../types/submission";
+import type { SubmissionRow } from "../../types/submission";
 
 const props = defineProps<{ submissions: SubmissionRow[] }>();
 

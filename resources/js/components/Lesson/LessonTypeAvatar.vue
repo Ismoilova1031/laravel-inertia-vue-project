@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { fallbackLessonMeta, lessonTypeMeta } from "../utils/lessonType";
+import { fallbackLessonMeta, lessonTypeMeta } from "../../utils/lessonType";
 
 const props = withDefaults(defineProps<{ type: number; size?: number }>(), {
     size: 40,

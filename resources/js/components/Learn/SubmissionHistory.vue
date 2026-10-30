@@ -182,12 +182,12 @@
 </template>
 
 <script setup lang="ts">
-import { QuestionType } from "../types/question";
+import { QuestionType } from "../../types/question";
 import type {
     LearnAnswer,
     LearnQuestion,
     LearnSubmission,
-} from "../types/learning";
+} from "../../types/learning";
 
 const props = defineProps<{
     submissions: LearnSubmission[];

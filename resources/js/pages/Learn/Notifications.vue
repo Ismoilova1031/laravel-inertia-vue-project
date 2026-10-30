@@ -38,7 +38,7 @@
 <script setup lang="ts">
 import { router } from "@inertiajs/vue3";
 import { computed } from "vue";
-import StudentViewBanner from "../../components/StudentViewBanner.vue";
+import StudentViewBanner from "../../components/Student/StudentViewBanner.vue";
 import LearningController from "../../actions/App/Http/Controllers/LearningController";
 import NotificationController from "../../actions/App/Http/Controllers/NotificationController";
 import type { LearnNotification } from "../../types/learning";

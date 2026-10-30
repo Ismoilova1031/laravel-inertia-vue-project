@@ -92,9 +92,9 @@ import { router } from "@inertiajs/vue3";
 import {
     edit,
     destroy,
-} from "../actions/App/Http/Controllers/StudentController";
-import type { Student } from "../types/student";
-import LearningController from "../actions/App/Http/Controllers/LearningController";
+} from "../../actions/App/Http/Controllers/StudentController";
+import type { Student } from "../../types/student";
+import LearningController from "../../actions/App/Http/Controllers/LearningController";
 defineProps<{
     students: Student[];
 }>();

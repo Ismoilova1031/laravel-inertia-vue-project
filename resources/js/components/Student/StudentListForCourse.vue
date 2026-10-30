@@ -151,11 +151,11 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { router } from "@inertiajs/vue3";
-import EnrollmentController from "../actions/App/Http/Controllers/EnrollmentController";
-import type { StudentForCourse } from "../types/student";
-import type { Student } from "../types/student";
+import EnrollmentController from "../../actions/App/Http/Controllers/EnrollmentController";
+import type { StudentForCourse } from "../../types/student";
+import type { Student } from "../../types/student";
 import { useForm } from "@inertiajs/vue3";
-import StudentController from "../actions/App/Http/Controllers/StudentController";
+import StudentController from "../../actions/App/Http/Controllers/StudentController";
 const props = defineProps<{
     students: StudentForCourse[];
     availableStudents: Student[];

@@ -70,10 +70,10 @@
 
 <script setup lang="ts">
 import { router } from "@inertiajs/vue3";
-import LessonTypeAvatar from "../../components/LessonTypeAvatar.vue";
-import StudentViewBanner from "../../components/StudentViewBanner.vue";
+import LessonTypeAvatar from "../../components/Lesson/LessonTypeAvatar.vue";
+import StudentViewBanner from "../../components/Student/StudentViewBanner.vue";
 import LearningController from "../../actions/App/Http/Controllers/LearningController";
-import CourseCompletionPanel from "../../components/CourseCompletionPanel.vue";
+import CourseCompletionPanel from "../../components/Course/CourseCompletionPanel.vue";
 import type { LearnCourse } from "../../types/learning";
 import type { StudentSummary } from "../../types/student";
 const props = defineProps<{
