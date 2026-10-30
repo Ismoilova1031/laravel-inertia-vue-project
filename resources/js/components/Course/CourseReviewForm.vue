@@ -21,8 +21,8 @@
 <script setup lang="ts">
 import { useForm } from "@inertiajs/vue3";
 import { computed, ref } from "vue";
-import CourseReviewController from "../../actions/App/Http/Controllers/CourseReviewController";
-import type { LearnCourse } from "../../types/learning";
+import CourseReviewController from "@/actions/App/Http/Controllers/CourseReviewController";
+import type { LearnCourse } from "@/types/learning";
 
 const props = defineProps<{ studentId: number; courseId: number; review: LearnCourse["myReview"]; rating: LearnCourse["rating"] }>();
 

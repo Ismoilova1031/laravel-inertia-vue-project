@@ -158,7 +158,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
-import type { SubmissionAnswerRow } from "../../types/submission";
+import type { SubmissionAnswerRow } from "@/types/submission";
 
 const props = defineProps<{
     answer: SubmissionAnswerRow;

@@ -28,10 +28,10 @@
 
 <script setup lang="ts">
 import { Head } from "@inertiajs/vue3";
-import StudentForm from "../../components/Student/StudentForm.vue";
-import { index } from "../../actions/App/Http/Controllers/StudentController.js";
-import { useStudentForm } from "../../forms/studentForm";
-import type { Student } from "../../types/student";
+import StudentForm from "@/components/Student/StudentForm.vue";
+import { index } from "@/actions/App/Http/Controllers/StudentController.js";
+import { useStudentForm } from "@/forms/studentForm";
+import type { Student } from "@/types/student";
 
 const props = defineProps<{
     student: Student;

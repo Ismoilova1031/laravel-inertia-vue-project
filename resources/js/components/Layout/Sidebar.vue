@@ -68,8 +68,8 @@
 </template>
 <script setup lang="ts">
 import { Link } from "@inertiajs/vue3";
-import DashboardController from "../actions/App/Http/Controllers/DashboardController";
-import CourseController from "../actions/App/Http/Controllers/CourseController";
+import DashboardController from "@/actions/App/Http/Controllers/DashboardController";
+import CourseController from "@/actions/App/Http/Controllers/CourseController";
 
 const drawer = defineModel<boolean>();
 </script>

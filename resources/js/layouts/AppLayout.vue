@@ -12,8 +12,8 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import Header from "../components/Layout/Header.vue";
-import Sidebar from "../components/Layout/Sidebar.vue";
+import Header from "@/components/Layout/Header.vue";
+import Sidebar from "@/components/Layout/Sidebar.vue";
 
 const drawer = ref(true);
 </script>

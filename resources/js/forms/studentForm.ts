@@ -4,7 +4,7 @@ import {
     store,
     update,
     storeForCourse,
-} from "../actions/App/Http/Controllers/StudentController";
+} from "@/actions/App/Http/Controllers/StudentController";
 
 export const studentFormSchema = z
     .object({

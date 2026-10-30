@@ -60,8 +60,8 @@
 
 <script setup lang="ts">
 import { reactive } from "vue";
-import { QuestionType } from "../../types/question";
-import type { LearnQuestion, QuizPayload } from "../../types/learning";
+import { QuestionType } from "@/types/question";
+import type { LearnQuestion, QuizPayload } from "@/types/learning";
 
 const props = defineProps<{ questions: LearnQuestion[]; loading: boolean }>();
 const emit = defineEmits<{ submit: [payload: QuizPayload] }>();

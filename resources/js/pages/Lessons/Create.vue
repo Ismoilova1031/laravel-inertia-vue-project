@@ -19,10 +19,10 @@
 </template>
 
 <script setup lang="ts">
-import LessonForm from "../../components/Lesson/LessonForm.vue";
-import { useLessonForm } from "../../forms/lessonForm";
-import type { Course } from "../../types/course";
-import type { SelectOption } from "../../types/common";
+import LessonForm from "@/components/Lesson/LessonForm.vue";
+import { useLessonForm } from "@/forms/lessonForm";
+import type { Course } from "@/types/course";
+import type { SelectOption } from "@/types/common";
 const props = defineProps<{
     course: Course;
     types: SelectOption[];

@@ -1,8 +1,8 @@
 import z from "zod";
 import { useForm } from "@inertiajs/vue3";
-import { LessonType } from "../types/lesson";
+import { LessonType } from "@/types/lesson";
 import { taskFormSchema } from "./taskForm";
-import LessonController from "../actions/App/Http/Controllers/LessonController";
+import LessonController from "@/actions/App/Http/Controllers/LessonController";
 
 export const lessonFormSchema = z
     .object({

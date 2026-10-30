@@ -1,4 +1,4 @@
-import { LessonType } from "../types/lesson";
+import { LessonType } from "@/types/lesson";
 
 export const lessonTypeMeta: Record<number, { icon: string; color: string }> = {
     [LessonType.VIDEO]: { icon: "mdi-play-circle-outline", color: "red" },

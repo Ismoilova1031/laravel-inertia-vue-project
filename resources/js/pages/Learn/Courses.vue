@@ -31,11 +31,11 @@
 
 <script setup lang="ts">
 import { router } from "@inertiajs/vue3";
-import LearnCourseCard from "../../components/Learn/LearnCourseCard.vue";
-import StudentViewBanner from "../../components/Student/StudentViewBanner.vue";
-import LearningController from "../../actions/App/Http/Controllers/LearningController";
-import type { LearnCourseItem } from "../../types/learning";
-import type { StudentSummary } from "../../types/student";
+import LearnCourseCard from "@/components/Learn/LearnCourseCard.vue";
+import StudentViewBanner from "@/components/Student/StudentViewBanner.vue";
+import LearningController from "@/actions/App/Http/Controllers/LearningController";
+import type { LearnCourseItem } from "@/types/learning";
+import type { StudentSummary } from "@/types/student";
 
 const props = defineProps<{
     student: StudentSummary;

@@ -37,10 +37,10 @@
 </template>
 <script setup lang="ts">
 import { Link } from "@inertiajs/vue3";
-import CourseForm from "../../components/Course/CourseForm.vue";
-import DashboardController from "../../actions/App/Http/Controllers/DashboardController";
-import { useCourseForm } from "../../forms/courseForm";
-import type { SelectOption } from "../../types/common.ts";
+import CourseForm from "@/components/Course/CourseForm.vue";
+import DashboardController from "@/actions/App/Http/Controllers/DashboardController";
+import { useCourseForm } from "@/forms/courseForm";
+import type { SelectOption } from "@/types/common.ts";
 
 defineProps<{
     categories: SelectOption[];

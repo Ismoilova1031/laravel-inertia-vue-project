@@ -105,8 +105,8 @@
 <script setup lang="ts">
 import { router } from "@inertiajs/vue3";
 import { computed, reactive, ref } from "vue";
-import type { Course } from "../../types/course";
-import CourseController from "../../actions/App/Http/Controllers/CourseController";
+import type { Course } from "@/types/course";
+import CourseController from "@/actions/App/Http/Controllers/CourseController";
 
 const props = defineProps<{
     courses: Course[];

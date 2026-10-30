@@ -33,7 +33,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import SubmissionController from "../../actions/App/Http/Controllers/SubmissionController";
+import SubmissionController from "@/actions/App/Http/Controllers/SubmissionController";
 
 const props = defineProps<{ submissionId: number; extension: string | null }>();
 

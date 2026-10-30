@@ -81,8 +81,8 @@
 </template>
 
 <script setup lang="ts">
-import type { LessonFormInstance } from "../../forms/lessonForm";
-import { LessonType } from "../../types/lesson";
+import type { LessonFormInstance } from "@/forms/lessonForm";
+import { LessonType } from "@/types/lesson";
 import RichTextEditor from "./RichTextEditor.vue";
 import LessonVideoUpload from "./LessonVideoUpload.vue";
 import TaskForm from "./TaskForm.vue";

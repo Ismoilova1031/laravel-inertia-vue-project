@@ -78,7 +78,7 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import QuestionForm from "./QuestionForm.vue";
-import type { QuestionFormData } from "../../forms/questionForm";
+import type { QuestionFormData } from "@/forms/questionForm";
 
 const props = defineProps<{
     errors?: Record<string, string>;

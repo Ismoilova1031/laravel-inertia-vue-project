@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import type { LearnQuestion } from "../../types/learning";
+import type { LearnQuestion } from "@/types/learning";
 
 defineProps<{ questions: LearnQuestion[] }>();
 </script>

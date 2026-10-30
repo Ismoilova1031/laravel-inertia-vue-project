@@ -69,7 +69,7 @@
 </template>
 <script setup lang="ts">
 import { computed } from "vue";
-import type { OptionFormData } from "../../forms/optionForm";
+import type { OptionFormData } from "@/forms/optionForm";
 
 defineProps<{
     question_type: 1 | 2;

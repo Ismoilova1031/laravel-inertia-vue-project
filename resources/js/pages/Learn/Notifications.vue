@@ -38,11 +38,11 @@
 <script setup lang="ts">
 import { router } from "@inertiajs/vue3";
 import { computed } from "vue";
-import StudentViewBanner from "../../components/Student/StudentViewBanner.vue";
-import LearningController from "../../actions/App/Http/Controllers/LearningController";
-import NotificationController from "../../actions/App/Http/Controllers/NotificationController";
-import type { LearnNotification } from "../../types/learning";
-import type { StudentSummary } from "../../types/student";
+import StudentViewBanner from "@/components/Student/StudentViewBanner.vue";
+import LearningController from "@/actions/App/Http/Controllers/LearningController";
+import NotificationController from "@/actions/App/Http/Controllers/NotificationController";
+import type { LearnNotification } from "@/types/learning";
+import type { StudentSummary } from "@/types/student";
 const props = defineProps<{ student: StudentSummary; notifications: LearnNotification[] }>();
 
 const hasUnread = computed(() => props.notifications.some((n) => !n.isRead));
