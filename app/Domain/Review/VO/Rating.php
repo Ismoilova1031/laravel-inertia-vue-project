@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Review;
+namespace App\Domain\Review\VO;
 
 use InvalidArgumentException;
 

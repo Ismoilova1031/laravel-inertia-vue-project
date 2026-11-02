@@ -2,7 +2,7 @@
 
 namespace App\Application\UseCase\Certificate;
 
-use App\Domain\Certificate\CertificateNumber;
+use App\Domain\Certificate\VO\CertificateNumber;
 use App\Domain\Certificate\CertificateRepositoryInterface;
 use App\Domain\Certificate\Exception\CertificateNotFoundException;
 use App\Domain\Course\CourseRepositoryInterface;

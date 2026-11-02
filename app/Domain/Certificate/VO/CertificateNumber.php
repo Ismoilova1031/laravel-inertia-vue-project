@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Certificate;
+namespace App\Domain\Certificate\VO;
 
 use InvalidArgumentException;
 

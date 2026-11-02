@@ -6,8 +6,8 @@ use App\Application\UseCase\Progress\CourseCompletion;
 use App\Domain\Course\VO\CourseId;
 use App\Domain\Review\Exception\ReviewNotAllowedException;
 use App\Domain\Review\NewReview;
-use App\Domain\Review\Rating;
-use App\Domain\Review\ReviewComment;
+use App\Domain\Review\VO\Rating;
+use App\Domain\Review\VO\ReviewComment;
 use App\Domain\Review\ReviewRepositoryInterface;
 use App\Domain\Student\VO\StudentId;
 

@@ -4,6 +4,8 @@ namespace App\Domain\Review;
 
 use App\Domain\Course\VO\CourseId;
 use App\Domain\Student\VO\StudentId;
+use App\Domain\Review\VO\Rating;
+use App\Domain\Review\VO\ReviewComment;
 
 final class NewReview
 {
