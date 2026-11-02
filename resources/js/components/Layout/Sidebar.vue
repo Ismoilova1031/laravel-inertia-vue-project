@@ -1,12 +1,8 @@
 <template>
     <v-navigation-drawer v-model="drawer">
         <v-list>
-            <v-list-item
-                prepend-icon="mdi-account-circle-outline"
-                :title="auth?.name ?? 'Guest'"
-                :subtitle="auth?.type"
-                class="border-b pa-2"
-            />
+            <v-list-item prepend-icon="mdi-account-circle-outline" :title="auth?.name ?? 'Guest'" :subtitle="auth?.type"
+                class="border-b pa-2" />
 
             <template v-if="auth?.type === 'teacher'">
                 <v-list-item link title="Dashboard" :component="Link" :href="DashboardController.index().url">
@@ -20,7 +16,8 @@
                         </v-list-item>
                     </template>
 
-                    <v-list-item link title="All Courses" class="ml-0" :component="Link" :href="CourseController.index().url">
+                    <v-list-item link title="All Courses" class="ml-0" :component="Link"
+                        :href="CourseController.index().url">
                         <template #prepend><v-icon size="small">mdi-format-list-bulleted</v-icon></template>
                     </v-list-item>
                 </v-list-group>
@@ -35,11 +32,18 @@
             </template>
 
             <template v-else-if="auth?.type === 'student'">
-                <v-list-item link title="My courses" :component="Link" :href="LearningController.courses({ student: auth.id }).url">
+                <v-list-item link title="My courses" :component="Link"
+                    :href="LearningController.courses({ student: auth.id }).url">
                     <template #prepend><v-icon size="small">mdi-book-open-variant</v-icon></template>
                 </v-list-item>
 
-                <v-list-item link title="Notifications" :component="Link" :href="NotificationController.index({ student: auth.id }).url">
+                <v-list-item link title="Browse courses" :component="Link"
+                    :href="CatalogController.index({ student: auth.id }).url">
+                    <template #prepend><v-icon size="small">mdi-compass-outline</v-icon></template>
+                </v-list-item>
+
+                <v-list-item link title="Notifications" :component="Link"
+                    :href="NotificationController.index({ student: auth.id }).url">
                     <template #prepend><v-icon size="small">mdi-bell-outline</v-icon></template>
                     <template #append>
                         <v-badge v-if="unread" :content="unread" color="error" inline />
@@ -67,6 +71,7 @@ import DashboardController from "@/actions/App/Http/Controllers/DashboardControl
 import LearningController from "@/actions/App/Http/Controllers/LearningController";
 import NotificationController from "@/actions/App/Http/Controllers/NotificationController";
 import StudentController from "@/actions/App/Http/Controllers/StudentController";
+import CatalogController from "@/actions/App/Http/Controllers/CatalogController";
 import type { AuthUser } from "@/types/auth";
 
 const drawer = defineModel<boolean>();

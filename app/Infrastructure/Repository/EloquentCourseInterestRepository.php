@@ -9,6 +9,7 @@ use App\Domain\CourseInterest\InterestType;
 use App\Domain\CourseInterest\NewCourseInterest;
 use App\Domain\Student\VO\StudentId;
 use App\Infrastructure\Eloquent\CourseInterestModel;
+use Illuminate\Support\Collection;
 use RuntimeException;
 
 final class EloquentCourseInterestRepository implements CourseInterestRepositoryInterface
@@ -51,6 +52,12 @@ final class EloquentCourseInterestRepository implements CourseInterestRepository
     public function delete(CourseInterest $interest): void
     {
         CourseInterestModel::whereKey($interest->id())->delete();
+    }
+
+    public function findByStudent(StudentId $studentId): Collection
+    {
+        return CourseInterestModel::where('student_id', $studentId->value())->get()
+            ->map(fn (CourseInterestModel $model) => $this->toEntity($model));
     }
 
     private function toEntity(CourseInterestModel $model): CourseInterest

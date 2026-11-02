@@ -11,6 +11,7 @@ use App\Domain\Course\Exception\CourseNotFoundException;
 use App\Domain\Course\NewCourse;
 use App\Infrastructure\Eloquent\CourseModel;
 use Illuminate\Support\Collection;
+use App\Domain\Course\CourseStatus;
 
 final class EloquentCourseRepository implements CourseRepositoryInterface
 {
@@ -75,6 +76,13 @@ final class EloquentCourseRepository implements CourseRepositoryInterface
     {
         return CourseModel::query()
             ->whereIn('id', array_map(fn(CourseId $id) => $id->value(), $ids))->get()
+            ->map(fn(CourseModel $m) => $this->toEntity($m));
+    }
+
+    public function findPublished(): Collection
+    {
+        return CourseModel::where('status', CourseStatus::PUBLISHED->value)
+            ->orderByDesc('id')->get()
             ->map(fn(CourseModel $m) => $this->toEntity($m));
     }
 }

@@ -14,4 +14,6 @@ interface ReviewRepositoryInterface
     public function save(Review $review): void;
 
     public function summary(CourseId $courseId): RatingSummary;
+
+    public function summaries(array $courseIds): array;
 }

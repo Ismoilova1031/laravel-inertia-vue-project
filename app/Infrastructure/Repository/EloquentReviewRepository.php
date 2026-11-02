@@ -50,6 +50,22 @@ final class EloquentReviewRepository implements ReviewRepositoryInterface
         return new RatingSummary(round((float) ($row->a ?? 0), 1), (int) ($row->c ?? 0));
     }
 
+    public function summaries(array $courseIds): array
+    {
+        if ($courseIds === []) {
+            return [];
+        }
+
+        return CourseReviewModel::whereIn('course_id', array_map(fn(CourseId $id) => $id->value(), $courseIds))
+            ->groupBy('course_id')
+            ->selectRaw('course_id, COUNT(*) as c, AVG(rating) as a')
+            ->get()
+            ->mapWithKeys(fn($r) => [
+                (int) $r->course_id => new RatingSummary(round((float) $r->a, 1), (int) $r->c),
+            ])
+            ->all();
+    }
+
     private function toEntity(CourseReviewModel $model): Review
     {
         return Review::reconstitute(

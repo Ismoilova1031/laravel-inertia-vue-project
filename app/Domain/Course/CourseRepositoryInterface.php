@@ -19,4 +19,7 @@ interface CourseRepositoryInterface
     public function all(): Collection;
 
     public function findByIds(array $ids): Collection;
+
+    public function findPublished(): Collection;
+
 }

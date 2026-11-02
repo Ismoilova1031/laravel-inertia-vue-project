@@ -11,6 +11,8 @@ use App\Http\Controllers\LearningController;
 use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\CourseReviewController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\CatalogController;
+use App\Http\Controllers\CourseInterestController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/certificates/{number}', [CertificateController::class, 'show'])->name('certificates.show');
@@ -86,4 +88,6 @@ Route::middleware('student.access')->prefix('/students/{student}')->name('learn.
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications');
     Route::post('/notifications/read', [NotificationController::class, 'readAll'])->name('notifications.readAll');
     Route::post('/notifications/{notification}/read', [NotificationController::class, 'read'])->name('notifications.read');
+    Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog');
+    Route::post('/courses/{course}/interest', [CourseInterestController::class, 'store'])->name('interest');
 });
