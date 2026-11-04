@@ -15,79 +15,92 @@ use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\CourseInterestController;
 use Illuminate\Support\Facades\Route;
 
+/*
+|--------------------------------------------------------------------------
+| Public
+|--------------------------------------------------------------------------
+*/
+
 Route::get('/certificates/{number}', [CertificateController::class, 'show'])->name('certificates.show');
 
-Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-Route::post('/login', [AuthController::class, 'login'])->name('login.attempt')->middleware('throttle:10,1');
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::controller(AuthController::class)->group(function () {
+    Route::get('/login', 'showLogin')->name('login');
+    Route::post('/login', 'login')->name('login.attempt')->middleware('throttle:10,1');
+    Route::post('/logout', 'logout')->name('logout');
+});
 
-Route::get('/certificates/{number}', [CertificateController::class, 'show'])->name('certificates.show');
-
+/*
+|--------------------------------------------------------------------------
+| Teacher
+|--------------------------------------------------------------------------
+*/
 Route::middleware('auth:web')->group(function () {
-    Route::get('/', [DashboardController::class, 'index'])
-        ->name('dashboard');
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
+    //Courses
     Route::resource('courses', CourseController::class)
-        ->only([
-            'create',
-            'store',
-            'show',
-            'update',
-            'destroy',
-            'index',
-        ]);
+        ->only(['index', 'create', 'store', 'show', 'update', 'destroy']);
+    Route::patch('/courses/{course}/status', [CourseController::class, 'changeStatus'])
+        ->name('courses.status.update');
 
-    Route::put(
-        '/courses/{course}/lessons/reorder',
-        [LessonController::class, 'reorder']
-    )->name('courses.lessons.reorder');
-
+    // Lessons
+    Route::put('/courses/{course}/lessons/reorder', [LessonController::class, 'reorder'])
+        ->name('courses.lessons.reorder');
     Route::resource('courses.lessons', LessonController::class)
-        ->only([
-            'create',
-            'store',
-            'edit',
-            'update',
-            'destroy',
-        ]);
+        ->only(['create', 'store', 'edit', 'update', 'destroy']);
 
-    Route::get('/students', [StudentController::class, 'index'])->name('students.index');
-    Route::get('/students/create', [StudentController::class, 'create'])->name('students.create');
-    Route::post('/students', [StudentController::class, 'store'])->name('students.store');
-    Route::get('/students/{student}/edit', [StudentController::class, 'edit'])->name('students.edit');
-    Route::put('/students/{student}', [StudentController::class, 'update'])->name('students.update');
-    Route::delete('/students/{student}', [StudentController::class, 'destroy'])->name('students.destroy');
-    Route::post('/courses/{course}/enrollments', [EnrollmentController::class, 'store'])->name('courses.enrollments.store');
-    Route::delete('/courses/{course}/enrollments/{student}', [EnrollmentController::class, 'destroy'])->name('courses.enrollments.destroy');
-
+    // Students
+    Route::resource('students', StudentController::class)->except(['show']);
     Route::get('/courses/{course}/students/create', [StudentController::class, 'createForCourse'])
         ->name('courses.students.create');
     Route::post('/courses/{course}/students', [StudentController::class, 'storeForCourse'])
         ->name('courses.students.store');
 
-    Route::patch('/courses/{course}/status', [CourseController::class, 'changeStatus'])
-        ->name('courses.status.update');
+    // Enrollments
+    Route::post('/courses/{course}/enrollments', [EnrollmentController::class, 'store'])
+        ->name('courses.enrollments.store');
+    Route::delete('/courses/{course}/enrollments/{student}', [EnrollmentController::class, 'destroy'])
+        ->name('courses.enrollments.destroy');
 
-
-
-
-    Route::get('/submissions/{submission}/file', [SubmissionController::class, 'file'])->name('submissions.file');
-    Route::post('/submissions/{submission}/review', [SubmissionController::class, 'review'])->name('submissions.review');
-    Route::post('/submissions/{submission}/answers/{question}/grade', [SubmissionController::class, 'grade'])->name('submissions.grade');
-    Route::get('/submissions/{submission}/preview', [SubmissionController::class, 'preview'])->name('submissions.preview');
+    // Submissions
+    Route::controller(SubmissionController::class)
+        ->prefix('/submissions/{submission}')
+        ->name('submissions.')
+        ->group(function () {
+            Route::get('/file', 'file')->name('file');
+            Route::get('/preview', 'preview')->name('preview');
+            Route::post('/review', 'review')->name('review');
+            Route::post('/answers/{question}/grade', 'grade')->name('grade');
+        });
 });
 
-Route::middleware('student.access')->prefix('/students/{student}')->name('learn.')->group(function () {
-    Route::get('/courses', [LearningController::class, 'courses'])->name('courses');
-    Route::get('/courses/{course}', [LearningController::class, 'course'])->name('course');
-    Route::get('/courses/{course}/lessons/{lesson}', [LearningController::class, 'lesson'])->name('lesson');
-    Route::post('/lessons/{lesson}/complete', [LearningController::class, 'complete'])->name('complete');
-    Route::post('/tasks/{task}/submissions', [LearningController::class, 'submit'])->name('submit');
-    Route::post('/courses/{course}/certificate', [CertificateController::class, 'issue'])->name('certificate.issue');
-    Route::post('/courses/{course}/review', [CourseReviewController::class, 'store'])->name('review.store');
-    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications');
-    Route::post('/notifications/read', [NotificationController::class, 'readAll'])->name('notifications.readAll');
-    Route::post('/notifications/{notification}/read', [NotificationController::class, 'read'])->name('notifications.read');
-    Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog');
-    Route::post('/courses/{course}/interest', [CourseInterestController::class, 'store'])->name('interest');
+/*
+|--------------------------------------------------------------------------
+| Student
+|--------------------------------------------------------------------------
+*/
+Route::middleware('student.access')
+    ->prefix('/students/{student}')
+    ->whereNumber('student')
+    ->name('learn.')
+    ->group(function () {
+        Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog');
+        Route::post('/courses/{course}/interest', [CourseInterestController::class, 'store'])->name('interest');
+
+        Route::controller(LearningController::class)->group(function () {
+            Route::get('/courses', 'courses')->name('courses');
+            Route::get('/courses/{course}', 'course')->name('course');
+            Route::get('/courses/{course}/lessons/{lesson}', 'lesson')->name('lesson');
+            Route::post('/lessons/{lesson}/complete', 'complete')->name('complete');
+            Route::post('/tasks/{task}/submissions', 'submit')->name('submit');
+        });
+
+        Route::post('/courses/{course}/certificate', [CertificateController::class, 'issue'])->name('certificate.issue');
+        Route::post('/courses/{course}/review', [CourseReviewController::class, 'store'])->name('review.store');
+
+        Route::controller(NotificationController::class)->group(function () {
+            Route::get('/notifications', 'index')->name('notifications');
+            Route::post('/notifications/read', 'readAll')->name('notifications.readAll');
+            Route::post('/notifications/{notification}/read', 'read')->name('notifications.read');
+        });
 });

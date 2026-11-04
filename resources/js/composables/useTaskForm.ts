@@ -13,8 +13,15 @@ export const questionFormSchema = z
     .object({
         id: z.union([z.number(), z.string()]).optional(),
         question: z.string().min(1, { message: "Question text is required" }),
-        question_type: z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(4)]),
-        points: z.number().min(0, { message: "Points must be a non-negative number" }),
+        question_type: z.union([
+            z.literal(1),
+            z.literal(2),
+            z.literal(3),
+            z.literal(4),
+        ]),
+        points: z
+            .number()
+            .min(0, { message: "Points must be a non-negative number" }),
         options: z.array(optionFormSchema).optional(),
         correct_answer: z.string().nullable(),
     })
@@ -25,7 +32,8 @@ export const questionFormSchema = z
             ctx.addIssue({
                 code: "custom",
                 path: ["options"],
-                message: "At least two options are required for choice questions",
+                message:
+                    "At least two options are required for choice questions",
             });
         }
 
@@ -33,7 +41,8 @@ export const questionFormSchema = z
             ctx.addIssue({
                 code: "custom",
                 path: ["options"],
-                message: "At least one option must be marked as correct for choice questions",
+                message:
+                    "At least one option must be marked as correct for choice questions",
             });
         }
 
@@ -41,7 +50,8 @@ export const questionFormSchema = z
             ctx.addIssue({
                 code: "custom",
                 path: ["correct_answer"],
-                message: "A correct answer is required for short answer questions",
+                message:
+                    "A correct answer is required for short answer questions",
             });
         }
     });
@@ -62,7 +72,8 @@ export const taskFormSchema = z
     .superRefine((data, ctx) => {
         if (
             data.task_type === TaskTypes.FILE_UPLOAD &&
-            (!data.allowed_file_extensions || data.allowed_file_extensions.length === 0)
+            (!data.allowed_file_extensions ||
+                data.allowed_file_extensions.length === 0)
         ) {
             ctx.addIssue({
                 code: "custom",
@@ -71,7 +82,10 @@ export const taskFormSchema = z
             });
         }
 
-        if (data.task_type === TaskTypes.QUIZ && (!data.questions || data.questions.length === 0)) {
+        if (
+            data.task_type === TaskTypes.QUIZ &&
+            (!data.questions || data.questions.length === 0)
+        ) {
             ctx.addIssue({
                 code: "custom",
                 path: ["questions"],

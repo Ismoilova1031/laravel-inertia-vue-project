@@ -1,41 +1,27 @@
 <template>
-    <v-container>
-        <Head title="Student tahrirlash" />
+    <v-container class="py-8">
+        <Head :title="`Edit ${student.name}`" />
 
-        <v-card
-            variant="text"
-            class="mb-4 pa-2 d-flex flex-row gap-2 align-center justify-space-between"
-        >
-            <div>
-                <v-card-title>Studentni tahrirlash</v-card-title>
-                <v-card-subtitle
-                    >Student ma'lumotlarini yangilash</v-card-subtitle
-                >
-            </div>
-            <v-btn
-                variant="tonal"
-                color="primary"
-                class="mb-4"
-                :href="index().url"
-            >
-                <v-icon start>mdi-arrow-left</v-icon>
-                Ro'yxatga qaytish
-            </v-btn>
-        </v-card>
-        <StudentForm :form="form" :submit="submit" submit-label="Yangilash" />
+        <PageHeader
+            title="Edit student"
+            subtitle="Update the student's details. Leave the password empty to keep it."
+            :back-url="StudentController.index().url"
+            back-label="Back to students"
+        />
+
+        <StudentForm :form="form" :submit="submit" submit-label="Update" />
     </v-container>
 </template>
 
 <script setup lang="ts">
 import { Head } from "@inertiajs/vue3";
+import StudentController from "@/actions/App/Http/Controllers/StudentController";
+import PageHeader from "@/components/Common/PageHeader.vue";
 import StudentForm from "@/components/Student/StudentForm.vue";
-import { index } from "@/actions/App/Http/Controllers/StudentController.js";
 import { useStudentForm } from "@/composables/useStudentForm";
 import type { Student } from "@/types/student";
 
-const props = defineProps<{
-    student: Student;
-}>();
+const props = defineProps<{ student: Student }>();
 
 const { form, submit } = useStudentForm(
     undefined,

@@ -1,5 +1,9 @@
 import z from "zod";
-import { store, storeForCourse, update } from "@/actions/App/Http/Controllers/StudentController";
+import {
+    store,
+    storeForCourse,
+    update,
+} from "@/actions/App/Http/Controllers/StudentController";
 import { useZodForm } from "./useZodForm";
 
 export const studentFormSchema = z
@@ -12,7 +16,9 @@ export const studentFormSchema = z
         surname: z
             .string()
             .min(1, { message: "Familiya kiritilishi shart." })
-            .max(255, { message: "Familiya 255 ta belgidan oshmasligi kerak." }),
+            .max(255, {
+                message: "Familiya 255 ta belgidan oshmasligi kerak.",
+            }),
 
         email: z
             .string()
@@ -34,14 +40,23 @@ export const studentFormSchema = z
 
         password_confirmation: z.string(),
     })
-    .refine((data) => data.password === "" || data.password === data.password_confirmation, {
-        message: "Parollar bir-biriga mos kelmaydi.",
-        path: ["password_confirmation"],
-    });
+    .refine(
+        (data) =>
+            data.password === "" ||
+            data.password === data.password_confirmation,
+        {
+            message: "Parollar bir-biriga mos kelmaydi.",
+            path: ["password_confirmation"],
+        },
+    );
 
 export type StudentFormData = z.input<typeof studentFormSchema>;
 
-export function useStudentForm(course_id?: number, initialData?: StudentFormData, studentId?: number) {
+export function useStudentForm(
+    course_id?: number,
+    initialData?: StudentFormData,
+    studentId?: number,
+) {
     const { form, validate } = useZodForm(studentFormSchema, {
         name: initialData?.name ?? "",
         surname: initialData?.surname ?? "",

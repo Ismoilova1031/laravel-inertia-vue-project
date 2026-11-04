@@ -1,124 +1,129 @@
 <template>
     <v-container class="py-8">
-        <v-card class="mx-auto border" rounded="lg" elevation="0">
-            <v-card-text class="d-flex justify-space-between align-center ga-4 pa-6">
-                <div class="d-flex flex-column">
-                    <v-card-title class="text-title-large font-weight-bold pa-0">
-                        {{ course.title }}
-                    </v-card-title>
+        <Head :title="course.title" />
 
-                    <p class="text-body-1 text-medium-emphasis mb-0">
-                        {{ course.description }}
-                    </p>
-                </div>
+        <CourseHeader :course="course" />
 
-                <div class="d-flex ga-2 flex-shrink-0">
-                    <v-chip color="primary" variant="tonal">
-                        {{ course.category.label }}
-                    </v-chip>
-
-                    <v-chip color="success" variant="tonal">
-                        {{ course.status.label }}
-                    </v-chip>
-                </div>
-            </v-card-text>
-
-            <v-divider />
-
-            <v-card-item class="d-flex justify-space-between align-center px-6 py-4">
-                <div class="informations">
-                    <v-icon size="small" class="me-2">mdi-account-multiple</v-icon>
-                    <span class="text-body-2 text-medium-emphasis">{{ students }} students enrolled</span>
-
-                    <v-icon size="small" class="ms-4 me-2">mdi-book</v-icon>
-                    <span class="text-body-2 text-medium-emphasis">{{ lessons }} lessons</span>
-                </div>
-            </v-card-item>
-        </v-card>
-
-        <v-tabs v-model="tab" class="mt-6" background-color="primary" dark>
-            <v-tab value="Lessons">Lessons</v-tab>
-            <v-tab value="Students">Students</v-tab>
-            <v-tab value="Settings">Settings</v-tab>
-            <v-tab value="Submissions">
+        <v-tabs v-model="tab" class="mt-6">
+            <v-tab value="lessons">Lessons</v-tab>
+            <v-tab value="students">Students</v-tab>
+            <v-tab value="submissions">
                 Submissions
-                <v-chip v-if="pendingCount" size="x-small" color="warning" variant="tonal" class="ms-2">{{ pendingCount
-                    }}</v-chip>
+                <v-chip
+                    v-if="pendingCount"
+                    size="x-small"
+                    color="warning"
+                    variant="tonal"
+                    class="ms-2"
+                >
+                    {{ pendingCount }}
+                </v-chip>
             </v-tab>
+            <v-tab value="settings">Settings</v-tab>
         </v-tabs>
 
         <v-divider />
 
         <v-tabs-window v-model="tab" class="mt-4">
-            <v-tabs-window-item value="Lessons">
+            <v-tabs-window-item value="lessons">
                 <LessonsList :lessons="course.lessons" :course="course" />
             </v-tabs-window-item>
-            <v-tabs-window-item value="Students">
-                <StudentListForCourse :students="course.students" :available-students="availableStudents"
-                    :course-id="course.id" :is-published="isPublished" />
-            </v-tabs-window-item>
-            <v-tabs-window-item value="Settings">
-                <v-card max-width="900" class="mx-auto" rounded="lg" elevation="2">
-                    <v-card-item>
-                        <v-card-title class="text-h4 font-weight-bold">Course Settings</v-card-title>
 
-                        <v-card-subtitle class="mt-2">Update the course settings below.</v-card-subtitle>
+            <v-tabs-window-item value="students">
+                <StudentListForCourse
+                    :students="course.students"
+                    :available-students="availableStudents"
+                    :course-id="course.id"
+                    :is-published="isPublished"
+                />
+            </v-tabs-window-item>
+
+            <v-tabs-window-item value="submissions">
+                <CourseSubmissions :submissions="submissions" />
+            </v-tabs-window-item>
+
+            <v-tabs-window-item value="settings">
+                <v-card
+                    max-width="900"
+                    class="mx-auto"
+                    rounded="lg"
+                    elevation="2"
+                >
+                    <v-card-item>
+                        <v-card-title class="text-h5 font-weight-bold"
+                            >Course Settings</v-card-title
+                        >
+                        <v-card-subtitle class="mt-2"
+                            >Update the course settings below.</v-card-subtitle
+                        >
                     </v-card-item>
 
                     <v-divider />
 
                     <v-card-text class="pa-6">
-                        <CourseForm :form="form" :categories="categories" :statuses="statuses"
-                            submit-label="Update Course" :submit="submit" />
-                        <v-snackbar color="success" location="top center" prepend-icon="mdi-check-circle"
-                            title="Updated" text="Course updated successfully!" timeout="2000"
-                            v-model="form.recentlySuccessful" />
+                        <CourseForm
+                            :form="form"
+                            :categories="categories"
+                            :statuses="statuses"
+                            submit-label="Update Course"
+                            :submit="submit"
+                        />
                     </v-card-text>
                 </v-card>
             </v-tabs-window-item>
-            <v-tabs-window-item value="Submissions">
-                <CourseSubmissions :submissions="submissions" />
-            </v-tabs-window-item>
         </v-tabs-window>
+
+        <v-snackbar
+            v-model="form.recentlySuccessful"
+            color="success"
+            location="top center"
+            prepend-icon="mdi-check-circle"
+            timeout="2000"
+        >
+            Course updated successfully!
+        </v-snackbar>
     </v-container>
 </template>
 
 <script setup lang="ts">
-import type { CourseDetail } from "@/types/course.ts";
-import type { SelectOption } from "@/types/common.ts";
-import { ref, computed } from "vue";
+import { Head } from "@inertiajs/vue3";
+import { computed, ref } from "vue";
+import CourseForm from "@/components/Course/CourseForm.vue";
+import CourseHeader from "@/components/Course/CourseHeader.vue";
+import CourseSubmissions from "@/components/Course/CourseSubmissions.vue";
 import LessonsList from "@/components/Lesson/LessonsList.vue";
 import StudentListForCourse from "@/components/Student/StudentListForCourse.vue";
 import { useCourseForm } from "@/composables/useCourseForm";
-import CourseForm from "@/components/Course/CourseForm.vue";
-import type { Student } from "@/types/student.ts";
-import CourseSubmissions from "@/components/Course/CourseSubmissions.vue";
+import type { SelectOption } from "@/types/common";
+import type { CourseDetail } from "@/types/course";
+import type { Student } from "@/types/student";
 import type { SubmissionRow } from "@/types/submission";
+import { COURSE_STATUS } from "@/utils/courseStatus";
 
-const { course, categories, statuses, availableStudents, submissions } = defineProps<{
+const props = defineProps<{
     course: CourseDetail;
     categories: SelectOption[];
     statuses: SelectOption[];
     availableStudents: Student[];
-    submissions: SubmissionRow[]
+    submissions: SubmissionRow[];
 }>();
 
-const pendingCount = computed(() => submissions.filter((s) => s.status.value === 0).length);
+const tab = ref("lessons");
 
-const isPublished = computed(() => course.status.value === 1);
-
-const lessons = computed(() => course.lessons.length);
-const students = computed(
-    () => course.students.filter((s) => s.isActive).length,
+const isPublished = computed(
+    () => props.course.status.value === COURSE_STATUS.PUBLISHED,
 );
-const tab = ref("Lessons");
+const pendingCount = computed(
+    () => props.submissions.filter((s) => s.status.value === 0).length,
+);
+
 const { form, submit } = useCourseForm(
     {
-        title: course.title,
-        description: course.description,
-        category: course.category.value,
-        status: course.status.value,
+        title: props.course.title,
+        description: props.course.description,
+        category: props.course.category.value,
+        status: props.course.status.value,
     },
-    course.id,
+    props.course.id,
 );
 </script>

@@ -1,37 +1,29 @@
-<script setup lang="ts">
-import { Head } from "@inertiajs/vue3";
-import StudentList from "@/components/Student/StudentList.vue";
-import type { Student } from "@/types/student";
-import { create } from "@/actions/App/Http/Controllers/StudentController.js";
-
-defineProps<{ students: Student[] }>();
-</script>
-
 <template>
-    <v-container>
-        <Head title="Studentlar" />
+    <v-container class="py-8">
+        <Head title="Students" />
 
-        <v-card
-            variant="text"
-            class="mb-4 pa-2 d-flex flex-row gap-2 align-center justify-space-between"
-        >
-            <div>
-                <v-card-title>Studentlar ro'yxati</v-card-title>
-                <v-card-subtitle
-                    >Ushbu sahifada barcha studentlar ro'yxatini ko'rishingiz
-                    mumkin.</v-card-subtitle
+        <PageHeader title="Students" subtitle="All registered students.">
+            <template #actions>
+                <v-btn
+                    color="primary"
+                    prepend-icon="mdi-plus"
+                    @click="router.visit(StudentController.create().url)"
                 >
-            </div>
-            <v-btn
-                variant="tonal"
-                color="primary"
-                class="mb-4"
-                :href="create().url"
-            >
-                <v-icon start>mdi-plus</v-icon>
-                Yangi student qo'shish
-            </v-btn>
-        </v-card>
+                    New student
+                </v-btn>
+            </template>
+        </PageHeader>
+
         <StudentList :students="students" />
     </v-container>
 </template>
+
+<script setup lang="ts">
+import { Head, router } from "@inertiajs/vue3";
+import StudentController from "@/actions/App/Http/Controllers/StudentController";
+import PageHeader from "@/components/Common/PageHeader.vue";
+import StudentList from "@/components/Student/StudentList.vue";
+import type { Student } from "@/types/student";
+
+defineProps<{ students: Student[] }>();
+</script>

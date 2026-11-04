@@ -19,7 +19,12 @@ export const courseFormSchema = z.object({
         .nullable()
         .refine((val) => val !== null, { message: "Category is required" }),
 
-    status: z.number().min(0, { message: "Status is required" }).max(2).nullable().optional(),
+    status: z
+        .number()
+        .min(0, { message: "Status is required" })
+        .max(2)
+        .nullable()
+        .optional(),
 });
 
 export type CourseFormData = z.input<typeof courseFormSchema>;

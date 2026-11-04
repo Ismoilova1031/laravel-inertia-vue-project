@@ -1,7 +1,10 @@
 import { useForm } from "@inertiajs/vue3";
 import type { z } from "zod";
 
-export function useZodForm<S extends z.ZodTypeAny>(schema: S, initial: z.input<S>) {
+export function useZodForm<S extends z.ZodTypeAny>(
+    schema: S,
+    initial: z.input<S>,
+) {
     const form = useForm<Record<string, any>>(initial as Record<string, any>);
 
     function validate(): boolean {
