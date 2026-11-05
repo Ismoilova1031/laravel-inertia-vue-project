@@ -17,11 +17,11 @@ final class CourseProgress
         $done = array_flip($completedLessonIds);
         $completed = 0;
         $next = null;
-        
-        foreach($lessons as $lesson){
-            if(isset($done[$lesson->id()->value()])){
+
+        foreach ($lessons as $lesson) {
+            if (isset($done[$lesson->id()->value()])) {
                 $completed++;
-            } elseif($next === null) {
+            } elseif ($next === null) {
                 $next = $lesson;
             }
         }
@@ -39,6 +39,8 @@ final class CourseProgress
         return $this->total > 0 && $this->completed === $this->total;
     }
 
-    public function next(): ?Lesson { return $this->next; }
-    
+    public function next(): ?Lesson
+    {
+        return $this->next;
+    }
 }

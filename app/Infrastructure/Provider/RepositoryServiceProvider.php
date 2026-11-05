@@ -4,30 +4,30 @@ namespace App\Infrastructure\Provider;
 
 use App\Domain\Assessment\Submission\TaskSubmissionRepositoryInterface;
 use App\Domain\Assessment\TaskRepositoryInterface;
+use App\Domain\Certificate\CertificateRepositoryInterface;
 use App\Domain\Course\CourseRepositoryInterface;
 use App\Domain\CourseInterest\CourseInterestRepositoryInterface;
 use App\Domain\Enrollment\EnrollmentRepositoryInterface;
 use App\Domain\Lesson\LessonRepositoryInterface;
+use App\Domain\Notification\NotificationRepositoryInterface;
 use App\Domain\Progress\LessonProgressRepositoryInterface;
+use App\Domain\Review\ReviewRepositoryInterface;
 use App\Domain\Shared\FileStorageInterface;
 use App\Domain\Student\PasswordHasherInterface;
 use App\Domain\Student\StudentRepositoryInterface;
-use App\Domain\Certificate\CertificateRepositoryInterface;
-use App\Domain\Review\ReviewRepositoryInterface;
-use App\Domain\Notification\NotificationRepositoryInterface;
+use App\Infrastructure\Repository\EloquentCertificateRepository;
 use App\Infrastructure\Repository\EloquentCourseInterestRepository;
 use App\Infrastructure\Repository\EloquentCourseRepository;
 use App\Infrastructure\Repository\EloquentEnrollmentRepository;
+use App\Infrastructure\Repository\EloquentLessonProgressRepository;
 use App\Infrastructure\Repository\EloquentLessonRepository;
+use App\Infrastructure\Repository\EloquentNotificationRepository;
+use App\Infrastructure\Repository\EloquentReviewRepository;
 use App\Infrastructure\Repository\EloquentStudentRepository;
 use App\Infrastructure\Repository\EloquentTaskRepository;
 use App\Infrastructure\Repository\EloquentTaskSubmissionRepository;
-use App\Infrastructure\Repository\EloquentLessonProgressRepository;
 use App\Infrastructure\Service\LaravelFileStorage;
 use App\Infrastructure\Service\LaravelPasswordHasher;
-use App\Infrastructure\Repository\EloquentCertificateRepository;
-use App\Infrastructure\Repository\EloquentReviewRepository;
-use App\Infrastructure\Repository\EloquentNotificationRepository;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider

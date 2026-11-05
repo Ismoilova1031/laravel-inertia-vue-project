@@ -1,4 +1,5 @@
 <?php
+
 // app/Console/Commands/MakeAdmin.php
 declare(strict_types=1);
 
@@ -11,6 +12,7 @@ use Illuminate\Console\Command;
 final class MakeAdmin extends Command
 {
     protected $signature = 'app:make-admin {username} {password} {--name=Teacher}';
+
     protected $description = 'Birinchi o\'qituvchi/admin foydalanuvchini yaratadi';
 
     public function handle(): int
@@ -24,8 +26,8 @@ final class MakeAdmin extends Command
         UserModel::create([
             'name' => $this->option('name'),
             'username' => $this->argument('username'),
-            'password' => $this->argument('password'),   
-            'role' => UserRole::cases()[0],              
+            'password' => $this->argument('password'),
+            'role' => UserRole::cases()[0],
         ]);
 
         $this->info('Yaratildi.');

@@ -14,5 +14,5 @@ final class SubmissionRow
         public readonly Task $task,
         public readonly Lesson $lesson,
         public readonly Student $student
-    ){}
+    ) {}
 }

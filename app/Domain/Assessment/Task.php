@@ -4,8 +4,8 @@ namespace App\Domain\Assessment;
 
 use App\Domain\Assessment\Exception\TaskLockedException;
 use App\Domain\Assessment\VO\TaskContent;
-use App\Domain\Lesson\VO\LessonId;
 use App\Domain\Assessment\VO\TaskId;
+use App\Domain\Lesson\VO\LessonId;
 
 final class Task
 {

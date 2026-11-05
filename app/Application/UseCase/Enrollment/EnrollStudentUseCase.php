@@ -2,15 +2,15 @@
 
 namespace App\Application\UseCase\Enrollment;
 
-use App\Domain\Course\VO\CourseId;
 use App\Domain\Course\CourseRepositoryInterface;
 use App\Domain\Course\Exception\CourseNotFoundException;
 use App\Domain\Course\Exception\CourseNotPublishedException;
+use App\Domain\Course\VO\CourseId;
 use App\Domain\Enrollment\EnrollmentRepositoryInterface;
 use App\Domain\Enrollment\NewEnrollment;
 use App\Domain\Student\Exception\StudentNotFoundException;
-use App\Domain\Student\VO\StudentId;
 use App\Domain\Student\StudentRepositoryInterface;
+use App\Domain\Student\VO\StudentId;
 use DateTimeImmutable;
 
 final class EnrollStudentUseCase

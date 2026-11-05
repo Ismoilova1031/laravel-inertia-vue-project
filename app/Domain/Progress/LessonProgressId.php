@@ -8,10 +8,13 @@ final class LessonProgressId
 {
     public function __construct(private readonly int $value)
     {
-        if($value <= 0){
+        if ($value <= 0) {
             throw new InvalidArgumentException('LessonProgressId musbat son bo\'lishi kerak');
         }
     }
 
-    public function value(): int { return $this->value; }
+    public function value(): int
+    {
+        return $this->value;
+    }
 }

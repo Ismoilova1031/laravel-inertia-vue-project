@@ -25,7 +25,12 @@ export function toLessonFormData(lesson: Lesson): LessonFormData {
                           question_type: q.question_type.value as QuestionType,
                           points: q.points,
                           correct_answer: q.correct_answer,
-                          options: q.options?.map((o) => ({ id: o.id, option: o.option, is_correct: o.is_correct })) ?? [],
+                          options:
+                              q.options?.map((o) => ({
+                                  id: o.id,
+                                  option: o.option,
+                                  is_correct: o.is_correct,
+                              })) ?? [],
                       })) ?? null,
               }
             : emptyTaskForm(),

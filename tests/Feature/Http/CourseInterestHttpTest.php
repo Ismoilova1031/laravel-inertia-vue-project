@@ -1,4 +1,5 @@
 <?php
+
 // tests/Feature/Http/CourseInterestHttpTest.php
 declare(strict_types=1);
 

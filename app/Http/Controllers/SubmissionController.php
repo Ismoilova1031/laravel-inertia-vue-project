@@ -48,7 +48,7 @@ final class SubmissionController extends Controller
     {
         try {
             $this->grade->execute($submission, $question, (int) $request->input('score'), $request->input('comment'));
-        } catch (SubmissionNotFoundException | TaskNotFoundException) {
+        } catch (SubmissionNotFoundException|TaskNotFoundException) {
             abort(404);
         } catch (AssessmentRuleViolation $error) {
             throw ValidationException::withMessages(['grade' => $error->getMessage()]);

@@ -2,14 +2,14 @@
 
 namespace App\Application\UseCase\Student;
 
-use App\Domain\Student\VO\EmailAddress;
 use App\Domain\Student\Exception\EmailAlreadyTakenException;
 use App\Domain\Student\Exception\UsernameAlreadyTakenException;
 use App\Domain\Student\NewStudent;
 use App\Domain\Student\PasswordHasherInterface;
+use App\Domain\Student\StudentRepositoryInterface;
+use App\Domain\Student\VO\EmailAddress;
 use App\Domain\Student\VO\PersonName;
 use App\Domain\Student\VO\StudentId;
-use App\Domain\Student\StudentRepositoryInterface;
 use App\Domain\Student\VO\Username;
 
 final class RegisterStudentUseCase

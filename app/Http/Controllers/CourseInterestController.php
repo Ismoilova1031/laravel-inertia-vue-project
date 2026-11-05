@@ -19,14 +19,14 @@ final class CourseInterestController extends Controller
 
     public function store(ToggleInterestRequest $request, int $student, int $course): RedirectResponse
     {
-        try{
+        try {
             $this->toggle->execute(
                 $student,
                 $course,
                 InterestType::from($request->validated('type')),
                 $request->boolean('enabled'),
             );
-        } catch (CourseNotFoundException | StudentNotFoundException) {
+        } catch (CourseNotFoundException|StudentNotFoundException) {
             abort(404);
         } catch (CourseNotPublishedException) {
             throw ValidationException::withMessages(['interest' => 'This course is not available anymore.']);

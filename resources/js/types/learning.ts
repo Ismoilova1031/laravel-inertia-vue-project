@@ -2,7 +2,6 @@ import type { Course, CourseRef } from "./course";
 import type { LessonRef } from "./lesson";
 import type { RatingSummary, SelectOption } from "./common";
 
-
 export interface LearnProgress {
     total: number;
     completed: number;

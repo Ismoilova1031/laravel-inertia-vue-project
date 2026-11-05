@@ -1,5 +1,7 @@
 <?php
 
+use App\Infrastructure\Eloquent\StudentModel;
+use App\Infrastructure\Eloquent\UserModel;
 
 return [
 
@@ -65,8 +67,8 @@ return [
     */
 
     'providers' => [
-        'users' => ['driver' => 'eloquent', 'model' => App\Infrastructure\Eloquent\UserModel::class],
-        'students' => ['driver' => 'eloquent', 'model' => App\Infrastructure\Eloquent\StudentModel::class],
+        'users' => ['driver' => 'eloquent', 'model' => UserModel::class],
+        'students' => ['driver' => 'eloquent', 'model' => StudentModel::class],
     ],
 
     /*

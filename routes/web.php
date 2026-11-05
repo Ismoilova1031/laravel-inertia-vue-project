@@ -1,18 +1,18 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CatalogController;
+use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\CourseInterestController;
+use App\Http\Controllers\CourseReviewController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EnrollmentController;
+use App\Http\Controllers\LearningController;
 use App\Http\Controllers\LessonController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubmissionController;
-use App\Http\Controllers\LearningController;
-use App\Http\Controllers\CertificateController;
-use App\Http\Controllers\CourseReviewController;
-use App\Http\Controllers\NotificationController;
-use App\Http\Controllers\CatalogController;
-use App\Http\Controllers\CourseInterestController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,7 +37,7 @@ Route::controller(AuthController::class)->group(function () {
 Route::middleware('auth:web')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
-    //Courses
+    // Courses
     Route::resource('courses', CourseController::class)
         ->only(['index', 'create', 'store', 'show', 'update', 'destroy']);
     Route::patch('/courses/{course}/status', [CourseController::class, 'changeStatus'])
@@ -103,4 +103,4 @@ Route::middleware('student.access')
             Route::post('/notifications/read', 'readAll')->name('notifications.readAll');
             Route::post('/notifications/{notification}/read', 'read')->name('notifications.read');
         });
-});
+    });

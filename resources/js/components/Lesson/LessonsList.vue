@@ -116,7 +116,10 @@ import type { Lesson } from "@/types/lesson";
 import { fallbackLessonMeta, lessonTypeMeta } from "@/utils/lessonType";
 import type { LessonListItem } from "@/types/lesson";
 
-const props = defineProps<{ lessons: LessonListItem[]; course: CourseDetail }>();
+const props = defineProps<{
+    lessons: LessonListItem[];
+    course: CourseDetail;
+}>();
 
 const items = ref([...props.lessons]);
 watch(

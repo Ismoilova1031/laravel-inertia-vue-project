@@ -11,7 +11,9 @@ export function useCourseActions(notify: Notify) {
     const processing = ref(false);
     const selected = ref<Course | null>(null);
 
-    const meta = computed(() => (selected.value ? courseActionMeta[selected.value.status.value] : null));
+    const meta = computed(() =>
+        selected.value ? courseActionMeta[selected.value.status.value] : null,
+    );
 
     function open(course: Course) {
         selected.value = course;
@@ -32,7 +34,8 @@ export function useCourseActions(notify: Notify) {
         const options = {
             preserveScroll: true,
             onSuccess: () => notify(`${current.confirm}: done`),
-            onError: (errors: Record<string, string>) => notify(firstError(errors), "error"),
+            onError: (errors: Record<string, string>) =>
+                notify(firstError(errors), "error"),
             onFinish: () => {
                 processing.value = false;
                 close();
@@ -42,7 +45,11 @@ export function useCourseActions(notify: Notify) {
         if (current.target === null) {
             router.delete(CourseController.destroy(course.id).url, options);
         } else {
-            router.patch(CourseController.changeStatus(course.id).url, { status: current.target }, options);
+            router.patch(
+                CourseController.changeStatus(course.id).url,
+                { status: current.target },
+                options,
+            );
         }
     }
 

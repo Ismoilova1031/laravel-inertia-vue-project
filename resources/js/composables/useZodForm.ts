@@ -1,10 +1,15 @@
 import { useForm, type InertiaForm } from "@inertiajs/vue3";
 import type { z } from "zod";
 
-export function useZodForm<S extends z.ZodTypeAny>(schema: S, initial: z.input<S>) {
+export function useZodForm<S extends z.ZodTypeAny>(
+    schema: S,
+    initial: z.input<S>,
+) {
     type Data = z.input<S> & Record<string, unknown>;
 
-    const form = useForm(initial as Record<string, never>) as unknown as InertiaForm<any>;
+    const form = useForm(
+        initial as Record<string, never>,
+    ) as unknown as InertiaForm<any>;
 
     function validate(): boolean {
         form.clearErrors();

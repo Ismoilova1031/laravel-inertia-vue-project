@@ -2,10 +2,10 @@
 
 namespace App\Domain\Certificate;
 
-use App\Domain\Course\VO\CourseId;
-use App\Domain\Student\VO\StudentId;
 use App\Domain\Certificate\VO\CertificateId;
 use App\Domain\Certificate\VO\CertificateNumber;
+use App\Domain\Course\VO\CourseId;
+use App\Domain\Student\VO\StudentId;
 use DateTimeImmutable;
 
 final class Certificate
@@ -32,11 +32,38 @@ final class Certificate
         return new self($id, $courseId, $studentId, $number, $grade, $percent, $issuedAt);
     }
 
-    public function id(): CertificateId { return $this->id; }
-    public function courseId(): CourseId { return $this->courseId; }
-    public function studentId(): StudentId { return $this->studentId; }
-    public function number(): CertificateNumber { return $this->number; }
-    public function grade(): ?CourseGrade { return $this->grade; }
-    public function percent(): ?int { return $this->percent; }
-    public function issuedAt(): DateTimeImmutable { return $this->issuedAt; }
+    public function id(): CertificateId
+    {
+        return $this->id;
+    }
+
+    public function courseId(): CourseId
+    {
+        return $this->courseId;
+    }
+
+    public function studentId(): StudentId
+    {
+        return $this->studentId;
+    }
+
+    public function number(): CertificateNumber
+    {
+        return $this->number;
+    }
+
+    public function grade(): ?CourseGrade
+    {
+        return $this->grade;
+    }
+
+    public function percent(): ?int
+    {
+        return $this->percent;
+    }
+
+    public function issuedAt(): DateTimeImmutable
+    {
+        return $this->issuedAt;
+    }
 }

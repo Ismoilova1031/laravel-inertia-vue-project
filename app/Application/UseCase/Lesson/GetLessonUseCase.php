@@ -4,9 +4,9 @@ namespace App\Application\UseCase\Lesson;
 
 use App\Domain\Assessment\TaskRepositoryInterface;
 use App\Domain\Lesson\Exception\LessonNotFoundException;
-use App\Domain\Lesson\VO\LessonId;
 use App\Domain\Lesson\LessonRepositoryInterface;
 use App\Domain\Lesson\LessonType;
+use App\Domain\Lesson\VO\LessonId;
 
 final class GetLessonUseCase
 {

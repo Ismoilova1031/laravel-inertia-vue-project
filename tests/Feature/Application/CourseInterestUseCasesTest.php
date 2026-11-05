@@ -1,4 +1,5 @@
 <?php
+
 // tests/Feature/Application/CourseInterestUseCasesTest.php
 declare(strict_types=1);
 

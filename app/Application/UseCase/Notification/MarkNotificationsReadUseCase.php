@@ -2,8 +2,8 @@
 
 namespace App\Application\UseCase\Notification;
 
-use App\Domain\Notification\VO\NotificationId;
 use App\Domain\Notification\NotificationRepositoryInterface;
+use App\Domain\Notification\VO\NotificationId;
 use App\Domain\Student\VO\StudentId;
 
 final class MarkNotificationsReadUseCase

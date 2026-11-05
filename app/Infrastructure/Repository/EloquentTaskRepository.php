@@ -6,20 +6,20 @@ use App\Domain\Assessment\AllowedFileExtensions;
 use App\Domain\Assessment\Exception\TaskNotFoundException;
 use App\Domain\Assessment\NewQuestion;
 use App\Domain\Assessment\NewTask;
-use App\Domain\Assessment\VO\Points;
 use App\Domain\Assessment\Question;
 use App\Domain\Assessment\QuestionOption;
 use App\Domain\Assessment\Task;
-use App\Domain\Assessment\VO\TaskId;
 use App\Domain\Assessment\TaskRepositoryInterface;
+use App\Domain\Assessment\VO\Points;
+use App\Domain\Assessment\VO\TaskId;
 use App\Domain\Course\VO\CourseId;
 use App\Domain\Lesson\VO\LessonId;
-use App\Infrastructure\Eloquent\LessonModel;    
+use App\Infrastructure\Eloquent\LessonModel;
 use App\Infrastructure\Eloquent\QuestionModel;
 use App\Infrastructure\Eloquent\QuestionOptionModel;
 use App\Infrastructure\Eloquent\TaskModel;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 final class EloquentTaskRepository implements TaskRepositoryInterface
 {
@@ -90,9 +90,9 @@ final class EloquentTaskRepository implements TaskRepositoryInterface
     public function findByLessonIds(array $lessonIds): Collection
     {
         return TaskModel::with('questions.options')
-            ->whereIn('lesson_id', array_map(fn(LessonId $id) => $id->value(), $lessonIds))
+            ->whereIn('lesson_id', array_map(fn (LessonId $id) => $id->value(), $lessonIds))
             ->get()
-            ->map(fn(TaskModel $m) => $this->toEntity($m));
+            ->map(fn (TaskModel $m) => $this->toEntity($m));
     }
 
     public function findByCourse(CourseId $courseId): Collection
@@ -100,7 +100,7 @@ final class EloquentTaskRepository implements TaskRepositoryInterface
         return TaskModel::with('questions.options')
             ->whereIn('lesson_id', LessonModel::where('course_id', $courseId->value())->select('id'))
             ->get()
-            ->map(fn(TaskModel $m) => $this->toEntity($m));
+            ->map(fn (TaskModel $m) => $this->toEntity($m));
     }
 
     /** @param list<NewQuestion> $questions */
@@ -118,7 +118,7 @@ final class EloquentTaskRepository implements TaskRepositoryInterface
                 'correct_answer' => $question->correctAnswer(),
             ]);
 
-            $rows = array_map(fn($option) => [
+            $rows = array_map(fn ($option) => [
                 'question_id' => $questionModel->id,
                 'option' => $option->text(),
                 'is_correct' => $option->isCorrect(),
@@ -134,13 +134,13 @@ final class EloquentTaskRepository implements TaskRepositoryInterface
 
     private function toEntity(TaskModel $model): Task
     {
-        $questions = $model->questions->map(fn(QuestionModel $q) => Question::reconstitute(
+        $questions = $model->questions->map(fn (QuestionModel $q) => Question::reconstitute(
             (int) $q->id,
             $q->question,
             $q->question_type,
             new Points((int) $q->points),
             $q->correct_answer,
-            $q->options->map(fn(QuestionOptionModel $o) => new QuestionOption(
+            $q->options->map(fn (QuestionOptionModel $o) => new QuestionOption(
                 (int) $o->id,
                 $o->option,
                 (bool) $o->is_correct

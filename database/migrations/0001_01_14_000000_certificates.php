@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('course_id')->constrained()->cascadeOnDelete();
             $table->foreignId('student_id')->constrained()->cascadeOnDelete();
             $table->string('number')->unique();
-            $table->unsignedTinyInteger('grade')->nullable();     
+            $table->unsignedTinyInteger('grade')->nullable();
             $table->unsignedTinyInteger('percent')->nullable();
             $table->dateTime('issued_at');
             $table->timestamps();

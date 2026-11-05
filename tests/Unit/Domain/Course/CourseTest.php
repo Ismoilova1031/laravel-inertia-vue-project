@@ -4,12 +4,12 @@ namespace Tests\Unit\Domain\Course;
 
 use App\Domain\Course\Course;
 use App\Domain\Course\CourseCategory;
-use App\Domain\Course\VO\CourseDescription;
-use App\Domain\Course\VO\CourseId;
 use App\Domain\Course\CourseStatus;
-use App\Domain\Course\VO\CourseTitle;
 use App\Domain\Course\Exception\CannotDeleteNonDraftCourseException;
 use App\Domain\Course\Exception\CannotPublishWithoutLessonsException;
+use App\Domain\Course\VO\CourseDescription;
+use App\Domain\Course\VO\CourseId;
+use App\Domain\Course\VO\CourseTitle;
 use PHPUnit\Framework\TestCase;
 
 final class CourseTest extends TestCase

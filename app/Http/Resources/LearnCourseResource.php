@@ -25,7 +25,7 @@ class LearnCourseResource extends JsonResource
                 'percent' => $value->progress->percent(),
             ],
             'nextLessonId' => $value->progress->next()?->id()->value(),
-            'lessons' => array_map(fn(Lesson $lesson) => [
+            'lessons' => array_map(fn (Lesson $lesson) => [
                 'id' => $lesson->id()->value(),
                 'title' => $lesson->title()->value(),
                 'description' => $lesson->description()->value(),

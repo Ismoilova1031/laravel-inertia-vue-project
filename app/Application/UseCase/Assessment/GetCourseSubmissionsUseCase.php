@@ -4,9 +4,9 @@ namespace App\Application\UseCase\Assessment;
 
 use App\Domain\Assessment\Submission\SubmissionStatus;
 use App\Domain\Assessment\Submission\TaskSubmission;
+use App\Domain\Assessment\Submission\TaskSubmissionRepositoryInterface;
 use App\Domain\Assessment\Task;
 use App\Domain\Assessment\TaskRepositoryInterface;
-use App\Domain\Assessment\Submission\TaskSubmissionRepositoryInterface;
 use App\Domain\Course\VO\CourseId;
 use App\Domain\Lesson\LessonRepositoryInterface;
 use App\Domain\Student\Student;
@@ -25,15 +25,15 @@ final class GetCourseSubmissionsUseCase
     {
         $courseId = new CourseId($courseId);
 
-        $tasks = $this->tasks->findByCourse($courseId)->keyBy(fn(Task $task) => $task->id()->value());
-        if($tasks->isEmpty()){
+        $tasks = $this->tasks->findByCourse($courseId)->keyBy(fn (Task $task) => $task->id()->value());
+        if ($tasks->isEmpty()) {
             return [];
         }
 
         $submissions = $this->submissions->findByTaskIds($tasks->map(fn (Task $task) => $task->id())->values()->all());
         $lessons = $this->lessons->findByCourse($courseId);
         $lessonsById = [];
-        foreach($lessons as $lesson){
+        foreach ($lessons as $lesson) {
             $lessonsById[$lesson->id()->value()] = $lesson;
         }
         $students = $this->students
@@ -42,7 +42,7 @@ final class GetCourseSubmissionsUseCase
 
         return $submissions
             ->filter(fn (TaskSubmission $submission) => $students->has($submission->studentId()->value()))
-            ->map(function (TaskSubmission $submission) use ($tasks, $lessonsById, $students){
+            ->map(function (TaskSubmission $submission) use ($tasks, $lessonsById, $students) {
                 $task = $tasks[$submission->taskId()->value()];
 
                 return new SubmissionRow(

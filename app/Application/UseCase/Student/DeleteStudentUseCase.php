@@ -3,8 +3,8 @@
 namespace App\Application\UseCase\Student;
 
 use App\Domain\Student\Exception\StudentNotFoundException;
-use App\Domain\Student\VO\StudentId;
 use App\Domain\Student\StudentRepositoryInterface;
+use App\Domain\Student\VO\StudentId;
 
 final class DeleteStudentUseCase
 {

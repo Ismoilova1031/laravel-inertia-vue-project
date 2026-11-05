@@ -7,6 +7,7 @@ use App\Domain\Course\Exception\CannotPublishWithoutLessonsException;
 use App\Domain\Course\VO\CourseDescription;
 use App\Domain\Course\VO\CourseId;
 use App\Domain\Course\VO\CourseTitle;
+
 final class Course
 {
     private function __construct(

@@ -2,10 +2,10 @@
 
 namespace App\Http\Middleware;
 
-use Illuminate\Http\Request;
-use Inertia\Middleware;
 use App\Application\UseCase\Notification\CountUnreadNotificationsUseCase;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -39,10 +39,10 @@ class HandleInertiaRequests extends Middleware
     {
         return [
             ...parent::share($request),
-            'unreadNotifications' => fn() => is_numeric($request->route('student'))
+            'unreadNotifications' => fn () => is_numeric($request->route('student'))
                 ? app(CountUnreadNotificationsUseCase::class)->execute((int) $request->route('student'))
                 : null,
-            'auth' => fn() => match (true) {
+            'auth' => fn () => match (true) {
                 Auth::guard('web')->check() => [
                     'type' => 'teacher',
                     'id' => Auth::guard('web')->id(),
@@ -51,7 +51,7 @@ class HandleInertiaRequests extends Middleware
                 Auth::guard('student')->check() => [
                     'type' => 'student',
                     'id' => Auth::guard('student')->id(),
-                    'name' => Auth::guard('student')->user()->name . ' ' . Auth::guard('student')->user()->surname,
+                    'name' => Auth::guard('student')->user()->name.' '.Auth::guard('student')->user()->surname,
                 ],
                 default => null,
             },

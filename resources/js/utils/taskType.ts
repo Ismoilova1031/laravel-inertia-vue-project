@@ -7,7 +7,9 @@ export const taskTypeOptions = [
     { title: "Discussion", value: TaskTypes.DISCUSSION },
 ];
 
-export const fileExtensionOptions = Object.values(FileExtensions).map((value) => ({
-    title: value.toUpperCase(),
-    value,
-}));
+export const fileExtensionOptions = Object.values(FileExtensions).map(
+    (value) => ({
+        title: value.toUpperCase(),
+        value,
+    }),
+);

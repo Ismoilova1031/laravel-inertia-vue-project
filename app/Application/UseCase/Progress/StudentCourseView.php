@@ -2,12 +2,12 @@
 
 namespace App\Application\UseCase\Progress;
 
+use App\Domain\Certificate\Certificate;
 use App\Domain\Course\Course;
 use App\Domain\Enrollment\Enrollment;
 use App\Domain\Progress\CourseProgress;
-use App\Domain\Certificate\Certificate;
-use App\Domain\Review\Review;
 use App\Domain\Review\RatingSummary;
+use App\Domain\Review\Review;
 
 final class StudentCourseView
 {

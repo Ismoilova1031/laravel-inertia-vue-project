@@ -4,19 +4,19 @@ namespace App\Infrastructure\Repository;
 
 use App\Domain\Course\VO\CourseId;
 use App\Domain\Review\NewReview;
-use App\Domain\Review\VO\Rating;
 use App\Domain\Review\RatingSummary;
 use App\Domain\Review\Review;
+use App\Domain\Review\ReviewRepositoryInterface;
+use App\Domain\Review\VO\Rating;
 use App\Domain\Review\VO\ReviewComment;
 use App\Domain\Review\VO\ReviewId;
-use App\Domain\Review\ReviewRepositoryInterface;
 use App\Domain\Student\VO\StudentId;
 use App\Infrastructure\Eloquent\CourseReviewModel;
 use RuntimeException;
 
 final class EloquentReviewRepository implements ReviewRepositoryInterface
 {
-    public function findByCourseAndStudent(Courseid $courseId, StudentId $studentId): ?Review
+    public function findByCourseAndStudent(CourseId $courseId, StudentId $studentId): ?Review
     {
         $model = CourseReviewModel::where('course_id', $courseId->value())
             ->where('student_id', $studentId->value())->first();
@@ -30,7 +30,7 @@ final class EloquentReviewRepository implements ReviewRepositoryInterface
             'course_id' => $new->courseId->value(),
             'student_id' => $new->studentId->value(),
             'rating' => $new->rating->value(),
-            'comment' => $new->comment->value()
+            'comment' => $new->comment->value(),
         ]));
     }
 
@@ -56,11 +56,11 @@ final class EloquentReviewRepository implements ReviewRepositoryInterface
             return [];
         }
 
-        return CourseReviewModel::whereIn('course_id', array_map(fn(CourseId $id) => $id->value(), $courseIds))
+        return CourseReviewModel::whereIn('course_id', array_map(fn (CourseId $id) => $id->value(), $courseIds))
             ->groupBy('course_id')
             ->selectRaw('course_id, COUNT(*) as c, AVG(rating) as a')
             ->get()
-            ->mapWithKeys(fn($r) => [
+            ->mapWithKeys(fn ($r) => [
                 (int) $r->course_id => new RatingSummary(round((float) $r->a, 1), (int) $r->c),
             ])
             ->all();

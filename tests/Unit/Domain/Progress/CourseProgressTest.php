@@ -5,10 +5,10 @@ namespace Tests\Unit\Domain\Progress;
 use App\Domain\Course\VO\CourseId;
 use App\Domain\Lesson\Lesson;
 use App\Domain\Lesson\LessonContent;
+use App\Domain\Lesson\LessonType;
 use App\Domain\Lesson\VO\LessonDescription;
 use App\Domain\Lesson\VO\LessonId;
 use App\Domain\Lesson\VO\LessonTitle;
-use App\Domain\Lesson\LessonType;
 use App\Domain\Lesson\VO\SortOrder;
 use App\Domain\Progress\CourseProgress;
 use App\Domain\Progress\Exception\LessonNotCompletableManuallyException;
@@ -57,6 +57,6 @@ final class CourseProgressTest extends TestCase
     {
         $this->expectException(LessonNotCompletableManuallyException::class);
 
-        NewLessonProgress::complete($this->lesson(1, LessonType::TASK), new StudentId(1), new DateTimeImmutable());
+        NewLessonProgress::complete($this->lesson(1, LessonType::TASK), new StudentId(1), new DateTimeImmutable);
     }
 }

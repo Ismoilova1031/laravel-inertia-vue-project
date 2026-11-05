@@ -27,10 +27,9 @@ final class GetCatalogUseCase
         $studentId = new StudentId($studentId);
 
         $courses = $this->courses->findPublished();
-        if($courses->isEmpty()){
+        if ($courses->isEmpty()) {
             return [];
         }
-        
 
         $interests = $this->interests->findByStudent($studentId)
             ->keyBy(fn (CourseInterest $interest) => $interest->courseId()->value());
@@ -41,7 +40,7 @@ final class GetCatalogUseCase
 
         $ratings = $this->reviews->summaries($courses->map(fn (Course $course) => $course->id())->values()->all());
 
-        return $courses->map(function (Course $course) use ($interests, $enrolled, $ratings){
+        return $courses->map(function (Course $course) use ($interests, $enrolled, $ratings) {
             $id = $course->id()->value();
             $interest = $interests->get($id);
 

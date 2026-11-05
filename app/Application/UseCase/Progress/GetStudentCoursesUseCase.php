@@ -34,7 +34,7 @@ final class GetStudentCoursesUseCase
         $courses = $this->courses->findByIds($courseIds)->keyBy(fn (Course $c) => $c->id()->value());
 
         $lessons = $this->lessons->findByCourseIds($courseIds);
-       $done = $this->completion->completedIds($studentId, $lessons->all());
+        $done = $this->completion->completedIds($studentId, $lessons->all());
         $lessonsByCourse = $lessons->groupBy(fn (Lesson $l) => $l->courseId()->value());
 
         return $enrollments

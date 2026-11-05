@@ -11,17 +11,17 @@ final class EnsureStudentAccess
 {
     public function handle(Request $request, Closure $next): Response
     {
-        if(Auth::guard('web')->check()){
+        if (Auth::guard('web')->check()) {
             return $next($request);
         }
 
         $student = Auth::guard('student')->user();
 
-        if($student === null){
+        if ($student === null) {
             return redirect()->guest(route('login'));
         }
 
-        if((int) $request->route('student') !== (int) $student->getAuthIdentifier()){
+        if ((int) $request->route('student') !== (int) $student->getAuthIdentifier()) {
             abort(403);
         }
 

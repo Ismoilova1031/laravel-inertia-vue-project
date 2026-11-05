@@ -1,4 +1,3 @@
-
 import { createApp, h, type Component, type DefineComponent } from "vue";
 import { createInertiaApp } from "@inertiajs/vue3";
 
@@ -14,8 +13,8 @@ const appName = import.meta.env.VITE_APP_NAME || "Study Platform";
 
 type PageModule = {
     default: DefineComponent & {
-        layout?: Component
-    }
+        layout?: Component;
+    };
 };
 
 const pages = import.meta.glob<PageModule>("./pages/**/*.vue");
@@ -34,7 +33,9 @@ createInertiaApp({
 
         const { default: page } = await importPage();
 
-        page.layout ??= blankPrefixes.some((prefix) => name.startsWith(prefix)) ? BlankLayout : AppLayout;
+        page.layout ??= blankPrefixes.some((prefix) => name.startsWith(prefix))
+            ? BlankLayout
+            : AppLayout;
 
         return page;
     },

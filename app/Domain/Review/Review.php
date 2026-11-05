@@ -3,10 +3,10 @@
 namespace App\Domain\Review;
 
 use App\Domain\Course\VO\CourseId;
-use App\Domain\Student\VO\StudentId;
-use App\Domain\Review\VO\ReviewId;
 use App\Domain\Review\VO\Rating;
 use App\Domain\Review\VO\ReviewComment;
+use App\Domain\Review\VO\ReviewId;
+use App\Domain\Student\VO\StudentId;
 
 final class Review
 {
@@ -16,7 +16,7 @@ final class Review
         private readonly StudentId $studentId,
         private Rating $rating,
         private ReviewComment $comment,
-    ){}
+    ) {}
 
     public static function reconstitute(
         ReviewId $id,
@@ -34,9 +34,28 @@ final class Review
         $this->comment = $comment;
     }
 
-    public function id(): ReviewId { return $this->id; }
-    public function courseId(): CourseId { return $this->courseId; }
-    public function studentId(): StudentId { return $this->studentId; }
-    public function rating(): Rating { return $this->rating; }
-    public function comment(): ReviewComment { return $this->comment; }
+    public function id(): ReviewId
+    {
+        return $this->id;
+    }
+
+    public function courseId(): CourseId
+    {
+        return $this->courseId;
+    }
+
+    public function studentId(): StudentId
+    {
+        return $this->studentId;
+    }
+
+    public function rating(): Rating
+    {
+        return $this->rating;
+    }
+
+    public function comment(): ReviewComment
+    {
+        return $this->comment;
+    }
 }

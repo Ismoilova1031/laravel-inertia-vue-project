@@ -41,7 +41,9 @@ export function useCourseForm(initialData?: CourseFormData, courseId?: number) {
             return;
         }
 
-        form.post(CourseController.store().url, { onSuccess: () => form.reset() });
+        form.post(CourseController.store().url, {
+            onSuccess: () => form.reset(),
+        });
     }
 
     return { form, validate, submit };

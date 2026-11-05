@@ -3,10 +3,10 @@
 namespace App\Infrastructure\Repository;
 
 use App\Domain\Certificate\Certificate;
-use App\Domain\Certificate\VO\CertificateId;
-use App\Domain\Certificate\VO\CertificateNumber;
 use App\Domain\Certificate\CertificateRepositoryInterface;
 use App\Domain\Certificate\NewCertificate;
+use App\Domain\Certificate\VO\CertificateId;
+use App\Domain\Certificate\VO\CertificateNumber;
 use App\Domain\Course\VO\CourseId;
 use App\Domain\Student\VO\StudentId;
 use App\Infrastructure\Eloquent\CertificateModel;

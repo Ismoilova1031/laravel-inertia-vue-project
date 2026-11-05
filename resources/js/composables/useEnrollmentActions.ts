@@ -11,21 +11,29 @@ export function useEnrollmentActions(courseId: () => number, notify: Notify) {
         preserveScroll: true,
         onStart: () => (processing.value = true),
         onSuccess: onDone,
-        onError: (errors: Record<string, string>) => notify(firstError(errors), "error"),
+        onError: (errors: Record<string, string>) =>
+            notify(firstError(errors), "error"),
         onFinish: () => (processing.value = false),
     });
 
     function enroll(studentId: number, onDone: () => void) {
         if (processing.value) return;
 
-        router.post(EnrollmentController.store(courseId()).url, { student_id: studentId }, options(onDone));
+        router.post(
+            EnrollmentController.store(courseId()).url,
+            { student_id: studentId },
+            options(onDone),
+        );
     }
 
     function remove(studentId: number, onDone: () => void) {
         if (processing.value) return;
 
         router.delete(
-            EnrollmentController.destroy({ course: courseId(), student: studentId }).url,
+            EnrollmentController.destroy({
+                course: courseId(),
+                student: studentId,
+            }).url,
             options(onDone),
         );
     }

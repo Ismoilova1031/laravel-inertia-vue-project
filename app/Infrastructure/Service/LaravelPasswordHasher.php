@@ -2,8 +2,8 @@
 
 namespace App\Infrastructure\Service;
 
-use App\Domain\Student\VO\HashedPassword;
 use App\Domain\Student\PasswordHasherInterface;
+use App\Domain\Student\VO\HashedPassword;
 use Illuminate\Contracts\Hashing\Hasher;
 
 final class LaravelPasswordHasher implements PasswordHasherInterface

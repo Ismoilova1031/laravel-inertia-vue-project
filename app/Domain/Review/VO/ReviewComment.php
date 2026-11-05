@@ -13,12 +13,15 @@ final class ReviewComment
         $value = $value !== null ? trim($value) : null;
         $value = $value === '' ? null : $value;
 
-        if($value !== null && mb_strlen($value) > 2000) {
+        if ($value !== null && mb_strlen($value) > 2000) {
             throw new InvalidArgumentException('Izoh 2000 belgidan oshmasligi kerak.');
         }
 
         $this->value = $value;
     }
 
-    public function value(): ?string { return $this->value; }
+    public function value(): ?string
+    {
+        return $this->value;
+    }
 }

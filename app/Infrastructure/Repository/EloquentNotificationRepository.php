@@ -5,8 +5,8 @@ namespace App\Infrastructure\Repository;
 use App\Domain\Course\VO\CourseId;
 use App\Domain\Notification\NewNotification;
 use App\Domain\Notification\Notification;
-use App\Domain\Notification\VO\NotificationId;
 use App\Domain\Notification\NotificationRepositoryInterface;
+use App\Domain\Notification\VO\NotificationId;
 use App\Domain\Student\VO\StudentId;
 use App\Infrastructure\Eloquent\NotificationModel;
 use Illuminate\Support\Collection;
@@ -28,7 +28,7 @@ final class EloquentNotificationRepository implements NotificationRepositoryInte
     {
         return NotificationModel::where('student_id', $studentId->value())
             ->latest('id')->limit($limit)->get()
-            ->map(fn(NotificationModel $model) => Notification::reconstitute(
+            ->map(fn (NotificationModel $model) => Notification::reconstitute(
                 new NotificationId((int) $model->id),
                 new StudentId((int) $model->student_id),
                 $model->course_id !== null ? new CourseId((int) $model->course_id) : null,

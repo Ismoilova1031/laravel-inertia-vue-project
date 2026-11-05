@@ -12,5 +12,5 @@ interface FileStorageInterface
 
     public function download(string $path, bool $private = false): StreamedResponse;
 
-    public function response(string $path, bool $private = false): \Symfony\Component\HttpFoundation\StreamedResponse;
+    public function response(string $path, bool $private = false): StreamedResponse;
 }

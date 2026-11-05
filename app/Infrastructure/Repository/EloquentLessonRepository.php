@@ -6,11 +6,11 @@ use App\Domain\Course\VO\CourseId;
 use App\Domain\Lesson\Exception\LessonNotFoundException;
 use App\Domain\Lesson\Lesson;
 use App\Domain\Lesson\LessonContent;
+use App\Domain\Lesson\LessonRepositoryInterface;
+use App\Domain\Lesson\NewLesson;
 use App\Domain\Lesson\VO\LessonDescription;
 use App\Domain\Lesson\VO\LessonId;
-use App\Domain\Lesson\LessonRepositoryInterface;
 use App\Domain\Lesson\VO\LessonTitle;
-use App\Domain\Lesson\NewLesson;
 use App\Domain\Lesson\VO\SortOrder;
 use App\Infrastructure\Eloquent\LessonModel;
 use Illuminate\Support\Collection;
@@ -31,7 +31,7 @@ final class EloquentLessonRepository implements LessonRepositoryInterface
             ->orderBy('sort_order')
             ->orderBy('id')
             ->get()
-            ->map(fn(LessonModel $m) => $this->toEntity($m))
+            ->map(fn (LessonModel $m) => $this->toEntity($m))
             ->all();
     }
 
@@ -74,9 +74,9 @@ final class EloquentLessonRepository implements LessonRepositoryInterface
     public function findByCourseIds(array $courseIds): Collection
     {
         return LessonModel::query()
-            ->whereIn('course_id', array_map(fn(CourseId $id) => $id->value(), $courseIds))
+            ->whereIn('course_id', array_map(fn (CourseId $id) => $id->value(), $courseIds))
             ->orderBy('course_id')->orderBy('sort_order')->get()
-            ->map(fn(LessonModel $m) => $this->toEntity($m));
+            ->map(fn (LessonModel $m) => $this->toEntity($m));
     }
 
     private function toEntity(LessonModel $model): Lesson

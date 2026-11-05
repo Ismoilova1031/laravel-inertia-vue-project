@@ -6,19 +6,19 @@ declare(strict_types=1);
 namespace App\Infrastructure\Repository;
 
 use App\Domain\Assessment\Exception\SubmissionNotFoundException;
-use App\Domain\Assessment\Submission\VO\AttemptNumber;
 use App\Domain\Assessment\Submission\NewTaskSubmission;
 use App\Domain\Assessment\Submission\StudentAnswer;
-use App\Domain\Assessment\Submission\VO\SubmissionId;
 use App\Domain\Assessment\Submission\TaskSubmission;
 use App\Domain\Assessment\Submission\TaskSubmissionRepositoryInterface;
+use App\Domain\Assessment\Submission\VO\AttemptNumber;
+use App\Domain\Assessment\Submission\VO\SubmissionId;
 use App\Domain\Assessment\VO\TaskId;
 use App\Domain\Course\VO\CourseId;
 use App\Domain\Student\VO\StudentId;
 use App\Infrastructure\Eloquent\StudentAnswerModel;
 use App\Infrastructure\Eloquent\TaskSubmissionModel;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 final class EloquentTaskSubmissionRepository implements TaskSubmissionRepositoryInterface
 {
@@ -36,7 +36,7 @@ final class EloquentTaskSubmissionRepository implements TaskSubmissionRepository
             ->where('student_id', $studentId->value())
             ->orderBy('attempt')
             ->get()
-            ->map(fn(TaskSubmissionModel $m) => $this->toEntity($m))
+            ->map(fn (TaskSubmissionModel $m) => $this->toEntity($m))
             ->all();
     }
 
@@ -55,7 +55,7 @@ final class EloquentTaskSubmissionRepository implements TaskSubmissionRepository
             ]);
             $now = now();
 
-            $rows = array_map(fn(StudentAnswer $answer) => [
+            $rows = array_map(fn (StudentAnswer $answer) => [
                 'task_submission_id' => $model->id,
                 'question_id' => $answer->questionId(),
                 'selected_option_ids' => json_encode($answer->selectedOptionIds()),
@@ -107,7 +107,7 @@ final class EloquentTaskSubmissionRepository implements TaskSubmissionRepository
             $model->score !== null ? (int) $model->score : null,
             $model->teacher_comment,
             $model->submitted_at,
-            $model->answers->map(fn(StudentAnswerModel $a) => new StudentAnswer(
+            $model->answers->map(fn (StudentAnswerModel $a) => new StudentAnswer(
                 (int) $a->question_id,
                 array_map('intval', $a->selected_option_ids ?? []),
                 $a->answer,
@@ -136,18 +136,18 @@ final class EloquentTaskSubmissionRepository implements TaskSubmissionRepository
     {
         return TaskSubmissionModel::with('answers')
             ->where('student_id', $studentId->value())
-            ->whereIn('task_id', array_map(fn(TaskId $id) => $id->value(), $taskIds))
+            ->whereIn('task_id', array_map(fn (TaskId $id) => $id->value(), $taskIds))
             ->orderBy('attempt')
             ->get()
-            ->map(fn(TaskSubmissionModel $m) => $this->toEntity($m));
+            ->map(fn (TaskSubmissionModel $m) => $this->toEntity($m));
     }
 
     public function findByTaskIds(array $taskIds): Collection
     {
         return TaskSubmissionModel::with('answers')
-            ->whereIn('task_id', array_map(fn(TaskId $id) => $id->value(), $taskIds))
+            ->whereIn('task_id', array_map(fn (TaskId $id) => $id->value(), $taskIds))
             ->orderByDesc('submitted_at')
             ->get()
-            ->map(fn(TaskSubmissionModel $m) => $this->toEntity($m));
+            ->map(fn (TaskSubmissionModel $m) => $this->toEntity($m));
     }
 }

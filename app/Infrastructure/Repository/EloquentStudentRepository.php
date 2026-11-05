@@ -2,14 +2,14 @@
 
 namespace App\Infrastructure\Repository;
 
-use App\Domain\Student\VO\EmailAddress;
 use App\Domain\Student\Exception\StudentNotFoundException;
-use App\Domain\Student\VO\HashedPassword;
 use App\Domain\Student\NewStudent;
-use App\Domain\Student\VO\PersonName;
 use App\Domain\Student\Student;
-use App\Domain\Student\VO\StudentId;
 use App\Domain\Student\StudentRepositoryInterface;
+use App\Domain\Student\VO\EmailAddress;
+use App\Domain\Student\VO\HashedPassword;
+use App\Domain\Student\VO\PersonName;
+use App\Domain\Student\VO\StudentId;
 use App\Domain\Student\VO\Username;
 use App\Infrastructure\Eloquent\StudentModel;
 use Illuminate\Support\Collection;

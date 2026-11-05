@@ -11,4 +11,5 @@ export const FileExtensions = {
     GIF: "gif",
 } as const;
 
-export type FileExtension = (typeof FileExtensions)[keyof typeof FileExtensions];
+export type FileExtension =
+    (typeof FileExtensions)[keyof typeof FileExtensions];

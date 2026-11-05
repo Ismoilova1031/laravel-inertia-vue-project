@@ -10,8 +10,8 @@ interface LessonProgressRepositoryInterface
     public function findByLessonAndStudent(LessonId $lessonId, StudentId $studentId): ?LessonProgress;
 
     /**
-     * @param list<LessonId> $lessonIds
-     * @return list<int> 
+     * @param  list<LessonId>  $lessonIds
+     * @return list<int>
      */
     public function completedLessonIds(StudentId $studentId, array $lessonIds): array;
 

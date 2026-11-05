@@ -28,7 +28,9 @@ final class TaskLessonProgressTest extends TestCase
     use RefreshDatabase;
 
     private int $courseId;
+
     private int $lessonId;
+
     private int $studentId;
 
     protected function setUp(): void

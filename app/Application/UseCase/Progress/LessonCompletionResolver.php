@@ -21,25 +21,25 @@ final class LessonCompletionResolver
     ) {}
 
     /**
-     * @param list<Lesson> $lessons
+     * @param  list<Lesson>  $lessons
      * @return list<int> bajarilgan dars ID'lari
      */
     public function completedIds(StudentId $studentId, array $lessons): array
     {
         $done = $this->progress->completedLessonIds(
             $studentId,
-            array_map(fn(Lesson $l) => $l->id(), $lessons)
+            array_map(fn (Lesson $l) => $l->id(), $lessons)
         );
 
-        $taskLessons = array_values(array_filter($lessons, fn(Lesson $l) => $l->type() === LessonType::TASK));
+        $taskLessons = array_values(array_filter($lessons, fn (Lesson $l) => $l->type() === LessonType::TASK));
         if ($taskLessons === []) {
             return $done;
         }
 
-        $tasks = $this->tasks->findByLessonIds(array_map(fn(Lesson $l) => $l->id(), $taskLessons));
+        $tasks = $this->tasks->findByLessonIds(array_map(fn (Lesson $l) => $l->id(), $taskLessons));
         $submissions = $this->submissions
-            ->findByStudentAndTaskIds($studentId, $tasks->map(fn(Task $t) => $t->id())->all())
-            ->groupBy(fn(TaskSubmission $s) => $s->taskId()->value());
+            ->findByStudentAndTaskIds($studentId, $tasks->map(fn (Task $t) => $t->id())->all())
+            ->groupBy(fn (TaskSubmission $s) => $s->taskId()->value());
 
         foreach ($tasks as $task) {
             $own = $submissions->get($task->id()->value(), collect())->values()->all();

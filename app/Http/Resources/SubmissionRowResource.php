@@ -3,7 +3,6 @@
 namespace App\Http\Resources;
 
 use App\Domain\Assessment\Question;
-use App\Domain\Assessment\Submission\StudentAnswer;
 use App\Domain\Assessment\TaskType;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -34,15 +33,15 @@ class SubmissionRowResource extends JsonResource
             'fileExtension' => $s->filePath() ? strtolower(pathinfo($s->filePath(), PATHINFO_EXTENSION)) : null,
             'teacherComment' => $s->teacherComment(),
             'answers' => $r->task->type() === TaskType::QUIZ
-                ? array_map(fn(Question $q) => [
+                ? array_map(fn (Question $q) => [
                     'questionId' => $q->id(),
                     'question' => $q->text(),
                     'questionType' => $q->type()->value,
                     'points' => $q->points()->value(),
                     'text' => ($answers[$q->id()] ?? null)?->text(),
                     'selected' => collect($q->options())
-                        ->filter(fn($o) => in_array($o->id(), ($answers[$q->id()] ?? null)?->selectedOptionIds() ?? [], true))
-                        ->map(fn($o) => $o->text())->values()->all(),
+                        ->filter(fn ($o) => in_array($o->id(), ($answers[$q->id()] ?? null)?->selectedOptionIds() ?? [], true))
+                        ->map(fn ($o) => $o->text())->values()->all(),
                     'score' => ($answers[$q->id()] ?? null)?->score(),
                     'teacherComment' => ($answers[$q->id()] ?? null)?->teacherComment(),
                     'needsGrading' => $q->type()->value === 4 && ($answers[$q->id()] ?? null)?->text() !== null,

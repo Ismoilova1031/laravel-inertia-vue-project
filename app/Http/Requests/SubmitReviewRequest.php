@@ -6,7 +6,10 @@ use Illuminate\Foundation\Http\FormRequest;
 
 final class SubmitReviewRequest extends FormRequest
 {
-    public function authorize(): bool { return true; }
+    public function authorize(): bool
+    {
+        return true;
+    }
 
     public function rules(): array
     {

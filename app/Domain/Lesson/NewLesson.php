@@ -3,8 +3,8 @@
 namespace App\Domain\Lesson;
 
 use App\Domain\Course\VO\CourseId;
-use App\Domain\Lesson\VO\LessonTitle;
 use App\Domain\Lesson\VO\LessonDescription;
+use App\Domain\Lesson\VO\LessonTitle;
 use App\Domain\Lesson\VO\SortOrder;
 
 final class NewLesson

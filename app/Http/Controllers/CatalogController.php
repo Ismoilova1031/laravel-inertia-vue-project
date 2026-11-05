@@ -18,7 +18,7 @@ final class CatalogController extends Controller
 
     public function index(int $studentId): Response
     {
-        try{
+        try {
             $student = $this->getStudent->execute($studentId);
         } catch (StudentNotFoundException) {
             abort(404);

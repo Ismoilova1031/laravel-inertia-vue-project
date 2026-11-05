@@ -4,6 +4,7 @@ namespace App\Domain\Course;
 
 use App\Domain\Course\VO\CourseDescription;
 use App\Domain\Course\VO\CourseTitle;
+
 final class NewCourse
 {
     private function __construct(

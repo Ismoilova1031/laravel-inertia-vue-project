@@ -9,12 +9,12 @@ final class TaskCompletion
 {
     public static function isDone(Task $task, array $submissions): bool
     {
-        if($task->type() === TaskType::QUIZ) {
+        if ($task->type() === TaskType::QUIZ) {
             return $submissions !== [];
         }
 
-        foreach($submissions as $submission) {
-            if($submission->status() === SubmissionStatus::ACCEPTED){
+        foreach ($submissions as $submission) {
+            if ($submission->status() === SubmissionStatus::ACCEPTED) {
                 return true;
             }
         }

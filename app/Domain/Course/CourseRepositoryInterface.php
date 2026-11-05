@@ -21,5 +21,4 @@ interface CourseRepositoryInterface
     public function findByIds(array $ids): Collection;
 
     public function findPublished(): Collection;
-
 }

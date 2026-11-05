@@ -11,6 +11,10 @@ const grades: Record<string, GradeStyle> = {
     D: { title: "Satisfactory", color: "#51657A" },
 };
 
-export const completionStyle: GradeStyle = { title: "Completed", color: "#334155" };
+export const completionStyle: GradeStyle = {
+    title: "Completed",
+    color: "#334155",
+};
 
-export const gradeStyle = (grade: string | null): GradeStyle => (grade ? (grades[grade] ?? completionStyle) : completionStyle);
+export const gradeStyle = (grade: string | null): GradeStyle =>
+    grade ? (grades[grade] ?? completionStyle) : completionStyle;

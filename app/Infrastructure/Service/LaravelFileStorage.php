@@ -12,7 +12,7 @@ final class LaravelFileStorage implements FileStorageInterface
 {
     public function store(string $directory, UploadedFileData $file, bool $private = false): string
     {
-        $path = trim($directory, '/') . '/' . Str::uuid() . '.' . $file->extension;
+        $path = trim($directory, '/').'/'.Str::uuid().'.'.$file->extension;
         $stream = fopen($file->path, 'rb');
 
         try {

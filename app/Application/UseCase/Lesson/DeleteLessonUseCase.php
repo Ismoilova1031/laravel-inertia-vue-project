@@ -3,9 +3,9 @@
 namespace App\Application\UseCase\Lesson;
 
 use App\Domain\Lesson\Exception\LessonNotFoundException;
-use App\Domain\Lesson\VO\LessonId;
 use App\Domain\Lesson\LessonRepositoryInterface;
 use App\Domain\Lesson\LessonSequence;
+use App\Domain\Lesson\VO\LessonId;
 use App\Domain\Shared\FileStorageInterface;
 use Illuminate\Support\Facades\DB;
 

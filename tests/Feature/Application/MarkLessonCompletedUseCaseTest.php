@@ -23,6 +23,7 @@ final class MarkLessonCompletedUseCaseTest extends TestCase
     use RefreshDatabase;
 
     private int $courseId;
+
     private int $studentId;
 
     protected function setUp(): void

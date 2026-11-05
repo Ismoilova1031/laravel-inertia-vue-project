@@ -2,9 +2,9 @@
 
 namespace App\Domain\Certificate;
 
+use App\Domain\Certificate\VO\CertificateNumber;
 use App\Domain\Course\VO\CourseId;
 use App\Domain\Student\VO\StudentId;
-use App\Domain\Certificate\VO\CertificateNumber;
 use DateTimeImmutable;
 
 final class NewCertificate

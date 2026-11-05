@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Application\UseCase\Assessment\GetCourseSubmissionsUseCase;
 use App\Application\UseCase\Course\ChangeCourseStatusUseCase;
 use App\Application\UseCase\Course\CreateCourseUseCase;
 use App\Application\UseCase\Course\DeleteCourseUseCase;
@@ -9,7 +10,6 @@ use App\Application\UseCase\Course\GetCoursesUseCase;
 use App\Application\UseCase\Course\GetCourseUseCase;
 use App\Application\UseCase\Course\UpdateCourseUseCase;
 use App\Application\UseCase\Student\GetAvailableStudentsUseCase;
-use App\Application\UseCase\Assessment\GetCourseSubmissionsUseCase;
 use App\Domain\Course\CourseCategory;
 use App\Domain\Course\CourseStatus;
 use App\Domain\Course\Exception\CannotDeleteNonDraftCourseException;

@@ -13,7 +13,7 @@ final class LessonProgress
         private readonly LessonId $lessonId,
         private readonly StudentId $studentId,
         private readonly DateTimeImmutable $completedAt
-    ){}
+    ) {}
 
     public static function reconstitute(
         LessonProgressId $id,
@@ -24,8 +24,23 @@ final class LessonProgress
         return new self($id, $lessonId, $studentId, $completedAt);
     }
 
-    public function id(): LessonProgressId { return $this->id; }
-    public function lessonId(): LessonId { return $this->lessonId; }
-    public function studentId(): StudentId { return $this->studentId; }
-    public function completedAt(): DateTimeImmutable { return $this->completedAt; }
+    public function id(): LessonProgressId
+    {
+        return $this->id;
+    }
+
+    public function lessonId(): LessonId
+    {
+        return $this->lessonId;
+    }
+
+    public function studentId(): StudentId
+    {
+        return $this->studentId;
+    }
+
+    public function completedAt(): DateTimeImmutable
+    {
+        return $this->completedAt;
+    }
 }

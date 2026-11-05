@@ -46,7 +46,7 @@ final class IssueCertificateUseCase
             return $existing;
         }
 
-        if (!$this->completion->progress($studentId, $courseId)->isComplete()) {
+        if (! $this->completion->progress($studentId, $courseId)->isComplete()) {
             throw CertificateRuleException::because('Sertifikat olish uchun kursni to\'liq tugating.');
         }
 
@@ -68,7 +68,7 @@ final class IssueCertificateUseCase
             }
         }
 
-        $now = new DateTimeImmutable();
+        $now = new DateTimeImmutable;
         $certificate = $this->certificates->create(
             NewCertificate::issue($courseId, $studentId, CoursePerformance::percent($tasks->values()->all(), $byTask), $now)
         );

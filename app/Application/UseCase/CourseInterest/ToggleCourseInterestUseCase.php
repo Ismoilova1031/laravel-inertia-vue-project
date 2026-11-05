@@ -2,16 +2,16 @@
 
 namespace App\Application\UseCase\CourseInterest;
 
-use App\Domain\Course\VO\CourseId;
 use App\Domain\Course\CourseRepositoryInterface;
 use App\Domain\Course\Exception\CourseNotFoundException;
 use App\Domain\Course\Exception\CourseNotPublishedException;
+use App\Domain\Course\VO\CourseId;
 use App\Domain\CourseInterest\CourseInterestRepositoryInterface;
 use App\Domain\CourseInterest\InterestType;
 use App\Domain\CourseInterest\NewCourseInterest;
 use App\Domain\Student\Exception\StudentNotFoundException;
-use App\Domain\Student\VO\StudentId;
 use App\Domain\Student\StudentRepositoryInterface;
+use App\Domain\Student\VO\StudentId;
 
 final class ToggleCourseInterestUseCase
 {
@@ -29,14 +29,14 @@ final class ToggleCourseInterestUseCase
         $course = $this->courses->findById($courseId) ?? throw CourseNotFoundException::withId($courseId);
         $this->students->findById($studentId) ?? throw StudentNotFoundException::withId($studentId);
 
-        if($enabled && !$course->isPublished()){
+        if ($enabled && ! $course->isPublished()) {
             throw CourseNotPublishedException::withId($courseId);
         }
 
         $interest = $this->interests->findByCourseAndStudent($courseId, $studentId);
 
-        if($interest === null){
-            if($enabled){
+        if ($interest === null) {
+            if ($enabled) {
                 $this->interests->create(NewCourseInterest::with($courseId, $studentId, $type));
             }
 
@@ -45,7 +45,7 @@ final class ToggleCourseInterestUseCase
 
         $enabled ? $interest->mark($type) : $interest->unmark($type);
 
-        if($interest->isEmpty()){
+        if ($interest->isEmpty()) {
             $this->interests->delete($interest);
 
             return;

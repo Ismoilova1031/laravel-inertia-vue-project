@@ -2,25 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Application\UseCase\Progress\GetStudentCourseUseCase;
+use App\Application\UseCase\Assessment\SubmitTaskUseCase;
 use App\Application\UseCase\Progress\GetStudentCoursesUseCase;
+use App\Application\UseCase\Progress\GetStudentCourseUseCase;
 use App\Application\UseCase\Progress\GetStudentLessonUseCase;
 use App\Application\UseCase\Progress\MarkLessonCompletedUseCase;
 use App\Application\UseCase\Student\GetStudentUseCase;
+use App\Domain\Assessment\Exception\AssessmentRuleViolation;
+use App\Domain\Assessment\Exception\TaskNotFoundException;
 use App\Domain\Course\Exception\CourseNotFoundException;
 use App\Domain\Enrollment\Exception\EnrollmentNotFoundException;
 use App\Domain\Enrollment\Exception\StudentNotActiveInCourseException;
 use App\Domain\Lesson\Exception\LessonNotFoundException;
 use App\Domain\Progress\Exception\LessonNotCompletableManuallyException;
 use App\Domain\Student\Exception\StudentNotFoundException;
+use App\Http\Requests\SubmitTaskRequest;
 use App\Http\Resources\LearnCourseItemResource;
 use App\Http\Resources\LearnCourseResource;
 use App\Http\Resources\LearnLessonResource;
-use App\Application\UseCase\Assessment\SubmitTaskUseCase;
-use App\Domain\Assessment\Exception\AssessmentRuleViolation;
-use App\Domain\Assessment\Exception\TaskNotFoundException;
 use Illuminate\Database\UniqueConstraintViolationException;
-use App\Http\Requests\SubmitTaskRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
@@ -51,7 +51,7 @@ final class LearningController extends Controller
 
         try {
             $view = $this->getCourse->execute($student, $course);
-        } catch (CourseNotFoundException | EnrollmentNotFoundException) {
+        } catch (CourseNotFoundException|EnrollmentNotFoundException) {
             abort(404);
         }
 
@@ -67,7 +67,7 @@ final class LearningController extends Controller
 
         try {
             $view = $this->getLesson->execute($student, $lesson);
-        } catch (LessonNotFoundException | CourseNotFoundException) {
+        } catch (LessonNotFoundException|CourseNotFoundException) {
             abort(404);
         } catch (StudentNotActiveInCourseException) {
             abort(403, 'Bu kursga kirish huquqingiz yo\'q.');

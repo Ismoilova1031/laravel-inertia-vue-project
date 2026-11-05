@@ -1,6 +1,5 @@
 <template>
     <v-container class="py-8">
-
         <Head :title="course.title" />
 
         <CourseHeader :course="course" />
@@ -10,7 +9,13 @@
             <v-tab value="students">Students</v-tab>
             <v-tab value="submissions">
                 Submissions
-                <v-chip v-if="pendingCount" size="x-small" color="warning" variant="tonal" class="ms-2">
+                <v-chip
+                    v-if="pendingCount"
+                    size="x-small"
+                    color="warning"
+                    variant="tonal"
+                    class="ms-2"
+                >
                     {{ pendingCount }}
                 </v-chip>
             </v-tab>
@@ -25,8 +30,12 @@
             </v-tabs-window-item>
 
             <v-tabs-window-item value="students">
-                <StudentListForCourse :students="course.students" :available-students="availableStudents"
-                    :course-id="course.id" :is-published="isPublished" />
+                <StudentListForCourse
+                    :students="course.students"
+                    :available-students="availableStudents"
+                    :course-id="course.id"
+                    :is-published="isPublished"
+                />
             </v-tabs-window-item>
 
             <v-tabs-window-item value="submissions">
@@ -34,25 +43,44 @@
             </v-tabs-window-item>
 
             <v-tabs-window-item value="settings">
-                <v-card max-width="900" class="mx-auto" rounded="lg" elevation="2">
+                <v-card
+                    max-width="900"
+                    class="mx-auto"
+                    rounded="lg"
+                    elevation="2"
+                >
                     <v-card-item>
-                        <v-card-title class="text-h5 font-weight-bold">Course Settings</v-card-title>
-                        <v-card-subtitle class="mt-2">Update the course settings below.</v-card-subtitle>
+                        <v-card-title class="text-h5 font-weight-bold"
+                            >Course Settings</v-card-title
+                        >
+                        <v-card-subtitle class="mt-2"
+                            >Update the course settings below.</v-card-subtitle
+                        >
                     </v-card-item>
 
                     <v-divider />
 
                     <v-card-text class="pa-6">
-                        <CourseForm :form="form" :categories="categories" :statuses="statuses"
-                            submit-label="Create Course" @submit="submit" :showStatus="true"/>
-
+                        <CourseForm
+                            :form="form"
+                            :categories="categories"
+                            :statuses="statuses"
+                            submit-label="Create Course"
+                            @submit="submit"
+                            :showStatus="true"
+                        />
                     </v-card-text>
                 </v-card>
             </v-tabs-window-item>
         </v-tabs-window>
 
-        <v-snackbar v-model="form.recentlySuccessful" color="success" location="top center"
-            prepend-icon="mdi-check-circle" timeout="2000">
+        <v-snackbar
+            v-model="form.recentlySuccessful"
+            color="success"
+            location="top center"
+            prepend-icon="mdi-check-circle"
+            timeout="2000"
+        >
             Course updated successfully!
         </v-snackbar>
     </v-container>
@@ -82,8 +110,12 @@ const props = defineProps<{
     submissions: SubmissionRow[];
 }>();
 
-const pendingCount = computed(() => props.submissions.filter((s) => s.status.value === SUBMISSION_STATUS.PENDING).length);
-
+const pendingCount = computed(
+    () =>
+        props.submissions.filter(
+            (s) => s.status.value === SUBMISSION_STATUS.PENDING,
+        ).length,
+);
 
 const tab = ref("lessons");
 

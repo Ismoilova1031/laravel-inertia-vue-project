@@ -26,18 +26,36 @@ export const questionFormSchema = z
     })
     .superRefine((data, ctx) => {
         const isChoice =
-            data.question_type === QuestionType.SINGLE_CHOICE || data.question_type === QuestionType.MULTIPLE_SELECT;
+            data.question_type === QuestionType.SINGLE_CHOICE ||
+            data.question_type === QuestionType.MULTIPLE_SELECT;
 
         if (isChoice && (!data.options || data.options.length < 2)) {
-            ctx.addIssue({ code: "custom", path: ["options"], message: "At least two options are required for choice questions" });
+            ctx.addIssue({
+                code: "custom",
+                path: ["options"],
+                message:
+                    "At least two options are required for choice questions",
+            });
         }
 
         if (isChoice && data.options?.every((o) => !o.is_correct)) {
-            ctx.addIssue({ code: "custom", path: ["options"], message: "At least one option must be marked as correct" });
+            ctx.addIssue({
+                code: "custom",
+                path: ["options"],
+                message: "At least one option must be marked as correct",
+            });
         }
 
-        if (data.question_type === QuestionType.SHORT_ANSWER && !data.correct_answer?.trim()) {
-            ctx.addIssue({ code: "custom", path: ["correct_answer"], message: "A correct answer is required for short answer questions" });
+        if (
+            data.question_type === QuestionType.SHORT_ANSWER &&
+            !data.correct_answer?.trim()
+        ) {
+            ctx.addIssue({
+                code: "custom",
+                path: ["correct_answer"],
+                message:
+                    "A correct answer is required for short answer questions",
+            });
         }
     });
 
@@ -57,13 +75,25 @@ export const taskFormSchema = z
     .superRefine((data, ctx) => {
         if (
             data.task_type === TaskTypes.FILE_UPLOAD &&
-            (!data.allowed_file_extensions || data.allowed_file_extensions.length === 0)
+            (!data.allowed_file_extensions ||
+                data.allowed_file_extensions.length === 0)
         ) {
-            ctx.addIssue({ code: "custom", path: ["allowed_file_extensions"], message: "File extensions are required for file upload tasks" });
+            ctx.addIssue({
+                code: "custom",
+                path: ["allowed_file_extensions"],
+                message: "File extensions are required for file upload tasks",
+            });
         }
 
-        if (data.task_type === TaskTypes.QUIZ && (!data.questions || data.questions.length === 0)) {
-            ctx.addIssue({ code: "custom", path: ["questions"], message: "At least one question is required" });
+        if (
+            data.task_type === TaskTypes.QUIZ &&
+            (!data.questions || data.questions.length === 0)
+        ) {
+            ctx.addIssue({
+                code: "custom",
+                path: ["questions"],
+                message: "At least one question is required",
+            });
         }
     });
 

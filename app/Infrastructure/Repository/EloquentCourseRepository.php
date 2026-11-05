@@ -3,15 +3,15 @@
 namespace App\Infrastructure\Repository;
 
 use App\Domain\Course\Course;
-use App\Domain\Course\VO\CourseDescription;
-use App\Domain\Course\VO\CourseId;
 use App\Domain\Course\CourseRepositoryInterface;
-use App\Domain\Course\VO\CourseTitle;
+use App\Domain\Course\CourseStatus;
 use App\Domain\Course\Exception\CourseNotFoundException;
 use App\Domain\Course\NewCourse;
+use App\Domain\Course\VO\CourseDescription;
+use App\Domain\Course\VO\CourseId;
+use App\Domain\Course\VO\CourseTitle;
 use App\Infrastructure\Eloquent\CourseModel;
 use Illuminate\Support\Collection;
-use App\Domain\Course\CourseStatus;
 
 final class EloquentCourseRepository implements CourseRepositoryInterface
 {
@@ -69,20 +69,20 @@ final class EloquentCourseRepository implements CourseRepositoryInterface
     public function all(): Collection
     {
         return CourseModel::query()->orderBy('id')->get()
-            ->map(fn(CourseModel $m) => $this->toEntity($m));
+            ->map(fn (CourseModel $m) => $this->toEntity($m));
     }
 
     public function findByIds(array $ids): Collection
     {
         return CourseModel::query()
-            ->whereIn('id', array_map(fn(CourseId $id) => $id->value(), $ids))->get()
-            ->map(fn(CourseModel $m) => $this->toEntity($m));
+            ->whereIn('id', array_map(fn (CourseId $id) => $id->value(), $ids))->get()
+            ->map(fn (CourseModel $m) => $this->toEntity($m));
     }
 
     public function findPublished(): Collection
     {
         return CourseModel::where('status', CourseStatus::PUBLISHED->value)
             ->orderByDesc('id')->get()
-            ->map(fn(CourseModel $m) => $this->toEntity($m));
+            ->map(fn (CourseModel $m) => $this->toEntity($m));
     }
 }

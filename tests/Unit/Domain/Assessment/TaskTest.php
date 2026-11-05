@@ -9,14 +9,14 @@ use App\Domain\Assessment\Exception\TaskLockedException;
 use App\Domain\Assessment\FileExtensions;
 use App\Domain\Assessment\NewQuestion;
 use App\Domain\Assessment\NewQuestionOption;
-use App\Domain\Assessment\VO\Points;
 use App\Domain\Assessment\Question;
 use App\Domain\Assessment\QuestionOption;
 use App\Domain\Assessment\QuestionType;
 use App\Domain\Assessment\Task;
+use App\Domain\Assessment\TaskType;
+use App\Domain\Assessment\VO\Points;
 use App\Domain\Assessment\VO\TaskContent;
 use App\Domain\Assessment\VO\TaskId;
-use App\Domain\Assessment\TaskType;
 use App\Domain\Lesson\VO\LessonId;
 use PHPUnit\Framework\TestCase;
 
