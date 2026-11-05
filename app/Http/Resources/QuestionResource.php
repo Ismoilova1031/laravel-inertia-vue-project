@@ -2,10 +2,9 @@
 
 namespace App\Http\Resources;
 
+use App\Domain\Assessment\QuestionType;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Enums\QuestionType;
-use App\Http\Resources\QuestionOptionResource;
 
 class QuestionResource extends JsonResource
 {
@@ -16,19 +15,20 @@ class QuestionResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $question = $this->resource;
+
         return [
-            'id' => $this->id,
-            'question' => $this->question,
+            'id' => $question->id(),
+            'question' => $question->text(),
             'question_type' => [
-                'value' => $this->question_type->value,
-                'label' => $this->question_type->label(),
+                'value' => $question->type()->value,
+                'label' => $question->type()->label(),
             ],
-            'points' => $this->points,
-            'sort_order' => $this->sort_order,
-            'correct_answer' => $this->correct_answer,
+            'points' => $question->points()->value(),
+            'correct_answer' => $question->correctAnswer(),
             'options' => $this->when(
-                in_array($this->question_type, [QuestionType::MULTIPLE_SELECT, QuestionType::SINGLE_CHOICE]),
-                QuestionOptionResource::collection($this->options)->resolve(),
+                in_array($question->type(), [QuestionType::MULTIPLE_SELECT, QuestionType::SINGLE_CHOICE], true),
+                fn () => QuestionOptionResource::collection($question->options())->resolve(),
             ),
         ];
     }

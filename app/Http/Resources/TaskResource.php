@@ -2,10 +2,9 @@
 
 namespace App\Http\Resources;
 
+use App\Domain\Assessment\TaskType;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Enums\TaskType;
-use App\Http\Resources\QuestionResource;
 
 class TaskResource extends JsonResource
 {
@@ -16,17 +15,18 @@ class TaskResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $task = $this->resource;
+
         return [
-            'id' => $this->id,
+            'id' => $task->id()->value(),
             'task_type' => [
-                'value' => $this->task_type->value,
-                'label' => $this->task_type->label(),
+                'value' => $task->type()->value,
+                'label' => $task->type()->label(),
             ],
-            'deadline' => $this->deadline?->format('Y-m-d\TH:i'),
-            'allowed_file_extensions' => $this->allowed_file_extensions,
+            'allowed_file_extensions' => $task->allowedFileExtensions()?->values(),
             'questions' => $this->when(
-                $this->task_type === TaskType::QUIZ,
-                fn() => QuestionResource::collection($this->questions)->resolve(),
+                $task->type() === TaskType::QUIZ,
+                fn () => QuestionResource::collection($task->questions())->resolve(),
             ),
         ];
     }

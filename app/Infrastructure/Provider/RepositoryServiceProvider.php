@@ -1,0 +1,57 @@
+<?php
+
+namespace App\Infrastructure\Provider;
+
+use App\Domain\Assessment\Submission\TaskSubmissionRepositoryInterface;
+use App\Domain\Assessment\TaskRepositoryInterface;
+use App\Domain\Certificate\CertificateRepositoryInterface;
+use App\Domain\Course\CourseRepositoryInterface;
+use App\Domain\CourseInterest\CourseInterestRepositoryInterface;
+use App\Domain\Enrollment\EnrollmentRepositoryInterface;
+use App\Domain\Lesson\LessonRepositoryInterface;
+use App\Domain\Notification\NotificationRepositoryInterface;
+use App\Domain\Progress\LessonProgressRepositoryInterface;
+use App\Domain\Review\ReviewRepositoryInterface;
+use App\Domain\Shared\FileStorageInterface;
+use App\Domain\Student\PasswordHasherInterface;
+use App\Domain\Student\StudentRepositoryInterface;
+use App\Infrastructure\Repository\EloquentCertificateRepository;
+use App\Infrastructure\Repository\EloquentCourseInterestRepository;
+use App\Infrastructure\Repository\EloquentCourseRepository;
+use App\Infrastructure\Repository\EloquentEnrollmentRepository;
+use App\Infrastructure\Repository\EloquentLessonProgressRepository;
+use App\Infrastructure\Repository\EloquentLessonRepository;
+use App\Infrastructure\Repository\EloquentNotificationRepository;
+use App\Infrastructure\Repository\EloquentReviewRepository;
+use App\Infrastructure\Repository\EloquentStudentRepository;
+use App\Infrastructure\Repository\EloquentTaskRepository;
+use App\Infrastructure\Repository\EloquentTaskSubmissionRepository;
+use App\Infrastructure\Service\LaravelFileStorage;
+use App\Infrastructure\Service\LaravelPasswordHasher;
+use Illuminate\Support\ServiceProvider;
+
+class RepositoryServiceProvider extends ServiceProvider
+{
+    public function register(): void
+    {
+        $this->app->bind(StudentRepositoryInterface::class, EloquentStudentRepository::class);
+        $this->app->bind(EnrollmentRepositoryInterface::class, EloquentEnrollmentRepository::class);
+        $this->app->bind(CourseInterestRepositoryInterface::class, EloquentCourseInterestRepository::class);
+        $this->app->bind(CourseRepositoryInterface::class, EloquentCourseRepository::class);
+
+        $this->app->bind(PasswordHasherInterface::class, LaravelPasswordHasher::class);
+
+        $this->app->bind(LessonRepositoryInterface::class, EloquentLessonRepository::class);
+        $this->app->bind(FileStorageInterface::class, LaravelFileStorage::class);
+
+        $this->app->bind(TaskRepositoryInterface::class, EloquentTaskRepository::class);
+
+        $this->app->bind(TaskSubmissionRepositoryInterface::class, EloquentTaskSubmissionRepository::class);
+
+        $this->app->bind(LessonProgressRepositoryInterface::class, EloquentLessonProgressRepository::class);
+
+        $this->app->bind(CertificateRepositoryInterface::class, EloquentCertificateRepository::class);
+        $this->app->bind(ReviewRepositoryInterface::class, EloquentReviewRepository::class);
+        $this->app->bind(NotificationRepositoryInterface::class, EloquentNotificationRepository::class);
+    }
+}

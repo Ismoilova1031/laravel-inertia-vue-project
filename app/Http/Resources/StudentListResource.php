@@ -14,6 +14,15 @@ class StudentListResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        $student = $this->resource;
+
+        return [
+            'id' => $student->id()->value(),
+            'name' => $student->name()->name(),
+            'surname' => $student->name()->surname(),
+            'fullName' => $student->name()->fullName(),
+            'email' => $student->email()->value(),
+            'username' => $student->username()->value(),
+        ];
     }
 }

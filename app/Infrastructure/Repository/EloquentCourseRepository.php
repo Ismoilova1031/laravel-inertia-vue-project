@@ -1,0 +1,88 @@
+<?php
+
+namespace App\Infrastructure\Repository;
+
+use App\Domain\Course\Course;
+use App\Domain\Course\CourseRepositoryInterface;
+use App\Domain\Course\CourseStatus;
+use App\Domain\Course\Exception\CourseNotFoundException;
+use App\Domain\Course\NewCourse;
+use App\Domain\Course\VO\CourseDescription;
+use App\Domain\Course\VO\CourseId;
+use App\Domain\Course\VO\CourseTitle;
+use App\Infrastructure\Eloquent\CourseModel;
+use Illuminate\Support\Collection;
+
+final class EloquentCourseRepository implements CourseRepositoryInterface
+{
+    public function findById(CourseId $id): ?Course
+    {
+        $model = CourseModel::find($id->value());
+
+        return $model ? $this->toEntity($model) : null;
+    }
+
+    public function create(NewCourse $new): Course
+    {
+        $model = CourseModel::create([
+            'title' => $new->title->value(),
+            'description' => $new->description->value(),
+            'category' => $new->category,
+            'status' => $new->status(),
+        ]);
+
+        return $this->toEntity($model);
+    }
+
+    public function save(Course $course): void
+    {
+
+        $model = CourseModel::find($course->id()->value())
+            ?? throw CourseNotFoundException::withId($course->id());
+
+        $model->update(
+            [
+                'title' => $course->title()->value(),
+                'description' => $course->description()->value(),
+                'category' => $course->category(),
+                'status' => $course->status(),
+            ]
+        );
+    }
+
+    public function delete(CourseId $id): void
+    {
+        CourseModel::whereKey($id->value())->delete();
+    }
+
+    private function toEntity(CourseModel $model): Course
+    {
+        return Course::reconstitute(
+            new CourseId((int) $model->id),
+            new CourseTitle($model->title),
+            new CourseDescription($model->description),
+            $model->category,
+            $model->status,
+        );
+    }
+
+    public function all(): Collection
+    {
+        return CourseModel::query()->orderBy('id')->get()
+            ->map(fn (CourseModel $m) => $this->toEntity($m));
+    }
+
+    public function findByIds(array $ids): Collection
+    {
+        return CourseModel::query()
+            ->whereIn('id', array_map(fn (CourseId $id) => $id->value(), $ids))->get()
+            ->map(fn (CourseModel $m) => $this->toEntity($m));
+    }
+
+    public function findPublished(): Collection
+    {
+        return CourseModel::where('status', CourseStatus::PUBLISHED->value)
+            ->orderByDesc('id')->get()
+            ->map(fn (CourseModel $m) => $this->toEntity($m));
+    }
+}

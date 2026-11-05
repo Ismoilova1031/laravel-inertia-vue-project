@@ -1,21 +1,28 @@
-import { Lesson } from "./lesson";
-import { Student } from "./student";
-import { SelectOption } from "./common";
+import type { SelectOption } from "./common";
+import type { LessonListItem } from "./lesson";
+import type { StudentForCourse } from "./student";
 
-export interface CourseBase {
+export interface CourseRef {
     id: number;
     title: string;
+}
+
+export interface CourseBase extends CourseRef {
     description: string;
 }
 
 export interface Course extends CourseBase {
     category: string;
-    status: string;
+    status: SelectOption;
 }
 
 export interface CourseDetail extends CourseBase {
     category: SelectOption;
     status: SelectOption;
-    lessons: Lesson[];
-    students: Student[];
+    lessons: LessonListItem[];
+    students: StudentForCourse[];
+}
+
+export interface CourseWithLessonCount extends CourseBase {
+    lessonsCount: number;
 }

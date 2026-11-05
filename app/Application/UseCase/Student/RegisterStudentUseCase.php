@@ -1,0 +1,44 @@
+<?php
+
+namespace App\Application\UseCase\Student;
+
+use App\Domain\Student\Exception\EmailAlreadyTakenException;
+use App\Domain\Student\Exception\UsernameAlreadyTakenException;
+use App\Domain\Student\NewStudent;
+use App\Domain\Student\PasswordHasherInterface;
+use App\Domain\Student\StudentRepositoryInterface;
+use App\Domain\Student\VO\EmailAddress;
+use App\Domain\Student\VO\PersonName;
+use App\Domain\Student\VO\StudentId;
+use App\Domain\Student\VO\Username;
+
+final class RegisterStudentUseCase
+{
+    public function __construct(
+        private readonly StudentRepositoryInterface $students,
+        private readonly PasswordHasherInterface $hasher,
+    ) {}
+
+    public function execute(RegisterStudentCommand $command, ?int $courseId = null): StudentId
+    {
+        $email = new EmailAddress($command->email);
+        $username = new Username($command->username);
+
+        if ($this->students->existsByEmail($email)) {
+            throw EmailAlreadyTakenException::withEmail($email);
+        }
+
+        if ($this->students->existsByUsername($username)) {
+            throw UsernameAlreadyTakenException::withUsername($username);
+        }
+
+        $new = NewStudent::register(
+            new PersonName($command->name, $command->surname),
+            $email,
+            $username,
+            $this->hasher->hash($command->password)
+        );
+
+        return $this->students->create($new)->id();
+    }
+}

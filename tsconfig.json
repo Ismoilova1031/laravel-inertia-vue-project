@@ -22,7 +22,11 @@
             "vite/client"
         ],
 
-        "skipLibCheck": true
+        "skipLibCheck": true,
+
+        "paths": {
+            "@/*": ["./resources/js/*"]
+        }
     },
 
     "include": [

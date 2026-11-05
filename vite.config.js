@@ -1,3 +1,4 @@
+
 import { defineConfig } from 'vite';
 import inertia from '@inertiajs/vite';
 import laravel from 'laravel-vite-plugin';
@@ -6,8 +7,15 @@ import tailwindcss from '@tailwindcss/vite';
 import vue from '@vitejs/plugin-vue';
 import vuetify from 'vite-plugin-vuetify';
 import { wayfinder } from '@laravel/vite-plugin-wayfinder';
+import { fileURLToPath, URL } from 'node:url';
 
 export default defineConfig({
+    resolve: {
+        alias: {
+            '@': fileURLToPath(new URL('./resources/js', import.meta.url)),
+        },
+    },
+
     plugins: [
         laravel({
             input: ['resources/css/app.css', 'resources/js/app.ts'],
@@ -28,6 +36,7 @@ export default defineConfig({
         tailwindcss(),
         wayfinder(),
     ],
+
     server: {
         host: '127.0.0.1',
         port: 5173,

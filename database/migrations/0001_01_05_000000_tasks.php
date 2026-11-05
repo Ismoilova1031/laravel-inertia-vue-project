@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('lesson_id')->constrained()->cascadeOnDelete();
             $table->integer('task_type');
-            $table->datetime('deadline');
             $table->json('allowed_file_extensions')->nullable();
             $table->timestamps();
         });

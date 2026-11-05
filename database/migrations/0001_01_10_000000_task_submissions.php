@@ -15,11 +15,13 @@ return new class extends Migration
             $table->id();
             $table->foreignId('task_id')->constrained()->cascadeOnDelete();
             $table->foreignId('student_id')->constrained()->cascadeOnDelete();
-            $table->integer('attempt');
+            $table->unsignedTinyInteger('attempt');
+            $table->unsignedTinyInteger('status')->default(0);
             $table->text('content')->nullable();
             $table->string('file_path')->nullable();
-            $table->integer('score')->nullable();
-            $table->datetime('submitted_at')->nullable();
+            $table->unsignedInteger('score')->nullable();
+            $table->text('teacher_comment')->nullable();
+            $table->dateTime('submitted_at');
             $table->timestamps();
 
             $table->unique(['task_id', 'student_id', 'attempt']);

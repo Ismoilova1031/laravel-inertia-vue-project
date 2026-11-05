@@ -1,0 +1,71 @@
+<template>
+    <v-card class="pa-5 border" elevation="0" rounded="lg">
+        <v-card-title class="text-title-medium pa-2">
+            <v-icon icon="mdi-clipboard-check-outline" />
+            <span class="ml-2">Task settings</span>
+        </v-card-title>
+        <v-divider />
+        <div>
+            <v-row class="mt-4">
+                <v-col cols="12" md="8">
+                    <v-select
+                        label="Task Type"
+                        :items="taskTypeOptions"
+                        v-model="task.task_type"
+                        variant="outlined"
+                        :error-messages="errors?.task_type"
+                    />
+                </v-col>
+            </v-row>
+            <v-select
+                v-if="task.task_type === TaskTypes.FILE_UPLOAD"
+                max-width="500"
+                label="Allowed file extensions"
+                :items="fileExtensionOptions"
+                multiple
+                v-model="task.allowed_file_extensions"
+                :error-messages="errors?.allowed_file_extensions"
+            />
+
+            <QuestionList
+                v-if="task.task_type === TaskTypes.QUIZ"
+                v-model="questions"
+                :errors="questionListErrors"
+            />
+        </div>
+    </v-card>
+</template>
+<script setup lang="ts">
+import { computed } from "vue";
+import { TaskTypes } from "@/types/task";
+import QuestionList from "@/components/Question/QuestionList.vue";
+import type { TaskFormData } from "@/composables/useTaskForm";
+import { fileExtensionOptions, taskTypeOptions } from "@/utils/taskType";
+
+const task = defineModel<TaskFormData>({
+    required: true,
+});
+
+const props = defineProps<{
+    errors?: Record<string, string>;
+}>();
+
+const questionListErrors = computed(() => {
+    const errors = props.errors ?? {};
+    const result: Record<string, string> = {};
+
+    for (const key in errors) {
+        if (key === "questions" || key.startsWith("questions.")) {
+            result[key] = errors[key]!;
+        }
+    }
+    return result;
+});
+
+const questions = computed({
+    get: () => task.value.questions ?? [],
+    set: (value) => {
+        task.value.questions = value;
+    },
+});
+</script>

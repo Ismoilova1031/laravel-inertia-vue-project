@@ -2,6 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Application\UseCase\Course\CreateCourseCommand;
+use App\Application\UseCase\Course\UpdateCourseCommand;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CourseRequest extends FormRequest
@@ -21,11 +24,40 @@ class CourseRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'title' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
             'category' => ['required', 'integer', 'between:0,9'],
-            'status' => ['required', 'integer', 'between:0,2'],
         ];
+
+        if ($this->isMethod('PUT') || $this->isMethod('PATCH')) {
+            $rules['status'] = ['required', 'integer', 'between:0,2'];
+        }
+
+        return $rules;
+    }
+
+    public function toCreateCommand(): CreateCourseCommand
+    {
+        $d = $this->validated();
+
+        return new CreateCourseCommand(
+            title: $d['title'],
+            description: $d['description'],
+            category: (int) $d['category'],
+        );
+    }
+
+    public function toUpdateCommand(): UpdateCourseCommand
+    {
+        $d = $this->validated();
+
+        return new UpdateCourseCommand(
+            id: (int) $this->route('course'),
+            title: $d['title'],
+            description: $d['description'],
+            category: (int) $d['category'],
+            status: (int) $d['status'],
+        );
     }
 }

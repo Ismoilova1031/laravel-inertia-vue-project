@@ -14,17 +14,16 @@ class LessonListResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $lesson = $this->resource;
+
         return [
-            'id' => $this->id,
-            'title' => $this->title,
-            'description' => $this->description,
-            'lessonType' => [
-                'value' => $this->lesson_type->value,
-                'label' => $this->lesson_type->label(),
-            ],
-            'lessonContent' => $this->lesson_content,
-            'videoUrl' => $this->video_url,
-            'sortOrder' => $this->sort_order,
+            'id' => $lesson->id()->value(),
+            'title' => $lesson->title()->value(),
+            'description' => $lesson->description()->value(),
+            'lessonType' => ['value' => $lesson->type()->value, 'label' => $lesson->type()->label()],
+            'lessonContent' => $lesson->content(),
+            'videoUrl' => $lesson->videoPath(),
+            'sortOrder' => $lesson->sortOrder()->value(),
         ];
     }
 }
