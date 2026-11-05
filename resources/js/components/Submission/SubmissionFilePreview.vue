@@ -8,7 +8,9 @@
                 size="small"
                 variant="text"
                 prepend-icon="mdi-download"
-                :href="SubmissionController.file({ submission: submissionId }).url"
+                :href="
+                    SubmissionController.file({ submission: submissionId }).url
+                "
             >
                 Download
             </v-btn>
@@ -22,11 +24,16 @@
         />
 
         <div v-else-if="kind === 'image'" class="text-center">
-            <img :src="previewUrl" alt="Submitted file" class="preview-image rounded-lg border" />
+            <img
+                :src="previewUrl"
+                alt="Submitted file"
+                class="preview-image rounded-lg border"
+            />
         </div>
 
         <v-alert v-else type="info" variant="tonal" icon="mdi-file-eye-outline">
-            Bu faylni brauzerda ko'rib bo'lmaydi. Iltimos, faylni yuklab oling va mos dastur yordamida oching.
+            This file type can't be previewed in the browser. Download it and
+            open it with a suitable app.
         </v-alert>
     </div>
 </template>
@@ -39,11 +46,14 @@ const props = defineProps<{ submissionId: number; extension: string | null }>();
 
 const kind = computed<"frame" | "image" | "none">(() => {
     if (props.extension === "pdf" || props.extension === "txt") return "frame";
-    if (["jpg", "jpeg", "png", "gif"].includes(props.extension ?? "")) return "image";
+    if (["jpg", "jpeg", "png", "gif"].includes(props.extension ?? ""))
+        return "image";
     return "none";
 });
 
-const previewUrl = computed(() => SubmissionController.preview({ submission: props.submissionId }).url);
+const previewUrl = computed(
+    () => SubmissionController.preview({ submission: props.submissionId }).url,
+);
 </script>
 
 <style scoped>

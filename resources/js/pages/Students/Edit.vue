@@ -9,7 +9,7 @@
             back-label="Back to students"
         />
 
-        <StudentForm :form="form" :submit="submit" submit-label="Update" />
+       <StudentForm :form="form" submit-label="Update" @submit="submit" />
     </v-container>
 </template>
 

@@ -1,5 +1,5 @@
 <template>
-    <v-card class="border rounded-lg pa-5 ma-0 md:ma-5">
+    <v-card class="border rounded-lg pa-5" elevation="0">
         <v-textarea
             v-model="question.question"
             label="Question"
@@ -14,7 +14,7 @@
                 <v-select
                     v-model="question.question_type"
                     label="Question Type"
-                    :items="questionTypes"
+                    :items="questionTypeOptions"
                     variant="outlined"
                     :error-messages="mergedErrors?.question_type"
                 />
@@ -69,6 +69,7 @@ import {
     questionFormSchema,
     type QuestionFormData,
 } from "@/composables/useTaskForm";
+import { questionTypeOptions } from "@/utils/questionType";
 
 const props = defineProps<{
     errors?: Record<string, string>;
@@ -82,13 +83,6 @@ const emit = defineEmits<{
     cancel: [];
     save: [];
 }>();
-
-const questionTypes = [
-    { title: "Single Choice", value: 1 },
-    { title: "Multiple Select", value: 2 },
-    { title: "Short Answer", value: 3 },
-    { title: "Open Ended", value: 4 },
-];
 
 const options = computed({
     get: () => question.value.options ?? [],

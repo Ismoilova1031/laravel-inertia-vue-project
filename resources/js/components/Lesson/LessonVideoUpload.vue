@@ -1,129 +1,93 @@
 <template>
     <div>
         <input
-            ref="fileInput"
+            ref="picker"
             type="file"
             accept="video/*"
             class="d-none"
-            @change="handleFileChange"
+            @change="onPick"
         />
 
         <v-file-upload
-            v-if="!videoUrl"
-            v-model="video"
+            v-if="!previewUrl"
+            :model-value="file"
             label="Upload Video"
             accept="video/*"
             show-size
             :error-messages="errorMessages"
-            @update:model-value="handleVideo"
+            @update:model-value="setFile"
         />
 
         <v-card v-else variant="outlined" rounded="lg">
-            <video :src="videoUrl" controls class="video-preview" />
+            <video :src="previewUrl" controls class="preview" />
 
             <v-card-actions class="px-4 py-3">
-                <div class="text-body-2 text-truncate">
-                    {{ video?.name }}
-                </div>
-
+                <div class="text-body-2 text-truncate">{{ file?.name }}</div>
                 <v-spacer />
-
                 <v-btn
                     variant="text"
                     prepend-icon="mdi-swap-horizontal"
-                    @click="openFilePicker"
+                    @click="picker?.click()"
+                    >Replace</v-btn
                 >
-                    Replace
-                </v-btn>
-
                 <v-btn
                     variant="text"
                     color="error"
                     prepend-icon="mdi-delete-outline"
-                    @click="deleteVideo"
+                    @click="clear"
+                    >Delete</v-btn
                 >
-                    Delete
-                </v-btn>
             </v-card-actions>
         </v-card>
     </div>
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, ref } from "vue";
+import { computed, onBeforeUnmount, ref, watch } from "vue";
 
-const props = defineProps<{
-    modelValue: File | undefined;
-    errorMessages?: string | string[];
-    videoUrl?: string | null;
-}>();
-const emit = defineEmits<{
-    "update:modelValue": [file: File | undefined];
-    "update:videoUrl": [url: string | null];
-}>();
+defineProps<{ errorMessages?: string | string[] }>();
 
-const video = ref<File | undefined>(props.modelValue ?? undefined);
+const file = defineModel<File | undefined>();
+const existingUrl = defineModel<string | null>("existingUrl");
 
-const fileInput = ref<HTMLInputElement | null>(null);
+const picker = ref<HTMLInputElement | null>(null);
+const objectUrl = ref<string | null>(null);
 
-const videoUrl = computed(() => {
-    if (!video.value) {
-        return props.videoUrl;
-    }
+watch(
+    file,
+    (value) => {
+        if (objectUrl.value) URL.revokeObjectURL(objectUrl.value);
+        objectUrl.value = value ? URL.createObjectURL(value) : null;
+    },
+    { immediate: true },
+);
 
-    return URL.createObjectURL(video.value);
-});
+onBeforeUnmount(() => objectUrl.value && URL.revokeObjectURL(objectUrl.value));
 
-function handleVideo(file: File | File[] | undefined) {
-    if (Array.isArray(file)) {
-        video.value = file[0] ?? undefined;
-    } else {
-        video.value = file;
-    }
+const previewUrl = computed(() => objectUrl.value ?? existingUrl.value ?? null);
 
-    emit("update:modelValue", video.value);
+function setFile(value: File | File[] | null | undefined) {
+    const next = Array.isArray(value) ? value[0] : (value ?? undefined);
 
-    if (video.value) {
-        emit("update:videoUrl", null);
-    }
+    file.value = next;
+    if (next) existingUrl.value = null;
 }
 
-function openFilePicker() {
-    fileInput.value?.click();
+function onPick(event: Event) {
+    const input = event.target as HTMLInputElement;
+
+    setFile(input.files?.[0]);
+    input.value = "";
 }
 
-function handleFileChange(event: Event) {
-    const target = event.target as HTMLInputElement;
-
-    const file = target.files?.[0] ?? undefined;
-
-    if (!file) {
-        return;
-    }
-
-    video.value = file;
-
-    emit("update:modelValue", file);
-
-    target.value = "";
+function clear() {
+    file.value = undefined;
+    existingUrl.value = null;
 }
-
-function deleteVideo() {
-    video.value = undefined;
-
-    emit("update:modelValue", undefined);
-    emit("update:videoUrl", null);
-}
-
-onBeforeUnmount(() => {
-    if (videoUrl.value) {
-        URL.revokeObjectURL(videoUrl.value);
-    }
-});
 </script>
 
 <style scoped>
-.video-preview {
+.preview {
     display: block;
     width: 100%;
     max-height: 450px;

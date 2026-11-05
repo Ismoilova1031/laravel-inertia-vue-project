@@ -1,15 +1,15 @@
 <template>
-    <v-card>
+    <v-card class="border" elevation="0" rounded="lg">
         <v-card-title>Questions</v-card-title>
 
         <div v-if="errors?.questions" class="text-error text-caption px-4 pb-2">
             {{ errors.questions }}
         </div>
 
-        <v-table>
+        <v-table v-if="questions.length">
             <thead>
                 <tr>
-                    <th>Order</th>
+                    <th>#</th>
                     <th>Question</th>
                     <th>Type</th>
                     <th>Points</th>
@@ -21,141 +21,109 @@
                     v-for="(question, index) in questions"
                     :key="question.id ?? index"
                 >
-                    <td>
-                        <v-icon
-                            class="drag-handle"
-                            color="medium-emphasis"
-                            size="20"
-                        >
-                            mdi-menu
-                        </v-icon>
-                        {{ index + 1 }}
-                    </td>
+                    <td>{{ index + 1 }}</td>
                     <td>{{ question.question }}</td>
-                    <td>{{ question.question_type }}</td>
+                    <td>{{ questionTypeLabel(question.question_type) }}</td>
                     <td>{{ question.points }}</td>
                     <td class="text-end">
                         <v-btn
                             icon="mdi-pencil"
                             variant="text"
                             size="small"
-                            @click="editQuestion(index)"
+                            aria-label="Edit question"
+                            @click="edit(index)"
                         />
                         <v-btn
                             icon="mdi-delete"
                             variant="text"
                             size="small"
-                            @click="removeQuestion(index)"
+                            aria-label="Delete question"
+                            @click="remove(index)"
                         />
                     </td>
                 </tr>
             </tbody>
         </v-table>
+        <v-card-text v-else class="text-medium-emphasis"
+            >No questions yet.</v-card-text
+        >
     </v-card>
-    <v-card
-        v-if="!isQuestionFormVisible"
-        link
-        rounded="lg"
-        class="border border-dashed bg-transparent mt-4"
-        elevation="0"
-        @click="openQuestionForm"
-    >
-        <div class="d-flex align-center justify-center px-5 py-3">
-            <v-btn icon="mdi-plus" variant="text" size="medium" class="mr-4" />
-            <span class="font-weight-medium"> Add Question </span>
-        </div>
-    </v-card>
+
+    <AddCard v-if="!draft" class="mt-4" label="Add Question" @click="openNew" />
 
     <QuestionForm
-        v-if="isQuestionFormVisible"
-        v-model="activeQuestion"
-        :errors="activeQuestionErrors"
-        @cancel="closeQuestionForm"
-        @save="saveQuestion"
+        v-if="draft"
         class="mt-4"
+        :model-value="draft"
+        :errors="draftErrors"
+        @update:model-value="draft = $event"
+        @cancel="close"
+        @save="save"
     />
 </template>
+
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { computed, ref } from "vue";
+import AddCard from "@/components/Common/AddCard.vue";
 import QuestionForm from "./QuestionForm.vue";
 import type { QuestionFormData } from "@/composables/useTaskForm";
+import { questionTypeLabel } from "@/utils/questionType";
 
-const props = defineProps<{
-    errors?: Record<string, string>;
-}>();
+const props = defineProps<{ errors?: Record<string, string> }>();
+const questions = defineModel<QuestionFormData[]>({ required: true });
 
-const questions = defineModel<QuestionFormData[]>({
-    required: true,
-});
-
-const isQuestionFormVisible = ref(false);
+const draft = ref<QuestionFormData | null>(null);
 const editingIndex = ref<number | null>(null);
 
-const draftQuestion = ref<QuestionFormData>(emptyQuestion());
-
-function emptyQuestion(): QuestionFormData {
-    return {
-        question: "",
-        question_type: 1,
-        points: 1,
-        options: [],
-        correct_answer: null,
-    };
-}
-
-const activeQuestion = computed({
-    get() {
-        return editingIndex.value !== null
-            ? questions.value[editingIndex.value]
-            : draftQuestion.value;
-    },
-    set(value: QuestionFormData) {
-        if (editingIndex.value !== null) {
-            questions.value[editingIndex.value] = value;
-        } else {
-            draftQuestion.value = value;
-        }
-    },
+const emptyQuestion = (): QuestionFormData => ({
+    question: "",
+    question_type: 1,
+    points: 1,
+    options: [],
+    correct_answer: null,
 });
 
-const activeQuestionErrors = computed(() => {
-    const index = editingIndex.value ?? questions.value.length;
-    const prefix = `questions.${index}.`;
+const clone = <T,>(value: T): T => JSON.parse(JSON.stringify(value));
+
+function openNew() {
+    editingIndex.value = null;
+    draft.value = emptyQuestion();
+}
+
+function edit(index: number) {
+    editingIndex.value = index;
+    draft.value = clone(questions.value[index]);
+}
+
+function save() {
+    if (!draft.value) return;
+
+    const next = [...questions.value];
+    if (editingIndex.value === null) next.push(draft.value);
+    else next[editingIndex.value] = draft.value;
+
+    questions.value = next;
+    close();
+}
+
+function close() {
+    draft.value = null;
+    editingIndex.value = null;
+}
+
+function remove(index: number) {
+    questions.value = questions.value.filter((_, i) => i !== index);
+}
+
+const draftErrors = computed(() => {
+    const prefix = `questions.${editingIndex.value ?? questions.value.length}.`;
     const result: Record<string, string> = {};
 
     for (const key in props.errors ?? {}) {
-        if (key.startsWith(prefix)) {
-            result[key.replace(prefix, "")] = props.errors![key];
-        }
+        if (key.startsWith(prefix))
+            result[key.slice(prefix.length)] = props.errors![key];
     }
+
     return result;
 });
-
-function openQuestionForm() {
-    editingIndex.value = null;
-    draftQuestion.value = emptyQuestion();
-    isQuestionFormVisible.value = true;
-}
-
-function editQuestion(index: number) {
-    editingIndex.value = index;
-    isQuestionFormVisible.value = true;
-}
-
-function saveQuestion() {
-    if (editingIndex.value === null) {
-        questions.value = [...questions.value, draftQuestion.value];
-    }
-
-    closeQuestionForm();
-}
-
-function closeQuestionForm() {
-    isQuestionFormVisible.value = false;
-    editingIndex.value = null;
-}
-
-function removeQuestion(index: number) {
-    questions.value = questions.value.filter((_, i) => i !== index);
-}
 </script>

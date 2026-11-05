@@ -13,7 +13,7 @@
             :form="form"
             :types="types"
             submit-label="Update Lesson"
-            :submit="submit"
+            @submit="submit"
             :video-url="lesson.video_url"
             show-position
             :max-position="course.lessonsCount"

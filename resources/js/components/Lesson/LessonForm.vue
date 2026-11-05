@@ -1,5 +1,5 @@
 <template>
-    <form @submit.prevent="submit">
+    <form @submit.prevent="emit('submit')">
         <v-text-field
             name="title"
             placeholder="e.g. Master Vue 3 Router Guards"
@@ -52,9 +52,8 @@
                 <LessonVideoUpload
                     v-else-if="type.value === LessonType.VIDEO"
                     v-model="form.video"
-                    @update:video-url="videoUrl = $event"
+                    v-model:existing-url="videoUrl"
                     :error-messages="form.errors.video"
-                    :video-url="videoUrl"
                 />
 
                 <TaskForm
@@ -100,12 +99,11 @@ const props = defineProps<{
 
     videoUrl?: string | null;
 
-    submit: () => void;
-
     showPosition?: boolean;
     maxPosition?: number;
 }>();
 
+const emit = defineEmits<{ submit: [] }>();
 const videoUrl = ref<string | null>(props.videoUrl ?? null);
 
 const taskErrors = computed(() => {

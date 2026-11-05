@@ -1,34 +1,74 @@
 <template>
     <div>
         <div class="d-flex align-center flex-wrap ga-3 mb-4">
-            <v-chip color="orange" variant="tonal" prepend-icon="mdi-clipboard-check-outline">
+            <v-chip
+                color="orange"
+                variant="tonal"
+                prepend-icon="mdi-clipboard-check-outline"
+            >
                 {{ task.type.label }}
             </v-chip>
-            <v-chip variant="tonal">Attempts left: {{ task.attemptsLeft }}</v-chip>
-            <v-chip v-if="task.bestScore !== null" color="primary" variant="tonal">
+            <v-chip variant="tonal"
+                >Attempts left: {{ task.attemptsLeft }}</v-chip
+            >
+            <v-chip
+                v-if="task.bestScore !== null"
+                color="primary"
+                variant="tonal"
+            >
                 Best score: {{ task.bestScore }} / {{ task.maxScore }}
             </v-chip>
         </div>
 
-        <v-alert v-for="message in errorMessages" :key="message" type="error" variant="tonal" class="mb-4">
+        <v-alert
+            v-for="message in errorMessages"
+            :key="message"
+            type="error"
+            variant="tonal"
+            class="mb-4"
+        >
             {{ message }}
         </v-alert>
 
         <template v-if="task.canSubmit">
-            <QuizAnswerForm v-if="isQuiz" :questions="task.questions" :loading="loading" @submit="submit" />
-            <FileSubmitForm v-else-if="isFile" :extensions="task.allowedExtensions" :loading="loading"
-                @submit="submit" />
+            <QuizAnswerForm
+                v-if="isQuiz"
+                :questions="task.questions"
+                :loading="loading"
+                @submit="submit"
+            />
+            <FileSubmitForm
+                v-else-if="isFile"
+                :extensions="task.allowedExtensions"
+                :loading="loading"
+                @submit="submit"
+            />
             <DiscussionForm v-else :loading="loading" @submit="submit" />
         </template>
 
-        <v-alert v-else-if="task.blockedReason" type="info" variant="tonal" class="mb-4">
+        <v-alert
+            v-else-if="task.blockedReason"
+            type="info"
+            variant="tonal"
+            class="mb-4"
+        >
             {{ task.blockedReason }}
         </v-alert>
 
-        <SubmissionHistory v-if="task.submissions.length" class="mt-6" :submissions="task.submissions"
-            :questions="task.questions" :max-score="task.maxScore" :reveal="task.revealAnswers" />
+        <SubmissionHistory
+            v-if="task.submissions.length"
+            class="mt-6"
+            :submissions="task.submissions"
+            :questions="task.questions"
+            :max-score="task.maxScore"
+            :reveal="task.revealAnswers"
+        />
 
-        <QuizReview v-if="isQuiz && task.revealAnswers" class="mt-6" :questions="task.questions" />
+        <QuizReview
+            v-if="isQuiz && task.revealAnswers"
+            class="mt-6"
+            :questions="task.questions"
+        />
     </div>
 </template>
 
@@ -58,7 +98,10 @@ type SubmitPayload = QuizPayload | { file: File | null } | { text: string };
 
 function submit(payload: SubmitPayload) {
     router.post(
-        LearningController.submit({ student: props.studentId, task: props.task.id }).url,
+        LearningController.submit({
+            student: props.studentId,
+            task: props.task.id,
+        }).url,
         payload as unknown as RequestPayload,
         {
             forceFormData: true,

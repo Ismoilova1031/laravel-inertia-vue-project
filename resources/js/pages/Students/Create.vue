@@ -15,7 +15,7 @@
             "
         />
 
-        <StudentForm :form="form" :submit="submit" submit-label="Create" />
+        <StudentForm :form="form" submit-label="Create" @submit="submit" />
     </v-container>
 </template>
 

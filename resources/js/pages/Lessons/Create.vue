@@ -13,7 +13,7 @@
             :form="form"
             :types="types"
             submit-label="Create Lesson"
-            :submit="submit"
+            @submit="submit"
         />
     </v-container>
 </template>

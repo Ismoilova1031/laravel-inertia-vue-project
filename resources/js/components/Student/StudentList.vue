@@ -1,128 +1,130 @@
 <template>
-    <v-card rounded="lg" elevation="1">
+    <EmptyState
+        v-if="students.length === 0"
+        icon="mdi-account-group-outline"
+        title="No students yet"
+        text="Add the first student."
+    />
+
+    <v-card v-else rounded="lg" elevation="1">
         <v-list lines="two" class="py-0">
-            <v-list-item v-for="(student, index) in students" :key="student.id" class="px-5 py-3">
-                <template #prepend>
-                    <v-avatar color="primary" variant="tonal" size="42">
-                        {{ index + 1 }}
-                    </v-avatar>
-                </template>
+            <template v-for="(student, index) in students" :key="student.id">
+                <v-divider v-if="index > 0" />
+                <v-list-item class="px-5 py-3">
+                    <template #prepend>
+                        <v-avatar
+                            color="primary"
+                            variant="tonal"
+                            size="42"
+                            class="mr-3"
+                            >{{ index + 1 }}</v-avatar
+                        >
+                    </template>
 
-                <v-list-item-title class="font-weight-medium">
-                    {{ student.name }} {{ student.surname }}
-                </v-list-item-title>
+                    <v-list-item-title class="font-weight-medium">
+                        {{ student.name }} {{ student.surname }}
+                    </v-list-item-title>
+                    <v-list-item-subtitle class="mt-1">{{
+                        student.email
+                    }}</v-list-item-subtitle>
 
-                <v-list-item-subtitle class="mt-1">
-                    {{ student.email }}
-                </v-list-item-subtitle>
-
-                <template #append>
-                    <div class="d-flex align-center ga-3">
-                        <v-chip size="small" color="primary" variant="tonal">
-                            @{{ student.username }}
-                        </v-chip>
+                    <template #append>
+                        <v-chip
+                            size="small"
+                            color="primary"
+                            variant="tonal"
+                            class="mr-2"
+                            >@{{ student.username }}</v-chip
+                        >
 
                         <v-menu>
-                            <template #activator="{ props }">
-                                <v-btn v-bind="props" icon="mdi-dots-vertical" variant="text" size="small"
-                                    aria-label="Student amallari" />
+                            <template #activator="{ props: menu }">
+                                <v-btn
+                                    v-bind="menu"
+                                    icon="mdi-dots-vertical"
+                                    variant="text"
+                                    size="small"
+                                    aria-label="Student actions"
+                                />
                             </template>
 
                             <v-list density="compact">
-                                <v-list-item :href="edit(student.id).url" prepend-icon="mdi-pencil-outline"
-                                    title="Tahrirlash" />
-
-                                <v-list-item prepend-icon="mdi-delete-outline" title="O‘chirish" class="text-error"
-                                    @click="confirmDelete(student)" />
-                                <v-list-item prepend-icon="mdi-school-outline" title="View as student"
-                                    @click="router.visit(LearningController.courses({ student: student.id }).url)" />
+                                <v-list-item
+                                    prepend-icon="mdi-school-outline"
+                                    title="View as student"
+                                    @click="
+                                        router.visit(
+                                            LearningController.courses({
+                                                student: student.id,
+                                            }).url,
+                                        )
+                                    "
+                                />
+                                <v-list-item
+                                    prepend-icon="mdi-pencil-outline"
+                                    title="Edit"
+                                    @click="
+                                        router.visit(
+                                            StudentController.edit(student.id)
+                                                .url,
+                                        )
+                                    "
+                                />
+                                <v-list-item
+                                    prepend-icon="mdi-delete-outline"
+                                    title="Delete"
+                                    class="text-error"
+                                    @click="ask(student)"
+                                />
                             </v-list>
-
                         </v-menu>
-                    </div>
-                </template>
-            </v-list-item>
-
-            <v-list-item v-if="students.length === 0" class="text-center py-10">
-                <v-icon size="40" color="medium-emphasis">
-                    mdi-account-group-outline
-                </v-icon>
-
-                <v-list-item-title>
-                    Hozircha studentlar yo‘q
-                </v-list-item-title>
-
-                <v-list-item-subtitle class="text-body-2">
-                    Birinchi studentni qo‘shing.
-                </v-list-item-subtitle>
-            </v-list-item>
-
+                    </template>
+                </v-list-item>
+            </template>
         </v-list>
     </v-card>
 
-    <v-dialog v-model="deleteDialog" max-width="420">
-        <v-card rounded="lg">
-            <v-card-title class="pa-5"> Studentni o‘chirish </v-card-title>
-
-            <v-card-text>
-                <strong>
-                    {{ selectedStudent?.name }}
-                    {{ selectedStudent?.surname }}
-                </strong>
-                studentini o‘chirishni xohlaysizmi? Bu amalni ortga qaytarib
-                bo‘lmasligi mumkin.
-            </v-card-text>
-
-            <v-card-actions class="pa-5 justify-end">
-                <v-btn variant="text" :disabled="deleting" @click="deleteDialog = false">
-                    Bekor qilish
-                </v-btn>
-
-                <v-btn color="error" variant="flat" :loading="deleting" @click="deleteStudent">
-                    O‘chirish
-                </v-btn>
-            </v-card-actions>
-        </v-card>
-    </v-dialog>
+    <ConfirmDialog
+        v-model="open"
+        title="Delete student"
+        confirm-label="Delete"
+        color="error"
+        :loading="deleting"
+        @confirm="remove"
+    >
+        <strong>{{ selected?.name }} {{ selected?.surname }}</strong> will be
+        deleted together with enrollments and results. This cannot be undone.
+    </ConfirmDialog>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
 import { router } from "@inertiajs/vue3";
-import {
-    edit,
-    destroy,
-} from "@/actions/App/Http/Controllers/StudentController";
-import type { Student } from "@/types/student";
+import { ref } from "vue";
 import LearningController from "@/actions/App/Http/Controllers/LearningController";
-defineProps<{
-    students: Student[];
-}>();
+import StudentController from "@/actions/App/Http/Controllers/StudentController";
+import ConfirmDialog from "@/components/Common/ConfirmDialog.vue";
+import EmptyState from "@/components/Common/EmptyState.vue";
+import type { Student } from "@/types/student";
 
-const deleteDialog = ref(false);
-const selectedStudent = ref<Student | null>(null);
+defineProps<{ students: Student[] }>();
+
+const open = ref(false);
 const deleting = ref(false);
+const selected = ref<Student | null>(null);
 
-function confirmDelete(student: Student) {
-    selectedStudent.value = student;
-    deleteDialog.value = true;
+function ask(student: Student) {
+    selected.value = student;
+    open.value = true;
 }
 
-function deleteStudent() {
-    if (!selectedStudent.value || deleting.value) {
-        return;
-    }
+function remove() {
+    if (!selected.value || deleting.value) return;
 
-    deleting.value = true;
-
-    router.delete(destroy(selectedStudent.value.id).url, {
-        onSuccess: () => {
-            deleteDialog.value = false;
-            selectedStudent.value = null;
-        },
-        onFinish: () => {
-            deleting.value = false;
-        },
+    router.delete(StudentController.destroy(selected.value.id).url, {
+        preserveScroll: true,
+        onStart: () => (deleting.value = true),
+        onSuccess: () => (open.value = false),
+        onFinish: () => (deleting.value = false),
     });
 }
 </script>

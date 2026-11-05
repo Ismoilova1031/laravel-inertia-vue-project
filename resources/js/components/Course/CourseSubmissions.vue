@@ -8,18 +8,28 @@
                         {{ row.student.fullName }}
                     </v-list-item-title>
                     <v-list-item-subtitle class="mt-1">
-                        {{ row.lesson.title }} · {{ row.taskType.label }} · attempt {{ row.attempt }} · {{ row.submittedAt }}
+                        {{ row.lesson.title }} · {{ row.taskType.label }} ·
+                        attempt {{ row.attempt }} · {{ row.submittedAt }}
                     </v-list-item-subtitle>
                     <template #append>
-                        <span v-if="row.score !== null" class="text-body-2 mr-3">{{ row.score }} / {{ row.maxScore }}</span>
-                        <v-chip size="small" variant="tonal" :color="statusColor(row.status.value)">
+                        <span v-if="row.score !== null" class="text-body-2 mr-3"
+                            >{{ row.score }} / {{ row.maxScore }}</span
+                        >
+                        <v-chip
+                            size="small"
+                            variant="tonal"
+                            :color="submissionStatusColor(row.status.value)"
+                        >
                             {{ row.status.label }}
                         </v-chip>
                     </template>
                 </v-list-item>
             </template>
 
-            <v-list-item v-if="submissions.length === 0" class="text-center py-10">
+            <v-list-item
+                v-if="submissions.length === 0"
+                class="text-center py-10"
+            >
                 <v-list-item-title>No submissions yet.</v-list-item-title>
             </v-list-item>
         </v-list>
@@ -30,13 +40,14 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import SubmissionReviewDialog from "./SubmissionReviewDialog.vue";
+import SubmissionReviewDialog from "@/components/Submission/SubmissionReviewDialog.vue";
+import { submissionStatusColor } from "@/utils/submissionStatus";
 import type { SubmissionRow } from "@/types/submission";
 
 const props = defineProps<{ submissions: SubmissionRow[] }>();
 
 const selectedId = ref<number | null>(null);
-const selected = computed(() => props.submissions.find((s) => s.id === selectedId.value) ?? null);
-
-const statusColor = (status: number) => (status === 1 ? "success" : status === 2 ? "error" : "warning");
+const selected = computed(
+    () => props.submissions.find((s) => s.id === selectedId.value) ?? null,
+);
 </script>

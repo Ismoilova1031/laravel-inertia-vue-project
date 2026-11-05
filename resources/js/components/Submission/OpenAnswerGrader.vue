@@ -1,10 +1,5 @@
 <template>
-    <v-card
-        rounded="lg"
-        variant="flat"
-        border
-        class="answer-card mb-4"
-    >
+    <v-card rounded="lg" variant="flat" border class="answer-card mb-4">
         <!-- Question and status -->
         <div class="card-header pa-4">
             <div class="d-flex align-start justify-space-between ga-3">
@@ -99,7 +94,11 @@
                 <v-btn
                     size="small"
                     variant="text"
-                    :color="score === Math.floor(answer.points / 2) ? 'primary' : undefined"
+                    :color="
+                        score === Math.floor(answer.points / 2)
+                            ? 'primary'
+                            : undefined
+                    "
                     @click="score = Math.floor(answer.points / 2)"
                 >
                     Half credit
@@ -131,11 +130,7 @@
             <!-- Footer -->
             <div class="d-flex align-center justify-space-between ga-3">
                 <div class="text-caption text-medium-emphasis">
-                    <v-icon
-                        v-if="dirty"
-                        size="14"
-                        class="mr-1"
-                    >
+                    <v-icon v-if="dirty" size="14" class="mr-1">
                         mdi-circle-edit-outline
                     </v-icon>
                     {{ dirty ? "Changes not saved" : "Up to date" }}

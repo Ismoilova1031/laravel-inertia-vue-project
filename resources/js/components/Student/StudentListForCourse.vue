@@ -1,161 +1,142 @@
 <template>
-    <v-card rounded="lg" elevation="1">
+    <EmptyState
+        v-if="students.length === 0"
+        icon="mdi-account-group-outline"
+        title="No students yet"
+        text="Add a new student or enroll an existing one."
+    />
+
+    <v-card v-else rounded="lg" elevation="1">
         <v-list class="py-0">
-            <v-list-item v-for="(student, index) in students" :key="student.id" class="px-5 py-4 student-item"
-                :class="{ 'inactive-student': !student.isActive }">
-                <template #prepend>
-                    <v-avatar color="primary" variant="tonal" size="42" class="mr-3">
-                        {{ index + 1 }}
-                    </v-avatar>
-                </template>
-                <template #default>
-                    <v-row align="center">
-                        <v-col cols="12" sm="5">
-                            <div class="font-weight-medium text-body-1">
-                                {{ student.name }} {{ student.surname }}
-                            </div>
+            <template v-for="(student, index) in students" :key="student.id">
+                <v-divider v-if="index > 0" />
+                <v-list-item
+                    class="px-5 py-4"
+                    :class="{ inactive: !student.isActive }"
+                >
+                    <template #prepend>
+                        <v-avatar
+                            color="primary"
+                            variant="tonal"
+                            size="42"
+                            class="mr-3"
+                            >{{ index + 1 }}</v-avatar
+                        >
+                    </template>
 
-                            <div class="text-body-2 text-medium-emphasis mt-1">
-                                {{ student.email }}
-                            </div>
-                        </v-col>
+                    <v-list-item-title class="font-weight-medium">
+                        {{ student.name }} {{ student.surname }}
+                    </v-list-item-title>
+                    <v-list-item-subtitle class="mt-1"
+                        >{{ student.email }} · @{{
+                            student.username
+                        }}</v-list-item-subtitle
+                    >
 
-                        <v-col cols="6" sm="3" class="mt-3 mt-sm-0">
-                            <span class="text-body-2 text-primary font-weight-medium">
-                                @{{ student.username }}
-                            </span>
-                        </v-col>
-
-                        <v-col cols="4" sm="2" class="mt-3 mt-sm-0">
-                            <v-chip size="small" :color="student.isActive ? 'success' : 'error'" :variant="student.isActive ? 'tonal' : 'outlined'
-                                ">
-                                {{ student.isActive ? "Active" : "Inactive" }}
-                            </v-chip>
-                        </v-col>
-
-                        <v-col cols="2" sm="2" class="d-flex justify-end mt-3 mt-sm-0">
-                            <v-btn v-if="!student.isActive" :icon="'mdi-account-check-outline'" :color="student.isActive ? 'warning' : 'success'
-                                " variant="text" size="small" @click="confirmActivate(student)" />
-
-                            <v-btn v-else icon="mdi-account-remove-outline" color="error" variant="text" size="small"
-                                @click="confirmRemove(student)" />
-                        </v-col>
-                    </v-row>
-                </template>
-            </v-list-item>
-
-            <v-divider v-if="students.length > 0" />
-
-            <v-list-item v-if="students.length === 0" class="text-center py-10">
-                <v-icon size="40" color="medium-emphasis">
-                    mdi-account-group-outline
-                </v-icon>
-
-                <v-list-item-title>
-                    Hozircha studentlar yo‘q
-                </v-list-item-title>
-
-                <v-list-item-subtitle class="text-body-2">
-                    Birinchi studentni qo‘shing.
-                </v-list-item-subtitle>
-            </v-list-item>
+                    <template #append>
+                        <v-chip
+                            size="small"
+                            class="mr-2"
+                            :color="student.isActive ? 'success' : 'error'"
+                            :variant="student.isActive ? 'tonal' : 'outlined'"
+                        >
+                            {{ student.isActive ? "Active" : "Inactive" }}
+                        </v-chip>
+                        <v-btn
+                            v-if="student.isActive"
+                            icon="mdi-account-remove-outline"
+                            color="error"
+                            variant="text"
+                            size="small"
+                            aria-label="Remove from course"
+                            @click="ask('remove', student)"
+                        />
+                        <v-btn
+                            v-else
+                            icon="mdi-account-check-outline"
+                            color="success"
+                            variant="text"
+                            size="small"
+                            aria-label="Re-enroll"
+                            @click="ask('activate', student)"
+                        />
+                    </template>
+                </v-list-item>
+            </template>
         </v-list>
     </v-card>
+
     <div class="d-flex ga-4 mt-4">
-        <v-card link rounded="lg" class="add-link border border-dashed bg-transparent h-100" elevation="0"
-            :disabled="!isPublished" @click="
+        <AddCard
+            class="actions"
+            label="Add New Student"
+            :disabled="!isPublished"
+            @click="
                 router.visit(StudentController.createForCourse(courseId).url)
-                ">
-            <div class="d-flex align-center justify-center ga-3 px-5 py-4">
-                <v-icon icon="mdi-plus" />
-                <span class="font-weight-medium">Add New Student</span>
-            </div>
-        </v-card>
-
-        <v-card link rounded="lg" class="add-link border border-dashed bg-transparent" elevation="0"
-            @click="enrollDialog = true" :disabled="!isPublished">
-            <div class="d-flex align-center justify-center ga-3 px-5 py-4">
-                <v-icon icon="mdi-check" />
-                <span class="font-weight-medium">Enroll Student in Course</span>
-            </div>
-        </v-card>
+            "
+        />
+        <AddCard
+            class="actions"
+            label="Enroll Existing Student"
+            icon="mdi-account-plus-outline"
+            :disabled="!isPublished"
+            @click="enrollOpen = true"
+        />
     </div>
-    <v-dialog v-model="removeDialog" max-width="420">
-        <v-card rounded="lg">
-            <v-card-title class="pa-5">
-                Studentni kursdan chiqarish
-            </v-card-title>
 
-            <v-card-text>
-                <strong>
-                    {{ selectedStudent?.name }}
-                    {{ selectedStudent?.surname }}
-                </strong>
-                studentini kursdan chiqarishni xohlaysizmi?
-            </v-card-text>
+    <ConfirmDialog
+        v-model="removeOpen"
+        title="Remove from course"
+        confirm-label="Remove"
+        color="error"
+        :loading="processing"
+        @confirm="removeSelected"
+    >
+        <strong>{{ selected?.name }} {{ selected?.surname }}</strong> will lose
+        access. Results are kept and the student can be re-enrolled later.
+    </ConfirmDialog>
 
-            <v-card-actions class="pa-5 justify-end">
-                <v-btn variant="text" :disabled="removing" @click="removeDialog = false">
-                    Bekor qilish
-                </v-btn>
+    <ConfirmDialog
+        v-model="activateOpen"
+        title="Re-enroll student"
+        confirm-label="Re-enroll"
+        color="success"
+        :loading="processing"
+        @confirm="activateSelected"
+    >
+        <strong>{{ selected?.name }} {{ selected?.surname }}</strong> will get
+        access to the course again.
+    </ConfirmDialog>
 
-                <v-btn color="error" variant="flat" :loading="removing" @click="removeStudent">
-                    Chiqarish
-                </v-btn>
-            </v-card-actions>
-        </v-card>
-    </v-dialog>
+    <EnrollStudentDialog
+        v-model="enrollOpen"
+        :students="availableStudents"
+        :loading="processing"
+        @enroll="enrollSelected"
+    />
 
-    <v-dialog v-model="activateDialog" max-width="420">
-        <v-card rounded="lg">
-            <v-card-title class="pa-5">
-                Studentni kursga qo'shish
-            </v-card-title>
-
-            <v-card-text>
-                <strong>
-                    {{ selectedStudent?.name }}
-                    {{ selectedStudent?.surname }}
-                </strong>
-                studentini kursga qo'shishni xohlaysizmi?
-            </v-card-text>
-
-            <v-card-actions class="pa-5 justify-end">
-                <v-btn variant="text" :disabled="enrollForm.processing" @click="activateDialog = false">
-                    Bekor qilish
-                </v-btn>
-
-                <v-btn color="success" variant="flat" :loading="enrollForm.processing" @click="activateStudent">
-                    Qo'shish
-                </v-btn>
-            </v-card-actions>
-        </v-card>
-    </v-dialog>
-    <v-dialog v-model="enrollDialog" max-width="480">
-        <v-card rounded="lg">
-            <v-card-title class="pa-5">Studentni kursga yozish</v-card-title>
-            <v-card-text>
-                <v-autocomplete v-model="enrollForm.student_id" :items="availableStudents" item-value="id" :item-title="(s: Student) =>
-                        `${s.name} ${s.surname} (@${s.username})`
-                    " label="Student" :error-messages="enrollForm.errors.student_id" />
-            </v-card-text>
-            <v-card-actions class="pa-5 justify-end">
-                <v-btn variant="text" @click="enrollDialog = false">Bekor qilish</v-btn>
-                <v-btn color="primary" variant="flat" :loading="enrollForm.processing"
-                    :disabled="!enrollForm.student_id" @click="enroll">Yozish</v-btn>
-            </v-card-actions>
-        </v-card>
-    </v-dialog>
+    <v-snackbar
+        v-model="snackbar.show"
+        :color="snackbar.color"
+        location="top center"
+        timeout="4000"
+    >
+        {{ snackbar.text }}
+    </v-snackbar>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
 import { router } from "@inertiajs/vue3";
-import EnrollmentController from "@/actions/App/Http/Controllers/EnrollmentController";
-import type { StudentForCourse } from "@/types/student";
-import type { Student } from "@/types/student";
-import { useForm } from "@inertiajs/vue3";
+import { ref } from "vue";
 import StudentController from "@/actions/App/Http/Controllers/StudentController";
+import AddCard from "@/components/Common/AddCard.vue";
+import ConfirmDialog from "@/components/Common/ConfirmDialog.vue";
+import EmptyState from "@/components/Common/EmptyState.vue";
+import EnrollStudentDialog from "@/components/Student/EnrollStudentDialog.vue";
+import { useEnrollmentActions } from "@/composables/useEnrollmentActions";
+import { useSnackbar } from "@/composables/useSnackbar";
+import type { Student, StudentForCourse } from "@/types/student";
+
 const props = defineProps<{
     students: StudentForCourse[];
     availableStudents: Student[];
@@ -163,78 +144,41 @@ const props = defineProps<{
     isPublished: boolean;
 }>();
 
-const removeDialog = ref(false);
-const removing = ref(false);
-const selectedStudent = ref<StudentForCourse | null>(null);
+const { snackbar, notify } = useSnackbar();
+const { processing, enroll, remove } = useEnrollmentActions(
+    () => props.courseId,
+    notify,
+);
 
-const enrollDialog = ref(false);
-const activateDialog = ref(false);
-const enrollForm = useForm({ student_id: null as number | null });
+const selected = ref<StudentForCourse | null>(null);
+const removeOpen = ref(false);
+const activateOpen = ref(false);
+const enrollOpen = ref(false);
 
-function confirmRemove(student: StudentForCourse) {
-    selectedStudent.value = student;
-    removeDialog.value = true;
+function ask(kind: "remove" | "activate", student: StudentForCourse) {
+    selected.value = student;
+    (kind === "remove" ? removeOpen : activateOpen).value = true;
 }
 
-function confirmActivate(student: StudentForCourse) {
-    selectedStudent.value = student;
-    activateDialog.value = true;
-}
+const removeSelected = () =>
+    selected.value &&
+    remove(selected.value.id, () => (removeOpen.value = false));
 
-function removeStudent() {
-    if (!selectedStudent.value || removing.value) return;
-    removing.value = true;
+const activateSelected = () =>
+    selected.value &&
+    enroll(selected.value.id, () => (activateOpen.value = false));
 
-    router.delete(
-        EnrollmentController.destroy({
-            course: props.courseId,
-            student: selectedStudent.value.id,
-        }).url,
-        {
-            preserveScroll: true,
-            onSuccess: () => {
-                removeDialog.value = false;
-                selectedStudent.value = null;
-            },
-            onFinish: () => (removing.value = false),
-        },
-    );
-}
-
-function enrollStudent(studentId: number | null, onDone: () => void) {
-    if (studentId === null || enrollForm.processing) return;
-
-    enrollForm.student_id = studentId;
-    enrollForm.post(EnrollmentController.store(props.courseId).url, {
-        preserveScroll: true,
-        onSuccess: () => {
-            onDone();
-            enrollForm.reset();
-        },
-    });
-}
-
-function enroll() {
-    enrollStudent(enrollForm.student_id, () => (enrollDialog.value = false));
-}
-
-function activateStudent() {
-    enrollStudent(selectedStudent.value?.id ?? null, () => {
-        activateDialog.value = false;
-        selectedStudent.value = null;
-    });
-}
+const enrollSelected = (studentId: number) =>
+    enroll(studentId, () => (enrollOpen.value = false));
 </script>
+
 <style scoped>
-.inactive-student {
-    opacity: 0.4;
+.inactive {
+    opacity: 0.45;
 }
 
-.add-link {
+.actions {
     flex: 1 1 0;
     min-width: 0;
-    display: block;
-    text-decoration: none;
-    color: inherit;
 }
 </style>

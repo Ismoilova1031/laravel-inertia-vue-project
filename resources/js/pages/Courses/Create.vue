@@ -1,23 +1,16 @@
 <template>
     <v-container class="py-8">
+
         <Head title="Create course" />
 
-        <PageHeader
-            title="Create Course"
-            subtitle="Add a new course to your study planner."
-            :back-url="CourseController.index().url"
-            back-label="Courses"
-        />
+        <PageHeader title="Create Course" subtitle="Add a new course to your study planner."
+            :back-url="CourseController.index().url" back-label="Courses" />
 
         <v-card max-width="900" class="mx-auto" rounded="lg" elevation="2">
             <v-card-text class="pa-6">
-                <CourseForm
-                    :form="form"
-                    :categories="categories"
-                    :statuses="statuses"
-                    submit-label="Create Course"
-                    :submit="submit"
-                />
+                <CourseForm :form="form" :categories="categories" :statuses="statuses" submit-label="Create Course"
+                    @submit="submit" />
+
             </v-card-text>
         </v-card>
     </v-container>

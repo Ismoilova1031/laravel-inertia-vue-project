@@ -1,6 +1,12 @@
 <template>
     <form @submit.prevent="emit('submit', { text })">
-        <v-textarea v-model="text" label="Your contribution" variant="outlined" rows="6" auto-grow />
+        <v-textarea
+            v-model="text"
+            label="Your contribution"
+            variant="outlined"
+            rows="6"
+            auto-grow
+        />
         <div class="d-flex justify-end">
             <v-btn
                 type="submit"

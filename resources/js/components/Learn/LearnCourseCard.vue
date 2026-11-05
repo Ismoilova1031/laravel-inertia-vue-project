@@ -10,12 +10,24 @@
             <v-card-title class="text-h6 font-weight-bold text-wrap">
                 {{ course.title }}
             </v-card-title>
-            <v-card-subtitle class="mt-1">{{ course.category }}</v-card-subtitle>
+            <v-card-subtitle class="mt-1">{{
+                course.category
+            }}</v-card-subtitle>
             <template #append>
-                <v-chip v-if="!course.isActive" size="small" color="error" variant="outlined">
+                <v-chip
+                    v-if="!course.isActive"
+                    size="small"
+                    color="error"
+                    variant="outlined"
+                >
                     Access removed
                 </v-chip>
-                <v-chip v-else-if="isFinished" size="small" color="success" variant="tonal">
+                <v-chip
+                    v-else-if="isFinished"
+                    size="small"
+                    color="success"
+                    variant="tonal"
+                >
                     Completed
                 </v-chip>
             </template>
@@ -30,9 +42,12 @@
         <v-card-text class="pt-0">
             <div class="d-flex justify-space-between text-body-2 mb-1">
                 <span class="text-medium-emphasis">
-                    {{ course.progress.completed }} / {{ course.progress.total }} lessons
+                    {{ course.progress.completed }} /
+                    {{ course.progress.total }} lessons
                 </span>
-                <span class="font-weight-medium">{{ course.progress.percent }}%</span>
+                <span class="font-weight-medium"
+                    >{{ course.progress.percent }}%</span
+                >
             </div>
             <v-progress-linear
                 :model-value="course.progress.percent"
@@ -68,7 +83,9 @@ const props = defineProps<{ course: LearnCourseItem }>();
 const emit = defineEmits<{ open: []; continue: [] }>();
 
 const isFinished = computed(
-    () => props.course.progress.total > 0 && props.course.progress.percent === 100,
+    () =>
+        props.course.progress.total > 0 &&
+        props.course.progress.percent === 100,
 );
 </script>
 

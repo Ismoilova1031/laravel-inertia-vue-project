@@ -139,7 +139,7 @@
 <script setup lang="ts">
 import { Head, router } from "@inertiajs/vue3";
 import LearningController from "@/actions/App/Http/Controllers/LearningController";
-import CourseCompletionPanel from "@/components/Course/CourseCompletionPanel.vue";
+import CourseCompletionPanel from "@/components/Learn/CourseCompletionPanel.vue";
 import LessonTypeAvatar from "@/components/Lesson/LessonTypeAvatar.vue";
 import StudentViewBanner from "@/components/Student/StudentViewBanner.vue";
 import type { LearnCourse } from "@/types/learning";

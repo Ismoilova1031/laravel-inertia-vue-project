@@ -1,12 +1,11 @@
 <template>
-    <v-card class="pa-5 ma-0 md:ma-5 border">
+    <v-card class="pa-5 border" elevation="0" rounded="lg">
         <v-card-title class="text-title-medium pa-2">
-            <v-icon icon="mdi-shield-alert-outline" />
-            <span class="ml-2">Task Configuration Fields (Conditional)</span>
+            <v-icon icon="mdi-clipboard-check-outline" />
+            <span class="ml-2">Task settings</span>
         </v-card-title>
-
         <v-divider />
-        <form>
+        <div>
             <v-row class="mt-4">
                 <v-col cols="12" md="8">
                     <v-select
@@ -17,7 +16,6 @@
                         :error-messages="errors?.task_type"
                     />
                 </v-col>
-
             </v-row>
             <v-select
                 v-if="task.task_type === TaskTypes.FILE_UPLOAD"
@@ -34,7 +32,7 @@
                 v-model="questions"
                 :errors="questionListErrors"
             />
-        </form>
+        </div>
     </v-card>
 </template>
 <script setup lang="ts">
@@ -62,8 +60,6 @@ const fileExtensions = Object.entries(FileExtensions).map(([key, value]) => ({
     title: key,
     value,
 }));
-
-const minDateTime = new Date().toISOString().slice(0, 16);
 
 const questionListErrors = computed(() => {
     const errors = props.errors ?? {};

@@ -22,7 +22,7 @@
                     placeholder="Enter option..."
                     variant="outlined"
                     hide-details="auto"
-                    :error-messages="errors?.[`${index}.text`]"
+                    :error-messages="errors?.[`${index}.option`]"
                 />
 
                 <v-btn
@@ -49,7 +49,7 @@
                     placeholder="Enter option..."
                     variant="outlined"
                     hide-details="auto"
-                    :error-messages="errors?.[`${index}.text`]"
+                    :error-messages="errors?.[`${index}.option`]"
                 />
 
                 <v-btn
@@ -96,7 +96,7 @@ function addOption() {
     options.value = [
         ...options.value,
         {
-            id: Date.now(),
+            id: crypto.randomUUID(),
             option: "",
             is_correct: false,
         },
