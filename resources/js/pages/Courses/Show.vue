@@ -44,7 +44,7 @@
 
                     <v-card-text class="pa-6">
                         <CourseForm :form="form" :categories="categories" :statuses="statuses"
-                            submit-label="Create Course" @submit="submit" />
+                            submit-label="Create Course" @submit="submit" :showStatus="true"/>
 
                     </v-card-text>
                 </v-card>
