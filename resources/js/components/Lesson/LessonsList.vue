@@ -114,8 +114,9 @@ import ConfirmDialog from "@/components/Common/ConfirmDialog.vue";
 import type { CourseDetail } from "@/types/course";
 import type { Lesson } from "@/types/lesson";
 import { fallbackLessonMeta, lessonTypeMeta } from "@/utils/lessonType";
+import type { LessonListItem } from "@/types/lesson";
 
-const props = defineProps<{ lessons: Lesson[]; course: CourseDetail }>();
+const props = defineProps<{ lessons: LessonListItem[]; course: CourseDetail }>();
 
 const items = ref([...props.lessons]);
 watch(
@@ -124,9 +125,9 @@ watch(
 );
 
 const open = ref(false);
-const selected = ref<Lesson | null>(null);
+const selected = ref<LessonListItem | null>(null);
 
-function ask(lesson: Lesson) {
+function ask(lesson: LessonListItem) {
     selected.value = lesson;
     open.value = true;
 }

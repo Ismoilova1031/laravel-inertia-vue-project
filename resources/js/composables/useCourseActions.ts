@@ -1,19 +1,17 @@
 import { router } from "@inertiajs/vue3";
 import { computed, ref } from "vue";
 import CourseController from "@/actions/App/Http/Controllers/CourseController";
+import type { Notify } from "@/composables/useSnackbar";
 import type { Course } from "@/types/course";
 import { courseActionMeta } from "@/utils/courseStatus";
-
-type Notify = (text: string, color?: "success" | "error") => void;
+import { firstError } from "@/utils/inertia";
 
 export function useCourseActions(notify: Notify) {
     const dialog = ref(false);
     const processing = ref(false);
     const selected = ref<Course | null>(null);
 
-    const meta = computed(() =>
-        selected.value ? courseActionMeta[selected.value.status.value] : null,
-    );
+    const meta = computed(() => (selected.value ? courseActionMeta[selected.value.status.value] : null));
 
     function open(course: Course) {
         selected.value = course;
@@ -34,11 +32,7 @@ export function useCourseActions(notify: Notify) {
         const options = {
             preserveScroll: true,
             onSuccess: () => notify(`${current.confirm}: done`),
-            onError: (errors: Record<string, string>) =>
-                notify(
-                    Object.values(errors)[0] ?? "Something went wrong",
-                    "error",
-                ),
+            onError: (errors: Record<string, string>) => notify(firstError(errors), "error"),
             onFinish: () => {
                 processing.value = false;
                 close();
@@ -48,11 +42,7 @@ export function useCourseActions(notify: Notify) {
         if (current.target === null) {
             router.delete(CourseController.destroy(course.id).url, options);
         } else {
-            router.patch(
-                CourseController.changeStatus(course.id).url,
-                { status: current.target },
-                options,
-            );
+            router.patch(CourseController.changeStatus(course.id).url, { status: current.target }, options);
         }
     }
 

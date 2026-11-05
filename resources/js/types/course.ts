@@ -1,6 +1,6 @@
-import type { Lesson } from "./lesson";
-import type { StudentForCourse } from "./student";
 import type { SelectOption } from "./common";
+import type { LessonListItem } from "./lesson";
+import type { StudentForCourse } from "./student";
 
 export interface CourseRef {
     id: number;
@@ -19,6 +19,10 @@ export interface Course extends CourseBase {
 export interface CourseDetail extends CourseBase {
     category: SelectOption;
     status: SelectOption;
-    lessons: Lesson[];
+    lessons: LessonListItem[];
     students: StudentForCourse[];
+}
+
+export interface CourseWithLessonCount extends CourseBase {
+    lessonsCount: number;
 }

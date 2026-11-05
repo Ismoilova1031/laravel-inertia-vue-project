@@ -4,3 +4,5 @@ export const QuestionType = {
     SHORT_ANSWER: 3,
     OPEN_ENDED: 4,
 } as const;
+
+export type QuestionType = (typeof QuestionType)[keyof typeof QuestionType];

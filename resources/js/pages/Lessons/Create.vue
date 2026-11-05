@@ -25,9 +25,9 @@ import PageHeader from "@/components/Common/PageHeader.vue";
 import LessonForm from "@/components/Lesson/LessonForm.vue";
 import { useLessonForm } from "@/composables/useLessonForm";
 import type { SelectOption } from "@/types/common";
-import type { Course } from "@/types/course";
+import type { CourseBase } from "@/types/course";
 
-const props = defineProps<{ course: Course; types: SelectOption[] }>();
+const props = defineProps<{ course: CourseBase; types: SelectOption[] }>();
 
 const { form, submit } = useLessonForm(props.course.id);
 </script>

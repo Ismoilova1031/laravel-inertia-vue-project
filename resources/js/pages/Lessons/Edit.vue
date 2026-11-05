@@ -28,12 +28,12 @@ import PageHeader from "@/components/Common/PageHeader.vue";
 import LessonForm from "@/components/Lesson/LessonForm.vue";
 import { useLessonForm } from "@/composables/useLessonForm";
 import type { SelectOption } from "@/types/common";
-import type { Course } from "@/types/course";
 import type { Lesson } from "@/types/lesson";
 import { toLessonFormData } from "@/utils/lessonFormData";
+import type { CourseWithLessonCount } from "@/types/course";
 
 const props = defineProps<{
-    course: Course & { lessonsCount: number };
+    course: CourseWithLessonCount;
     lesson: Lesson;
     types: SelectOption[];
 }>();

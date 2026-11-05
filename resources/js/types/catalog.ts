@@ -1,3 +1,5 @@
+import type { RatingSummary } from "./common";
+
 export interface CatalogCourse {
     id: number;
     title: string;
@@ -6,7 +8,7 @@ export interface CatalogCourse {
     liked: boolean;
     planned: boolean;
     enrolled: boolean;
-    rating: { average: number; count: number };
+    rating: RatingSummary;
 }
 
 export type InterestKind = "like" | "planned";

@@ -10,7 +10,7 @@
                 <v-col cols="12" md="8">
                     <v-select
                         label="Task Type"
-                        :items="taskTypes"
+                        :items="taskTypeOptions"
                         v-model="task.task_type"
                         variant="outlined"
                         :error-messages="errors?.task_type"
@@ -21,7 +21,7 @@
                 v-if="task.task_type === TaskTypes.FILE_UPLOAD"
                 max-width="500"
                 label="Allowed file extensions"
-                :items="fileExtensions"
+                :items="fileExtensionOptions"
                 multiple
                 v-model="task.allowed_file_extensions"
                 :error-messages="errors?.allowed_file_extensions"
@@ -38,9 +38,9 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { TaskTypes } from "@/types/task";
-import { FileExtensions } from "@/types/file-extensions";
 import QuestionList from "@/components/Question/QuestionList.vue";
 import type { TaskFormData } from "@/composables/useTaskForm";
+import { fileExtensionOptions, taskTypeOptions } from "@/utils/taskType";
 
 const task = defineModel<TaskFormData>({
     required: true,
@@ -49,17 +49,6 @@ const task = defineModel<TaskFormData>({
 const props = defineProps<{
     errors?: Record<string, string>;
 }>();
-
-const taskTypes = Object.entries(TaskTypes)
-    .filter(([key]) => isNaN(Number(key)))
-    .map(([key, value]) => ({
-        title: key,
-        value,
-    }));
-const fileExtensions = Object.entries(FileExtensions).map(([key, value]) => ({
-    title: key,
-    value,
-}));
 
 const questionListErrors = computed(() => {
     const errors = props.errors ?? {};

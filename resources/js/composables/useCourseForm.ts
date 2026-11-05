@@ -1,4 +1,5 @@
 import z from "zod";
+import CourseController from "@/actions/App/Http/Controllers/CourseController";
 import { useZodForm } from "./useZodForm";
 
 export const courseFormSchema = z.object({
@@ -14,17 +15,12 @@ export const courseFormSchema = z.object({
 
     category: z
         .number()
-        .min(0, { message: "Category is required" })
+        .min(0)
         .max(9)
         .nullable()
-        .refine((val) => val !== null, { message: "Category is required" }),
+        .refine((value) => value !== null, { message: "Category is required" }),
 
-    status: z
-        .number()
-        .min(0, { message: "Status is required" })
-        .max(2)
-        .nullable()
-        .optional(),
+    status: z.number().min(0).max(2).nullable().optional(),
 });
 
 export type CourseFormData = z.input<typeof courseFormSchema>;
@@ -41,11 +37,11 @@ export function useCourseForm(initialData?: CourseFormData, courseId?: number) {
         if (!validate()) return;
 
         if (courseId) {
-            form.put(`/courses/${courseId}`);
+            form.put(CourseController.update(courseId).url);
             return;
         }
 
-        form.post("/courses", { onSuccess: () => form.reset() });
+        form.post(CourseController.store().url, { onSuccess: () => form.reset() });
     }
 
     return { form, validate, submit };

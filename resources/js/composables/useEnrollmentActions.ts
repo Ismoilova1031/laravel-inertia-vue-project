@@ -1,8 +1,8 @@
 import { router } from "@inertiajs/vue3";
 import { ref } from "vue";
 import EnrollmentController from "@/actions/App/Http/Controllers/EnrollmentController";
-
-type Notify = (text: string, color?: "success" | "error") => void;
+import type { Notify } from "@/composables/useSnackbar";
+import { firstError } from "@/utils/inertia";
 
 export function useEnrollmentActions(courseId: () => number, notify: Notify) {
     const processing = ref(false);
@@ -11,29 +11,21 @@ export function useEnrollmentActions(courseId: () => number, notify: Notify) {
         preserveScroll: true,
         onStart: () => (processing.value = true),
         onSuccess: onDone,
-        onError: (errors: Record<string, string>) =>
-            notify(Object.values(errors)[0] ?? "Something went wrong", "error"),
+        onError: (errors: Record<string, string>) => notify(firstError(errors), "error"),
         onFinish: () => (processing.value = false),
     });
 
     function enroll(studentId: number, onDone: () => void) {
         if (processing.value) return;
 
-        router.post(
-            EnrollmentController.store(courseId()).url,
-            { student_id: studentId },
-            options(onDone),
-        );
+        router.post(EnrollmentController.store(courseId()).url, { student_id: studentId }, options(onDone));
     }
 
     function remove(studentId: number, onDone: () => void) {
         if (processing.value) return;
 
         router.delete(
-            EnrollmentController.destroy({
-                course: courseId(),
-                student: studentId,
-            }).url,
+            EnrollmentController.destroy({ course: courseId(), student: studentId }).url,
             options(onDone),
         );
     }

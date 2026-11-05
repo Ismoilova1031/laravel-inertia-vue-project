@@ -1,6 +1,6 @@
-import type { SelectOption } from "./common";
 import type { Course, CourseRef } from "./course";
 import type { LessonRef } from "./lesson";
+import type { RatingSummary, SelectOption } from "./common";
 
 
 export interface LearnProgress {
@@ -25,7 +25,7 @@ export interface LearnCourse extends LearnCourseItem {
     lessons: LearnLessonItem[];
     isComplete: boolean;
     certificate: { number: string } | null;
-    rating: { average: number; count: number };
+    rating: RatingSummary;
     myReview: { rating: number; comment: string | null } | null;
 }
 
@@ -42,7 +42,7 @@ export interface LearnNotification {
 export interface LearnLesson extends LearnLessonItem {
     content: string | null;
     videoUrl: string | null;
-    task: LearnTask | null
+    task: LearnTask | null;
     course: CourseRef;
     previous: LessonRef | null;
     next: LessonRef | null;
